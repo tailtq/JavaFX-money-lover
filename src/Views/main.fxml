@@ -1,8 +1,12 @@
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.geometry.Insets?>
 
-<StackPane>
+<?import javafx.scene.layout.VBox?>
+<?import Components.buttons.ExtendedButton?>
+<VBox>
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
-</StackPane>
+    <ExtendedButton text="Hello">
+
+    </ExtendedButton>
+</VBox>
