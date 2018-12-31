@@ -1,0 +1,38 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.layout.StackPane?>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="main.java.com.app.controllers.MainController"
+           stylesheets="@../../assets/css/components/sidebar.css">
+    <VBox styleClass="sidebar">
+        <fx:include source="sidebar-button.fxml" onAction="#pressTransaction">
+            <text>Transactions</text>
+            <styleClass>wallet</styleClass>
+
+            <VBox.margin>
+                <Insets>
+                    <top>10</top>
+                    <bottom>5</bottom>
+                </Insets>
+            </VBox.margin>
+        </fx:include>
+
+        <fx:include source="sidebar-button.fxml" onAction="#pressReport">
+            <text>Reports</text>
+            <styleClass>report</styleClass>
+        </fx:include>
+
+        <fx:include source="sidebar-button.fxml" onAction="#pressBudget">
+            <text>Budgets</text>
+            <styleClass>budget</styleClass>
+
+            <VBox.margin>
+                <Insets>
+                    <top>5</top>
+                    <bottom>10</bottom>
+                </Insets>
+            </VBox.margin>
+        </fx:include>
+    </VBox>
+</StackPane>
