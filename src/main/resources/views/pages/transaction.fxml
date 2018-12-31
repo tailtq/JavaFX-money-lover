@@ -5,7 +5,20 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../assets/css/pages/transaction.css"
-      styleClass="transaction">
+      styleClass="transaction" alignment="TOP_CENTER">
+    <HBox styleClass="transaction__button-group" alignment="TOP_CENTER">
+        <fx:include source="../components/tag-button.fxml">
+            <text>LAST MONTH</text>
+        </fx:include>
+        <fx:include source="../components/tag-button.fxml">
+            <text>THIS MONTH</text>
+        </fx:include>
+        <fx:include source="../components/tag-button.fxml" styleClass="active">
+            <text>FUTURE</text>
+        </fx:include>
+    </HBox>
 
-    <fx:include source="../components/sidebar-button.fxml" text="Hello"/>
+    <VBox>
+
+    </VBox>
 </VBox>
