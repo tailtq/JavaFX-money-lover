@@ -1,3 +1,12 @@
 .transaction {
+    -fx-pref-width: 370px;
+    -fx-background-color: #000;
+    /*-fx-alignment: center;*/
+}
 
+.transaction__button-group {
+    -fx-max-width: 320px;
+    /*-fx-min-width: 80%;*/
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0), 0, 0, 0;
 }

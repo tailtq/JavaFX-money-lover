@@ -20,7 +20,8 @@ public class Main extends Application {
         this.changeMainView(fxmlLoader.getController());
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(this.layout, 400, 300));
+        primaryStage.setScene(new Scene(this.layout, 450, 300));
+        primaryStage.setMinWidth(450);
         primaryStage.show();
     }
 
