@@ -1,0 +1,17 @@
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.layout.VBox?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import Components.buttons.sidebarButton.SidebarButton?>
+<VBox>
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <SidebarButton styleClass="">
+        <text>asdf</text>
+        <graphic>
+            <FontAwesomeIconView glyphName="ADDRESS_BOOK" size="12px" glyphStyle="-fx-fill: blue" />
+        </graphic>
+    </SidebarButton>
+    <SidebarButton styleClass="budget" text="Budget"/>
+</VBox>
