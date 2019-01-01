@@ -37,11 +37,11 @@ public class TransactionController implements LoaderInterface {
     @FXML
     public void changeTime(Event e) {
         Node button = (Node) e.getSource();
-//        if (button == leftTime) {
-//            middleTime.setText("Hello");
-//        } else if (button == rightTime) {
-//            middleTime.setText("Good morning");
-//        }
+        if (button == leftTime) {
+            middleTime.setText("Hello");
+        } else if (button == rightTime) {
+            middleTime.setText("Good morning");
+        }
     }
 
 

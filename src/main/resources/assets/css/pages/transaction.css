@@ -11,11 +11,11 @@
 
 .transaction__button-group {
     -fx-background-color: #fff;
-    -fx-effect: dropshadow(three-pass-box, #000000, 2, -1, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, #000000, 1, 0, 0, 0.5);
 }
 
 .transaction__pane {
-    -fx-padding: 5px;
+    -fx-padding: 10px;
 }
 
 .transaction__statistic {
@@ -32,7 +32,10 @@
 }
 
 .transactions {
-    -fx-vgap: 5;
+    -fx-vgap: 8;
+    -fx-border-color: rgba(0,0,0,.12);
+    -fx-border-width: 5 0 0 0;
+    -fx-padding: 5 0 5 0;
 }
 
 .transactions Line {
@@ -41,11 +44,6 @@
 
 .transaction__time__dd {
     -fx-font-size: 24px;
-}
-
-.transaction__time__dddd, .transaction__content__type {
-    -fx-font-weight: bold;
-    -fx-font-family: 'SansSerif';
 }
 
 .transaction__time__dddd,
@@ -63,7 +61,12 @@
     -fx-text-fill: #6f6f6f;
 }
 
+.transaction__content, .transaction__time {
+    -fx-vgap: 3;
+}
+
 .transaction__content__image {
     -fx-pref-width: 40px;
     -fx-pref-height: 40px;
 }
+
