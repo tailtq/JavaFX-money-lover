@@ -1,0 +1,11 @@
+.primary-color {
+    -fx-text-fill: #039be5;
+}
+
+.success-color {
+    -fx-text-fill: #2db84c;
+}
+
+.danger-color {
+    -fx-text-fill: #f25a5a;
+}
