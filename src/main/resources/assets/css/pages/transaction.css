@@ -1,12 +1,69 @@
+.transaction__container {
+    -fx-pref-width: 450px;
+}
+
 .transaction {
-    -fx-pref-width: 370px;
-    -fx-background-color: #000;
-    /*-fx-alignment: center;*/
+    -fx-max-width: 400px;
+    -fx-pref-width: 320px;
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
 }
 
 .transaction__button-group {
-    -fx-max-width: 320px;
-    /*-fx-min-width: 80%;*/
     -fx-background-color: #fff;
-    -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0), 0, 0, 0;
+    -fx-effect: dropshadow(three-pass-box, #000000, 2, -1, 0, 0);
+}
+
+.transaction__pane {
+    -fx-padding: 5px;
+}
+
+.transaction__statistic {
+    -fx-vgap: 5;
+}
+
+.transaction__statistic__residual-amount {
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: rgba(0,0,0,.12);
+}
+
+.transactions__times {
+    -fx-spacing: 10;
+}
+
+.transactions {
+    -fx-vgap: 5;
+}
+
+.transactions Line {
+    -fx-stroke: red
+}
+
+.transaction__time__dd {
+    -fx-font-size: 24px;
+}
+
+.transaction__time__dddd, .transaction__content__type {
+    -fx-font-weight: bold;
+    -fx-font-family: 'SansSerif';
+}
+
+.transaction__time__dddd,
+.transaction__content__type.subcategory,
+.transaction__time__mmyyyy,
+.transaction__content__note {
+    -fx-text-fill: rgba(0,0,0,.54);
+}
+
+.transaction__content__type.subcategory {
+    -fx-text-fill: rgba(0,0,0,.87);
+}
+
+.transaction__time__mmyyyy {
+    -fx-text-fill: #6f6f6f;
+}
+
+.transaction__content__image {
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
 }
