@@ -76,14 +76,14 @@
                     <GridPane styleClass="transaction__time"
                               GridPane.columnIndex="1" GridPane.rowIndex="0">
                         <Label text="Thursday"
-                               styleClass="transaction__time__dddd"
+                               styleClass="transaction__time__dddd, text-bold"
                                GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                         <Label text="December 2018"
                                styleClass="transaction__time__mmyyyy"
                                GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                     </GridPane>
                     <Label text="-2,960,000.00 ₫"
-                           styleClass="danger-color"
+                           styleClass="black-color, text-bold"
                            GridPane.columnIndex="2" GridPane.rowIndex="0"/>
 
                     <ImageView fitHeight="40"
@@ -93,9 +93,10 @@
                         <Image url="@../../assets/images/ic_category_debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
-                    <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <GridPane styleClass="transaction__content"
+                              GridPane.columnIndex="1" GridPane.rowIndex="1">
                         <Label text="Thursday"
-                               styleClass="transaction__content__type, category"
+                               styleClass="transaction__content__type, text-bold, category"
                                GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                         <Label text="December 2018"
                                styleClass="transaction__content__note"
@@ -112,9 +113,10 @@
                         <Image url="@../../assets/images/ic_category_debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
-                    <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <GridPane styleClass="transaction__content"
+                              GridPane.columnIndex="1" GridPane.rowIndex="2">
                         <Label text="Thursday"
-                               styleClass="transaction__content__type, category"
+                               styleClass="transaction__content__type, text-bold, category"
                                GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                         <Label text="December 2018"
                                styleClass="transaction__content__note"

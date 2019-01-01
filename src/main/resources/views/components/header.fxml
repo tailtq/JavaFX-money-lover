@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../assets/css/content.css">
+    <HBox stylesheets="@../../assets/css/components/header.css"
+          styleClass="header">
+        <MenuButton fx:id="changeStatusButton" mnemonicParsing="false"
+                    text="Wallet1" styleClass="header__wallet__select-btn">
+            <items>
+                <MenuItem text="Select Wallet" disable="true"/>
+                <MenuItem text="Wallet1" styleClass="header__wallet"/>
+                <MenuItem text="Wallet2" styleClass="header__wallet"/>
+            </items>
+        </MenuButton>
+        <VBox.margin>
+            <Insets>
+                <bottom>20</bottom>
+            </Insets>
+        </VBox.margin>
+    </HBox>
+</VBox>

@@ -11,13 +11,17 @@ import main.java.com.app.controllers.MainController;
 public class Main extends Application {
     private HBox layout = new HBox();
 
+    private VBox content;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../resources/views/components/sidebar.fxml"));
-        Parent sidebar = fxmlLoader.load();
+        FXMLLoader sidebarLoader = new FXMLLoader(getClass().getResource("../../../resources/views/components/sidebar.fxml"));
+        Parent sidebar = sidebarLoader.load();
+        FXMLLoader contentLoader = new FXMLLoader(getClass().getResource("../../../resources/views/components/header.fxml"));
+        this.content = contentLoader.load();
 
-        this.layout.getChildren().add(sidebar);
-        this.changeMainView(fxmlLoader.getController());
+        this.layout.getChildren().addAll(sidebar, this.content);
+        this.changeMainView(sidebarLoader.getController());
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(this.layout, 530, 500));
@@ -28,7 +32,7 @@ public class Main extends Application {
     private void changeMainView(MainController mainController) {
         mainController.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
-                ObservableList<Node> nodes = this.layout.getChildren();
+                ObservableList<Node> nodes = this.content.getChildren();
                 if (nodes.size() == 2) {
                     nodes.remove(1);
                 }
@@ -39,7 +43,7 @@ public class Main extends Application {
             }
         });
 
-        this.layout.getChildren().add(mainController.getMainView());
+        this.content.getChildren().add(mainController.getMainView());
     }
 
     public static void main(String[] args) {

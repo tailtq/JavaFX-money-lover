@@ -9,3 +9,12 @@
 .danger-color {
     -fx-text-fill: #f25a5a;
 }
+
+.black-color {
+    -fx-text-fill: rgba(0,0,0,.87);
+}
+
+.text-bold {
+    -fx-font-weight: bold;
+    -fx-font-family: 'SansSerif';
+}
