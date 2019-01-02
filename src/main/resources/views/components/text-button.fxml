@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.*?>
-
-<Button xmlns="http://javafx.com/javafx"
-        xmlns:fx="http://javafx.com/fxml"
-        stylesheets="@../../assets/css/components/normal-button.css"
-        styleClass="text-button">
-</Button>

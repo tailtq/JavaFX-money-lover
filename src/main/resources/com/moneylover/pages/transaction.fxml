@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../../assets/css/pages/transaction.css, @../../../assets/css/colors.css"
+      styleClass="transaction__container"
+      alignment="TOP_CENTER"
+      fx:controller="com.moneylover.app.controllers.Pages.TransactionController">
+    <VBox styleClass="transaction">
+        <HBox styleClass="transaction__button-group" alignment="TOP_CENTER">
+            <fx:include source="../components/tag-button.fxml"
+                        fx:id="leftTime"
+                        onAction="#changeTime">
+                <text>LAST MONTH</text>
+            </fx:include>
+            <fx:include source="../components/tag-button.fxml"
+                        fx:id="middleTime"
+                        onAction="#changeTime"
+                        styleClass="active">
+                <text>THIS MONTH</text>
+            </fx:include>
+            <fx:include source="../components/tag-button.fxml"
+                        fx:id="rightTime"
+                        onAction="#changeTime">
+                <text>FUTURE</text>
+            </fx:include>
+        </HBox>
+
+        <VBox styleClass="transaction__pane" fx:id="transactionContent" alignment="CENTER">
+            <GridPane styleClass="transaction__statistic">
+                <Text text="Inflow"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="+2,960,000.00 ₫" fx:id="inflow"
+                       styleClass="primary-color"
+                       GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <Text text="Outflow"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <Label text="-15,960,000.00 ₫" fx:id="outflow"
+                       styleClass="danger-color"
+                       GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label text="-60,000.00 ₫"
+                       styleClass="transaction__statistic__residual-amount"
+                       GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50" halignment="RIGHT"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints vgrow="SOMETIMES" />
+                    <RowConstraints vgrow="SOMETIMES" />
+                </rowConstraints>
+            </GridPane>
+            <fx:include source="../components/text-button.fxml" styleClass="success-color">
+                <text>VIEW REPORT FOR THIS PERIOD</text>
+                <VBox.margin>
+                    <Insets>
+                        <top>5</top>
+                        <bottom>10</bottom>
+                    </Insets>
+                </VBox.margin>
+            </fx:include>
+
+
+            <VBox styleClass="transactions__times">
+                <GridPane styleClass="transactions">
+                    <Label text="27"
+                           styleClass="transaction__time__dd"
+                           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <GridPane styleClass="transaction__time"
+                              GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Thursday"
+                               styleClass="transaction__time__dddd, text-bold"
+                               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label text="December 2018"
+                               styleClass="transaction__time__mmyyyy"
+                               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    </GridPane>
+                    <Label text="-2,960,000.00 ₫"
+                           styleClass="black-color, text-bold"
+                           GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+                    <ImageView fitHeight="40"
+                               fitWidth="40"
+                               styleClass="transaction__content__image"
+                               GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Image url="@../../../assets/images/categories/debt.png"
+                               backgroundLoading="true"/>
+                    </ImageView>
+                    <GridPane styleClass="transaction__content"
+                              GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Thursday"
+                               styleClass="transaction__content__type, text-bold, category"
+                               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label text="December 2018"
+                               styleClass="transaction__content__note"
+                               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    </GridPane>
+                    <Label text="+2,960,000.00 ₫"
+                           styleClass="primary-color"
+                           GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+                    <ImageView fitHeight="40"
+                               fitWidth="40"
+                               styleClass="transaction__content__image"
+                               GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Image url="@../../../assets/images/categories/debt.png"
+                               backgroundLoading="true"/>
+                    </ImageView>
+                    <GridPane styleClass="transaction__content"
+                              GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label text="Thursday"
+                               styleClass="transaction__content__type, text-bold, category"
+                               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label text="December 2018"
+                               styleClass="transaction__content__note"
+                               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    </GridPane>
+                    <Label text="+2,960,000.00 ₫"
+                           styleClass="primary-color"
+                           GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="12" halignment="CENTER"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="60" halignment="LEFT"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+        </VBox>
+    </VBox>
+</VBox>
