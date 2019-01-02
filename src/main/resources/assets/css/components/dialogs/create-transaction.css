@@ -1,0 +1,16 @@
+.transaction__create-form {
+    -fx-padding: 15;
+    -fx-vgap: 10;
+    -fx-hgap: 20;
+}
+
+.transaction__create-form__select {
+    -fx-background-color: #fff;
+    -fx-pref-width: infinity;
+    -fx-border-radius: 3;
+}
+
+.form__button {
+    -fx-font-size: 15px;
+    -fx-padding: 6px 10px;
+}

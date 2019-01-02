@@ -6,6 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../assets/css/pages/transaction.css, @../../assets/css/colors.css"
@@ -34,12 +35,12 @@
 
         <VBox styleClass="transaction__pane" fx:id="transactionContent" alignment="CENTER">
             <GridPane styleClass="transaction__statistic">
-                <Label text="Inflow"
+                <Text text="Inflow"
                        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                 <Label text="+2,960,000.00 ₫" fx:id="inflow"
                        styleClass="primary-color"
                        GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                <Label text="Outflow"
+                <Text text="Outflow"
                        GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                 <Label text="-15,960,000.00 ₫" fx:id="outflow"
                        styleClass="danger-color"
@@ -90,7 +91,7 @@
                                fitWidth="40"
                                styleClass="transaction__content__image"
                                GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Image url="@../../assets/images/ic_category_debt.png"
+                        <Image url="@../../assets/images/categories/debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
                     <GridPane styleClass="transaction__content"
@@ -110,7 +111,7 @@
                                fitWidth="40"
                                styleClass="transaction__content__image"
                                GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Image url="@../../assets/images/ic_category_debt.png"
+                        <Image url="@../../assets/images/categories/debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
                     <GridPane styleClass="transaction__content"

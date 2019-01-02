@@ -1,0 +1,10 @@
+.category {
+    -fx-border-width: 0.5 0 0.5 0;
+    -fx-border-color: rgb(224, 224, 224);
+    -fx-padding: 10;
+    -fx-vgap: 10;
+}
+
+.subcategories {
+    -fx-vgap: 10;
+}
