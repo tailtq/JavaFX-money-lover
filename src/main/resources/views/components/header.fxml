@@ -4,23 +4,35 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
-<VBox xmlns="http://javafx.com/javafx"
+
+<HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../../assets/css/content.css">
-    <HBox stylesheets="@../../assets/css/components/header.css"
-          styleClass="header">
-        <MenuButton fx:id="changeStatusButton" mnemonicParsing="false"
-                    text="Wallet1" styleClass="header__wallet__select-btn">
-            <items>
-                <MenuItem text="Select Wallet" disable="true"/>
-                <MenuItem text="Wallet1" styleClass="header__wallet"/>
-                <MenuItem text="Wallet2" styleClass="header__wallet"/>
-            </items>
-        </MenuButton>
-        <VBox.margin>
-            <Insets>
-                <bottom>20</bottom>
-            </Insets>
-        </VBox.margin>
-    </HBox>
-</VBox>
+      stylesheets="@../../assets/css/components/header.css"
+      fx:controller="main.java.com.app.controllers.Pages.TransactionController"
+      styleClass="header">
+    <BorderPane minWidth="430">
+        <left>
+            <MenuButton fx:id="changeStatusButton" mnemonicParsing="false"
+                        text="Wallet1" styleClass="header__wallet__select-btn">
+                <items>
+                    <MenuItem text="Select Wallet" disable="true"/>
+                    <MenuItem text="Wallet1" styleClass="header__wallet"/>
+                    <MenuItem text="Wallet2" styleClass="header__wallet"/>
+                </items>
+            </MenuButton>
+        </left>
+        <right >
+            <fx:include source="normal-button.fxml"
+                        onAction="#showCreateTransactionDialog"
+                        fx:id="createButton">
+                <text>ADD TRANSACTION</text>
+            </fx:include>
+        </right>
+    </BorderPane>
+
+    <VBox.margin>
+        <Insets>
+            <bottom>20</bottom>
+        </Insets>
+    </VBox.margin>
+</HBox>

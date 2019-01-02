@@ -1,17 +1,16 @@
 package main.java.com.app.controllers.Pages;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import main.java.com.app.controllers.Contracts.LoaderInterface;
 
 import java.io.IOException;
@@ -19,13 +18,25 @@ import java.io.IOException;
 public class TransactionController implements LoaderInterface {
 
     @FXML
-    Button leftTime, middleTime, rightTime;
+    private Button leftTime, middleTime, rightTime;
 
     @FXML
-    VBox transactionContent;
+    private VBox transactionContent;
 
     @FXML
-    Label inflow;
+    private Label inflow;
+
+    @FXML
+    private Button createButton;
+
+    @FXML
+    private TextField amount;
+
+    @FXML
+    private DatePicker transactedAt;
+
+    @FXML
+    private TreeView categoriesView;
 
     @Override
     public VBox loadView() throws IOException {
@@ -44,5 +55,48 @@ public class TransactionController implements LoaderInterface {
         }
     }
 
+    @FXML
+    public void showCreateTransactionDialog(Event e) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../../../resources/views/components/dialogs/create-transaction.fxml"));
+        Parent parent = fxmlLoader.load();
 
+        Scene scene = new Scene(parent, 500, 300);
+        Stage stage = new Stage();
+        stage.setTitle("Add Transaction");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    @FXML
+    public void showCategoryDialog(Event e) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../../../resources/views/components/dialogs/choose-category.fxml"));
+        Parent parent = fxmlLoader.load();
+
+        Scene scene = new Scene(parent, 300, 200);
+        Stage stage = new Stage();
+        stage.setTitle("Choose Category");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    @FXML
+    public void changeType(Event e) {
+        Node button = (Node) e.getSource();
+        ObservableList<Node> nodes = button.getParent().getChildrenUnmodifiable();
+
+        for (Node node: nodes) {
+            ObservableList<String> classes = node.getStyleClass();
+
+            if (node == button) {
+                if (!classes.toString().contains("active")) {
+                    classes.add("active");
+                }
+            } else {
+                classes.remove("active");
+            }
+        }
+        // Change categoriesView
+    }
 }

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
+import main.java.com.app.controllers.Contracts.LoaderInterface;
 import main.java.com.app.controllers.Pages.TransactionController;
 
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class MainController implements Initializable {
     private BooleanProperty changeScene = new SimpleBooleanProperty(false);
 
     private VBox mainView;
+
+    private LoaderInterface controller;
 
     public BooleanProperty getChangeScene() {
         return changeScene;
@@ -31,14 +34,18 @@ public class MainController implements Initializable {
         return this.mainView;
     }
 
+    public LoaderInterface getController() {
+        return this.controller;
+    }
+
     @FXML
     public void pressTransaction(Event e) throws IOException {
         Node button = (Node) e.getSource();
-        TransactionController transactionController = new TransactionController();
+        this.controller = new TransactionController();
         boolean result = this.handleSidebarButtonClass(button);
 
         if (result) {
-            this.mainView = transactionController.loadView();
+            this.mainView = this.controller.loadView();
         }
     }
 
@@ -78,8 +85,8 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            TransactionController transactionController = new TransactionController();
-            this.mainView = transactionController.loadView();
+            this.controller = new TransactionController();
+            this.mainView = this.controller.loadView();
         } catch (IOException e) {
             e.printStackTrace();
         }

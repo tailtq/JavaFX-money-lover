@@ -11,14 +11,16 @@ import main.java.com.app.controllers.MainController;
 public class Main extends Application {
     private HBox layout = new HBox();
 
-    private VBox content;
+    private VBox content = new VBox();
+
+    private FXMLLoader headerLoader;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader sidebarLoader = new FXMLLoader(getClass().getResource("../../../resources/views/components/sidebar.fxml"));
         Parent sidebar = sidebarLoader.load();
-        FXMLLoader contentLoader = new FXMLLoader(getClass().getResource("../../../resources/views/components/header.fxml"));
-        this.content = contentLoader.load();
+        this.headerLoader = new FXMLLoader(getClass().getResource("../../../resources/views/components/header.fxml"));
+        this.content.getChildren().add(this.headerLoader.load());
 
         this.layout.getChildren().addAll(sidebar, this.content);
         this.changeMainView(sidebarLoader.getController());
@@ -38,6 +40,7 @@ public class Main extends Application {
                 }
 
                 nodes.add(mainController.getMainView());
+                this.headerLoader.setController(mainController.getController());
                 // The difference between oldValue and newValue triggers an event
                 mainController.setChangeScene(false);
             }

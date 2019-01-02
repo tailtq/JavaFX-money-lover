@@ -1,0 +1,85 @@
+.normal-button {
+    -fx-font-weight: 500;
+    -fx-font-family: 'SansSerif';
+    -fx-background-color: #1aa333;
+    -fx-text-fill: #fff;
+}
+
+.cancel-button {
+    -fx-background-color: rgba(0,0,0,.06);
+    -fx-text-fill: #1aa333;
+}
+
+/* Image Button */
+.image-button {
+    -fx-background-color: #fff;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 30px;
+    -fx-background-position: 20px 45%;
+    -fx-padding: 10 10 10 55;
+    -fx-text-fill: #000;
+    -fx-max-width: infinity;
+}
+
+.subcategories .image-button {
+    -fx-background-position: 45px 45%;
+    -fx-padding: 10 10 10 80;
+}
+
+/* Tag Button */
+.tags__button {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-border-width: 0 0 3 0;
+    -fx-border-color: inherit;
+}
+
+.tags__button.active {
+    -fx-text-fill: #2db84c;
+    -fx-border-color: #2db84c;
+}
+
+/* Text Button */
+.text-button {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+}
+
+/* Sidebar Button */
+.sidebar__button {
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 24px;
+    -fx-background-position: top center;
+    -fx-font-size: 10px;
+    -fx-pref-height: 47px;
+    -fx-pref-width: 80px;
+}
+
+.sidebar__button.active {
+    -fx-text-fill: #2db84c;
+}
+
+.wallet {
+    -fx-background-image: url("../../images/wallet.png");
+}
+
+.wallet.active {
+    -fx-background-image: url("../../images/coloured-wallet.png");
+}
+
+.report {
+    -fx-background-image: url("../../images/statistics.png");
+}
+
+.report.active {
+    -fx-background-image: url("../../images/coloured-statistics.png");
+}
+
+.budget {
+    -fx-background-image: url("../../images/budget.png");
+}
+
+.budget.active {
+    -fx-background-image: url("../../images/coloured-budget.png");
+}

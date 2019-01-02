@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.Label?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../../assets/css/pages/transaction.css,
+        @../../../assets/css/components/dialogs/choose-category.css,
+        @../../../assets/css/icons.css"
+      fx:controller="main.java.com.app.controllers.Pages.TransactionController">
+    <HBox styleClass="type__button-group" alignment="TOP_CENTER">
+        <fx:include source="../tag-button.fxml"
+                    onAction="#changeType">
+            <text>DEBT / LOAN</text>
+        </fx:include>
+        <fx:include source="../tag-button.fxml"
+                    onAction="#changeType"
+                    styleClass="active">
+            <text>EXPENSE</text>
+        </fx:include>
+        <fx:include source="../tag-button.fxml"
+                    onAction="#changeType">
+            <text>INCOME</text>
+        </fx:include>
+    </HBox>
+    <!--<TreeView id="treeView" fx:id="categoriesView" styleClass="categories-tree">-->
+        <!--<TreeItem value="Case Full Name">-->
+            <!--<children>-->
+                <!--<TreeItem>-->
+                    <!--<value>-->
+                        <!--<CheckBox id="checkBox1" prefWidth="180.0" text="ONE" />-->
+                    <!--</value>-->
+                <!--</TreeItem>-->
+                <!--<TreeItem>-->
+                    <!--<value>-->
+                        <!--<CheckBox id="checkBox2" prefWidth="180.0" text="TWO" />-->
+                    <!--</value>-->
+                <!--</TreeItem>-->
+                <!--<TreeItem>-->
+                    <!--<value>-->
+                        <!--<CheckBox id="checkBox3" prefWidth="180.0" text="THREE" />-->
+                    <!--</value>-->
+                <!--</TreeItem>-->
+            <!--</children>-->
+        <!--</TreeItem>-->
+    <!--</TreeView>-->
+    <VBox>
+        <VBox styleClass="category">
+            <fx:include source="../normal-button.fxml" styleClass="image-button, bill" alignment="TOP_LEFT">
+                <text>Button</text>
+            </fx:include>
+            <VBox styleClass="subcategories">
+                <fx:include source="../normal-button.fxml" styleClass="image-button, bill_electricity" alignment="TOP_LEFT">
+                    <text>Button</text>
+                </fx:include>
+                <fx:include source="../normal-button.fxml" styleClass="image-button, bill_gas" alignment="TOP_LEFT">
+                    <text>Button</text>
+                </fx:include>
+                <fx:include source="../normal-button.fxml" styleClass="image-button, debt" alignment="TOP_LEFT">
+                    <text>Button</text>
+                </fx:include>
+            </VBox>
+        </VBox>
+        <VBox styleClass="category">
+            <fx:include source="../normal-button.fxml" styleClass="image-button, debt" alignment="TOP_LEFT">
+                <text>Button</text>
+            </fx:include>
+            <VBox styleClass="subcategories">
+                <fx:include source="../normal-button.fxml" styleClass="image-button, debt" alignment="TOP_LEFT">
+                    <text>Button</text>
+                </fx:include>
+                <fx:include source="../normal-button.fxml" styleClass="image-button, debt" alignment="TOP_LEFT">
+                    <text>Button</text>
+                </fx:include>
+                <fx:include source="../normal-button.fxml" styleClass="image-button, debt" alignment="TOP_LEFT">
+                    <text>Button</text>
+                </fx:include>
+            </VBox>
+        </VBox>
+    </VBox>
+</VBox>
+

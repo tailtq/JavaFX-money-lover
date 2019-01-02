@@ -1,0 +1,15 @@
+.bill {
+    -fx-background-image: url("../images/categories/category_bill.png");
+}
+
+.bill_debt {
+    -fx-background-image: url("../images/categories/debt.png");
+}
+
+.bill_electricity {
+    -fx-background-image: url("../images/categories/bill_electricity.png");
+}
+
+.bill_gas {
+    -fx-background-image: url("../images/categories/bill_gas.png");
+}
