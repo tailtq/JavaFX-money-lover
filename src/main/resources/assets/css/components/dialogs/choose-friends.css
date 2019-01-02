@@ -1,0 +1,13 @@
+.friends {
+    -fx-padding: 10px;
+    -fx-spacing: 10;
+}
+
+.friends__form {
+    -fx-spacing: 5;
+}
+
+.friends__form__field {
+    -fx-border-radius: 3;
+    -fx-pref-width: 100;
+}

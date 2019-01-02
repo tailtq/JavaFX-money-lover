@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+<Button styleClass="sidebar__button"
+        alignment="BOTTOM_CENTER"
+        stylesheets="@../../../assets/css/components/normal-button.css">
+    <VBox.margin>
+        <Insets>
+            <top>5</top>
+            <bottom>5</bottom>
+        </Insets>
+    </VBox.margin>
+</Button>

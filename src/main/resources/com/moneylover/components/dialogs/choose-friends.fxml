@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../../../assets/css/components/dialogs/choose-friends.css"
+      fx:controller="com.moneylover.app.controllers.Pages.TransactionController"
+      styleClass="friends">
+    <Text>Add new friend</Text>
+    <HBox styleClass="friends__form">
+        <TextField styleClass="friends__form__field" HBox.hgrow="ALWAYS"/>
+        <fx:include source="../normal-button.fxml">
+            <text>Add</text>
+        </fx:include>
+    </HBox>
+    <CheckBox id="checkBox1" text="A"/>
+    <CheckBox id="checkBox1" text="B"/>
+    <CheckBox id="checkBox1" text="C"/>
+    <CheckBox id="checkBox1" text="D"/>
+</VBox>

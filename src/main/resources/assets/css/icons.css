@@ -1,9 +1,25 @@
 .bill {
-    -fx-background-image: url("../images/categories/category_bill.png");
+    -fx-background-image: url("../images/categories/bill.png");
 }
 
-.bill_debt {
-    -fx-background-image: url("../images/categories/debt.png");
+.bill_rentals {
+    -fx-background-image: url("../images/categories/bill_rentals.png");
+}
+
+.bill_internet {
+    -fx-background-image: url("../images/categories/bill_internet.png");
+}
+
+.bill_phone {
+    -fx-background-image: url("../images/categories/bill_phone.png");
+}
+
+.bill_television {
+    -fx-background-image: url("../images/categories/bill_television.png");
+}
+
+.bill_water {
+    -fx-background-image: url("../images/categories/bill_water.png");
 }
 
 .bill_electricity {
@@ -12,4 +28,12 @@
 
 .bill_gas {
     -fx-background-image: url("../images/categories/bill_gas.png");
+}
+
+.education {
+    -fx-background-image: url("../images/categories/education.png");
+}
+
+.education_books {
+    -fx-background-image: url("../images/categories/education_books.png");
 }
