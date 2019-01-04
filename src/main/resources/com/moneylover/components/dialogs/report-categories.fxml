@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.PieChart?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="
+          @../../../../assets/css/colors.css,
+          @../../../../assets/css/pages/transaction.css,
+          @../../../../assets/css/pages/report.css"
+      styleClass="report--padding-30, report--background-white">
+    <PieChart fx:id="pieChartDetail" legendVisible="false"/>
+</VBox>

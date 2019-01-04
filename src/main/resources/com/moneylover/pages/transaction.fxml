@@ -11,8 +11,7 @@
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../assets/css/pages/transaction.css, @../../../assets/css/colors.css"
       styleClass="transaction__container"
-      alignment="TOP_CENTER"
-      fx:controller="com.moneylover.app.controllers.Pages.TransactionController">
+      alignment="TOP_CENTER">
     <VBox styleClass="transaction">
         <HBox styleClass="transaction__button-group" alignment="TOP_CENTER">
             <fx:include source="../components/tag-button.fxml"
@@ -67,7 +66,6 @@
                     </Insets>
                 </VBox.margin>
             </fx:include>
-
 
             <VBox styleClass="transactions__times">
                 <GridPane styleClass="transactions">

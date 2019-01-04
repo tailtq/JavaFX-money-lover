@@ -5,32 +5,22 @@
       fx:controller="com.moneylover.app.controllers.MainController"
       stylesheets="@../../../assets/css/components/sidebar.css"
       styleClass="sidebar">
-    <fx:include source="sidebar-button.fxml" onAction="#pressTransaction">
+    <fx:include source="sidebar-button.fxml" onAction="#pressTransaction" styleClass="active, wallet">
         <text>Transactions</text>
         <styleClass>wallet</styleClass>
 
         <VBox.margin>
             <Insets>
                 <top>10</top>
-                <bottom>5</bottom>
             </Insets>
         </VBox.margin>
     </fx:include>
 
-    <fx:include source="sidebar-button.fxml" onAction="#pressReport">
+    <fx:include source="sidebar-button.fxml" onAction="#pressReport" styleClass="report">
         <text>Reports</text>
-        <styleClass>report</styleClass>
     </fx:include>
 
-    <fx:include source="sidebar-button.fxml" onAction="#pressBudget">
+    <fx:include source="sidebar-button.fxml" onAction="#pressBudget" styleClass="budget">
         <text>Budgets</text>
-        <styleClass>budget</styleClass>
-
-        <VBox.margin>
-            <Insets>
-                <top>5</top>
-                <bottom>10</bottom>
-            </Insets>
-        </VBox.margin>
     </fx:include>
 </VBox>

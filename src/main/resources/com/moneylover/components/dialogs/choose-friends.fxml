@@ -16,8 +16,18 @@
             <text>Add</text>
         </fx:include>
     </HBox>
-    <CheckBox id="checkBox1" text="A"/>
-    <CheckBox id="checkBox1" text="B"/>
-    <CheckBox id="checkBox1" text="C"/>
-    <CheckBox id="checkBox1" text="D"/>
+    <VBox styleClass="friends__list">
+        <CheckBox id="checkBox1" text="A"/>
+        <CheckBox id="checkBox1" text="B"/>
+        <CheckBox id="checkBox1" text="C"/>
+        <CheckBox id="checkBox1" text="D"/>
+    </VBox>
+    <HBox styleClass="friends__form__button-group" alignment="BOTTOM_RIGHT">
+        <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button">
+            <text>Cancel</text>
+        </fx:include>
+        <fx:include source="../normal-button.fxml" styleClass="form__button">
+            <text>Done</text>
+        </fx:include>
+    </HBox>
 </VBox>
