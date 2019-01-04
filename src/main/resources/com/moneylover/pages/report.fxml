@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml">
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../../assets/css/pages/report.css"
+      styleClass="report__container">
     <VBox alignment="CENTER">
         <BarChart fx:id="barChart" legendVisible="false">
             <xAxis>
@@ -17,16 +18,22 @@
                 <NumberAxis side="LEFT"/>
             </yAxis>
         </BarChart>
-        <Button text="Button" onAction="#loadMonths"/>
+        <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonths">
+            <text>View</text>
+        </fx:include>
     </VBox>
     <HBox alignment="CENTER">
         <VBox alignment="CENTER">
             <PieChart fx:id="expenseChart" legendVisible="false"/>
-            <Button text="Button" onAction="#loadCategories"/>
+            <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
+                <text>View</text>
+            </fx:include>
         </VBox>
         <VBox alignment="CENTER">
             <PieChart fx:id="incomeChart" legendVisible="false"/>
-            <Button text="Button" onAction="#loadCategories"/>
+            <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
+                <text>View</text>
+            </fx:include>
         </VBox>
     </HBox>
 </VBox>

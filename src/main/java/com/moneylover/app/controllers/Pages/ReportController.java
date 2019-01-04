@@ -1,6 +1,5 @@
 package com.moneylover.app.controllers.Pages;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -12,12 +11,12 @@ import javafx.scene.chart.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import com.moneylover.app.controllers.Contracts.LoaderInterface;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class ReportController implements LoaderInterface {
     @FXML
@@ -37,6 +36,9 @@ public class ReportController implements LoaderInterface {
 
     @FXML
     private GridPane transactionPane;
+
+    @FXML
+    private Text title;
 
     @Override
     public VBox loadView() throws IOException {
@@ -87,10 +89,10 @@ public class ReportController implements LoaderInterface {
 
         XYChart.Series clonalData = this.cloneBarChartData(this.barChart);
         this.barChartDetail.getData().add(clonalData);
+        this.barChartDetail.setTitle("Report");
 
         Stage stage = new Stage();
         stage.setScene(new Scene(parent, 500, 700));
-
         stage.setTitle("Report");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
@@ -110,10 +112,10 @@ public class ReportController implements LoaderInterface {
         } else {
             this.addPieChartData(this.incomeChart, this.pieChartDetail.getData());
         }
+        this.pieChartDetail.setTitle("Category");
 
         Stage stage = new Stage();
         stage.setScene(new Scene(parent, 500, 700));
-
         stage.setTitle("Report");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();

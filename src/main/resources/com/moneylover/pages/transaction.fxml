@@ -2,11 +2,11 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.text.Text?>
+
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../assets/css/pages/transaction.css, @../../../assets/css/colors.css"
@@ -125,14 +125,14 @@
                            styleClass="primary-color"
                            GridPane.columnIndex="2" GridPane.rowIndex="2"/>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="12" halignment="CENTER"/>
-                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="60" halignment="LEFT"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="CENTER"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
                     </rowConstraints>
                 </GridPane>
             </VBox>

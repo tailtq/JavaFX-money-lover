@@ -2,13 +2,24 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../../assets/css/pages/transaction.css, @../../../../assets/css/pages/report.css"
-      styleClass="report--background-white">
+      styleClass="report--background-white"
+      alignment="TOP_CENTER">
+    <Text text="Hello" styleClass="report__title" fx:id="title">
+        <VBox.margin>
+            <Insets>
+                <top>15</top>
+            </Insets>
+        </VBox.margin>
+    </Text>
+
     <VBox styleClass="transactions__times, report--padding-30">
         <GridPane styleClass="transactions">
             <Label text="27"
@@ -67,14 +78,148 @@
                    styleClass="primary-color"
                    GridPane.columnIndex="2" GridPane.rowIndex="2"/>
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="12" halignment="CENTER"/>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="60" halignment="LEFT"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="CENTER"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
                 <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints vgrow="SOMETIMES" />
-                <RowConstraints vgrow="SOMETIMES" />
-                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES"/>
+            </rowConstraints>
+        </GridPane>
+        <GridPane styleClass="transactions">
+            <Label text="27"
+                   styleClass="transaction__time__dd"
+                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <GridPane styleClass="transaction__time"
+                      GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Thursday"
+                       styleClass="transaction__time__dddd, text-bold"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="December 2018"
+                       styleClass="transaction__time__mmyyyy"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            </GridPane>
+            <Label text="-2,960,000.00 ₫"
+                   styleClass="black-color, text-bold"
+                   GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+            <ImageView fitHeight="40"
+                       fitWidth="40"
+                       styleClass="transaction__content__image"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Image url="@../../../../assets/images/categories/debt.png"
+                       backgroundLoading="true"/>
+            </ImageView>
+            <GridPane styleClass="transaction__content"
+                      GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Thursday"
+                       styleClass="transaction__content__type, text-bold, category"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="December 2018"
+                       styleClass="transaction__content__note"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            </GridPane>
+            <Label text="+2,960,000.00 ₫"
+                   styleClass="primary-color"
+                   GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+            <ImageView fitHeight="40"
+                       fitWidth="40"
+                       styleClass="transaction__content__image"
+                       GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Image url="@../../../../assets/images/categories/debt.png"
+                       backgroundLoading="true"/>
+            </ImageView>
+            <GridPane styleClass="transaction__content"
+                      GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="Thursday"
+                       styleClass="transaction__content__type, text-bold, category"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="December 2018"
+                       styleClass="transaction__content__note"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            </GridPane>
+            <Label text="+2,960,000.00 ₫"
+                   styleClass="primary-color"
+                   GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="LEFT"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES"/>
+            </rowConstraints>
+        </GridPane>
+        <GridPane styleClass="transactions">
+            <Label text="27"
+                   styleClass="transaction__time__dd"
+                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <GridPane styleClass="transaction__time"
+                      GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Thursday"
+                       styleClass="transaction__time__dddd, text-bold"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="December 2018"
+                       styleClass="transaction__time__mmyyyy"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            </GridPane>
+            <Label text="-2,960,000.00 ₫"
+                   styleClass="black-color, text-bold"
+                   GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+            <ImageView fitHeight="40"
+                       fitWidth="40"
+                       styleClass="transaction__content__image"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Image url="@../../../../assets/images/categories/debt.png"
+                       backgroundLoading="true"/>
+            </ImageView>
+            <GridPane styleClass="transaction__content"
+                      GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Thursday"
+                       styleClass="transaction__content__type, text-bold, category"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="December 2018"
+                       styleClass="transaction__content__note"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            </GridPane>
+            <Label text="+2,960,000.00 ₫"
+                   styleClass="primary-color"
+                   GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+            <ImageView fitHeight="40"
+                       fitWidth="40"
+                       styleClass="transaction__content__image"
+                       GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Image url="@../../../../assets/images/categories/debt.png"
+                       backgroundLoading="true"/>
+            </ImageView>
+            <GridPane styleClass="transaction__content"
+                      GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="Thursday"
+                       styleClass="transaction__content__type, text-bold, category"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label text="December 2018"
+                       styleClass="transaction__content__note"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            </GridPane>
+            <Label text="+2,960,000.00 ₫"
+                   styleClass="primary-color"
+                   GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="LEFT"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES"/>
             </rowConstraints>
         </GridPane>
     </VBox>

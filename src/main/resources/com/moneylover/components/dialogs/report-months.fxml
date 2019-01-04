@@ -59,9 +59,9 @@
                 <text>View</text>
             </fx:include>
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="60" halignment="CENTER"/>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="LEFT"/>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="12" halignment="RIGHT"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="56" halignment="CENTER"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="16" halignment="RIGHT"/>
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints vgrow="SOMETIMES" />
