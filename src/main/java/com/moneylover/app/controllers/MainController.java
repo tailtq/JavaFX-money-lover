@@ -1,5 +1,6 @@
 package com.moneylover.app.controllers;
 
+import com.moneylover.app.controllers.Pages.ReportController;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -46,13 +47,20 @@ public class MainController implements Initializable {
 
         if (result) {
             this.mainView = this.controller.loadView();
+            this.setChangeScene(true);
         }
     }
 
     @FXML
-    public void pressReport(Event e) {
+    public void pressReport(Event e) throws IOException {
         Node button = (Node) e.getSource();
+        this.controller = new ReportController();
         boolean result = this.handleSidebarButtonClass(button);
+
+        if (result) {
+            this.mainView = this.controller.loadView();
+            this.setChangeScene(true);
+        }
     }
 
     @FXML
@@ -71,7 +79,6 @@ public class MainController implements Initializable {
             if (node == button) {
                 if (!classes.toString().contains("active")) {
                     classes.add("active");
-                    this.setChangeScene(true);
                     newScene = true;
                 }
             } else {

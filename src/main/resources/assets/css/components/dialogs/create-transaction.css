@@ -14,3 +14,7 @@
     -fx-font-size: 15px;
     -fx-padding: 6px 10px;
 }
+
+.friends__form__button-group {
+    -fx-spacing: 5;
+}

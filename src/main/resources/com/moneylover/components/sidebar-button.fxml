@@ -7,10 +7,4 @@
 <Button styleClass="sidebar__button"
         alignment="BOTTOM_CENTER"
         stylesheets="@../../../assets/css/components/normal-button.css">
-    <VBox.margin>
-        <Insets>
-            <top>5</top>
-            <bottom>5</bottom>
-        </Insets>
-    </VBox.margin>
 </Button>

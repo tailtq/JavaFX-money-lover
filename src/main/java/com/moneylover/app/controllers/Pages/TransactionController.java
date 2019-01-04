@@ -41,6 +41,7 @@ public class TransactionController implements LoaderInterface {
     @Override
     public VBox loadView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction.fxml"));
+        fxmlLoader.setController(this);
 
         return fxmlLoader.load();
     }

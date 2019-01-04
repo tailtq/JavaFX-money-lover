@@ -1,0 +1,19 @@
+.report--padding-30 {
+    -fx-padding: 30px;
+}
+
+.report--background-white {
+    -fx-background-color: #fff;
+}
+
+.report__transactions--no-border {
+    -fx-border-width: 0 0 0 0;
+}
+
+.report__transactions {
+    -fx-padding: 15;
+}
+
+.transactions__times {
+    -fx-background-color: #fff;
+}

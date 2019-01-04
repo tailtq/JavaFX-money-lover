@@ -2,4 +2,5 @@
     -fx-pref-width: 80px;
     -fx-background-color: #fff;
     -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
+    -fx-spacing: 10;
 }

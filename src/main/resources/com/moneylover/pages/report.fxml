@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml">
+    <VBox alignment="CENTER">
+        <BarChart fx:id="barChart" legendVisible="false">
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </BarChart>
+        <Button text="Button" onAction="#loadMonths"/>
+    </VBox>
+    <HBox alignment="CENTER">
+        <VBox alignment="CENTER">
+            <PieChart fx:id="expenseChart" legendVisible="false"/>
+            <Button text="Button" onAction="#loadCategories"/>
+        </VBox>
+        <VBox alignment="CENTER">
+            <PieChart fx:id="incomeChart" legendVisible="false"/>
+            <Button text="Button" onAction="#loadCategories"/>
+        </VBox>
+    </HBox>
+</VBox>
