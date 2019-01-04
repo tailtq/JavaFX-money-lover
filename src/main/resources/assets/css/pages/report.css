@@ -1,3 +1,7 @@
+.report__container {
+    -fx-pref-width: 450px;
+}
+
 .report--padding-30 {
     -fx-padding: 30px;
 }
@@ -16,4 +20,14 @@
 
 .transactions__times {
     -fx-background-color: #fff;
+}
+
+.report__title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-padding: 15 0 0 0;
+}
+
+.report__view-button {
+
 }
