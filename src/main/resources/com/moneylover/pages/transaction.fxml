@@ -7,12 +7,17 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.Button?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../../../assets/css/pages/transaction.css, @../../../assets/css/colors.css"
-      styleClass="transaction__container"
+      stylesheets="
+        @../../../assets/css/pages/transaction.css,
+        @../../../assets/css/colors.css
+      "
+      styleClass="transactions__container"
       alignment="TOP_CENTER">
-    <VBox styleClass="transaction">
+    <VBox styleClass="transactions__content">
         <HBox styleClass="transaction__button-group" alignment="TOP_CENTER">
             <fx:include source="../components/tag-button.fxml"
                         fx:id="leftTime"
@@ -67,20 +72,19 @@
                 </VBox.margin>
             </fx:include>
 
-            <VBox styleClass="transactions__times">
+            <VBox styleClass="transactions__times" fx:id="transactionTimes">
                 <GridPane styleClass="transactions">
                     <Label text="27"
                            styleClass="transaction__time__dd"
                            GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                    <GridPane styleClass="transaction__time"
+                    <VBox styleClass="transaction__time"
                               GridPane.columnIndex="1" GridPane.rowIndex="0">
                         <Label text="Thursday"
-                               styleClass="transaction__time__dddd, text-bold"
-                               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                               styleClass="transaction__time__dddd, text-bold"/>
                         <Label text="December 2018"
                                styleClass="transaction__time__mmyyyy"
                                GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    </GridPane>
+                    </VBox>
                     <Label text="-2,960,000.00 ₫"
                            styleClass="black-color, text-bold"
                            GridPane.columnIndex="2" GridPane.rowIndex="0"/>
@@ -92,18 +96,31 @@
                         <Image url="@../../../assets/images/categories/debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
-                    <GridPane styleClass="transaction__content"
-                              GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <VBox styleClass="transaction__content"
+                          GridPane.columnIndex="1" GridPane.rowIndex="1">
                         <Label text="Thursday"
-                               styleClass="transaction__content__type, text-bold, category"
-                               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                               styleClass="transaction__content__type, text-bold, category"/>
                         <Label text="December 2018"
-                               styleClass="transaction__content__note"
-                               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    </GridPane>
-                    <Label text="+2,960,000.00 ₫"
-                           styleClass="primary-color"
-                           GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                               styleClass="transaction__content__note"/>
+                    </VBox>
+                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Label text="+2,960,000.00 ₫"
+                               styleClass="primary-color"/>
+                        <HBox styleClass="transaction__options" alignment="CENTER">
+                            <Button styleClass="transaction__edit-button, warning-bg-color"
+                                    onAction="#showEditTransactionDialog">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
+                                </graphic>
+                            </Button>
+                            <Button styleClass="transaction__delete-button, danger-bg-color"
+                                    onAction="#showDeleteTransactionDialog">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                    </VBox>
 
                     <ImageView fitHeight="40"
                                fitWidth="40"
@@ -112,18 +129,90 @@
                         <Image url="@../../../assets/images/categories/debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
-                    <GridPane styleClass="transaction__content"
-                              GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <VBox styleClass="transaction__content"
+                          GridPane.columnIndex="1" GridPane.rowIndex="2">
                         <Label text="Thursday"
-                               styleClass="transaction__content__type, text-bold, category"
-                               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                               styleClass="transaction__content__type, text-bold, category"/>
                         <Label text="December 2018"
-                               styleClass="transaction__content__note"
+                               styleClass="transaction__content__note"/>
+                    </VBox>
+                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Label text="+2,960,000.00 ₫"
+                               styleClass="primary-color"/>
+                        <HBox styleClass="transaction__options" alignment="CENTER">
+                            <Button styleClass="transaction__edit-button, warning-bg-color"
+                                    onAction="#showEditTransactionDialog">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
+                                </graphic>
+                            </Button>
+                            <Button styleClass="transaction__delete-button, danger-bg-color"
+                                    onAction="#showDeleteTransactionDialog">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="CENTER"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                </GridPane>
+                <GridPane styleClass="transactions">
+                    <Label text="27"
+                           styleClass="transaction__time__dd"
+                           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <VBox styleClass="transaction__time"
+                          GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Thursday"
+                               styleClass="transaction__time__dddd, text-bold"/>
+                        <Label text="December 2018"
+                               styleClass="transaction__time__mmyyyy"
                                GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    </GridPane>
-                    <Label text="+2,960,000.00 ₫"
-                           styleClass="primary-color"
-                           GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                    </VBox>
+                    <Label text="-2,960,000.00 ₫"
+                           styleClass="black-color, text-bold"
+                           GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+                    <ImageView fitHeight="40"
+                               fitWidth="40"
+                               styleClass="transaction__content__image"
+                               GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Image url="@../../../assets/images/categories/debt.png"
+                               backgroundLoading="true"/>
+                    </ImageView>
+                    <VBox styleClass="transaction__content"
+                          GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Thursday"
+                               styleClass="transaction__content__type, text-bold, category"/>
+                        <Label text="December 2018"
+                               styleClass="transaction__content__note"/>
+                    </VBox>
+                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Label text="+2,960,000.00 ₫"
+                               styleClass="primary-color"/>
+                        <HBox styleClass="transaction__options" alignment="CENTER">
+                            <Button styleClass="transaction__edit-button, warning-bg-color"
+                                    onAction="#showEditTransactionDialog">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
+                                </graphic>
+                            </Button>
+                            <Button styleClass="transaction__delete-button, danger-bg-color"
+                                    onAction="#showDeleteTransactionDialog">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                    </VBox>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="CENTER"/>
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>

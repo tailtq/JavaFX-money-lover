@@ -9,7 +9,10 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../../../../assets/css/pages/transaction.css, @../../../../assets/css/pages/report.css"
+      stylesheets="
+          @../../../../assets/css/pages/transaction.css,
+          @../../../../assets/css/pages/report.css
+        "
       styleClass="report--background-white"
       alignment="TOP_CENTER">
     <Text text="Hello" styleClass="report__title" fx:id="title">

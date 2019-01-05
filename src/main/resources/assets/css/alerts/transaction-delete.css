@@ -1,0 +1,8 @@
+.transaction__delete-dialog .button-bar .button:odd {
+    -fx-background-color: red;
+}
+
+.transaction__delete-dialog .delete-button {
+    -fx-background-color: #f25a5a;
+    -fx-text-fill: #fff;
+}

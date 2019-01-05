@@ -1,8 +1,8 @@
-.transaction__container {
+.transactions__container {
     -fx-pref-width: 450px;
 }
 
-.transaction {
+.transactions__content {
     -fx-max-width: 400px;
     -fx-pref-width: 320px;
     -fx-background-color: #fff;
@@ -62,7 +62,7 @@
 }
 
 .transaction__content, .transaction__time {
-    -fx-vgap: 3;
+    -fx-spacing: 7;
 }
 
 .transaction__content__image {
@@ -70,3 +70,10 @@
     -fx-pref-height: 40px;
 }
 
+.transaction__options {
+    -fx-spacing: 8;
+}
+
+.transaction__edit-button, .transaction__delete-button {
+    -fx-background-radius: 50%;
+}

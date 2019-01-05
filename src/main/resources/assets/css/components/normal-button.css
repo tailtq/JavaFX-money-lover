@@ -83,3 +83,11 @@
 .budget.active {
     -fx-background-image: url("../../images/coloured-budget.png");
 }
+
+.transaction {
+    -fx-background-image: url("../../images/transaction.png");
+}
+
+.transaction.active {
+    -fx-background-image: url("../../images/coloured-transaction.png");
+}

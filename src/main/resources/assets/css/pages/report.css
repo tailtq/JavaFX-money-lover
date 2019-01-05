@@ -2,6 +2,13 @@
     -fx-pref-width: 450px;
 }
 
+.report__content {
+    -fx-max-width: 400px;
+    -fx-pref-width: 320px;
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
+}
+
 .report--padding-30 {
     -fx-padding: 30px;
 }
