@@ -37,3 +37,24 @@
 .education_books {
     -fx-background-image: url("../images/categories/education_books.png");
 }
+
+/* FLAGS */
+.currency__usd {
+    -fx-background-image: url("../images/flags/currency_usd.png");
+}
+
+.currency__vnd {
+    -fx-background-image: url("../images/flags/currency_vnd.png");
+}
+
+.currency__jpy {
+    -fx-background-image: url("../images/flags/currency_jpy.png");
+}
+
+.currency__krw {
+    -fx-background-image: url("../images/flags/currency_krw.png");
+}
+
+.currency__sgd {
+    -fx-background-image: url("../images/flags/currency_sgd.png");
+}

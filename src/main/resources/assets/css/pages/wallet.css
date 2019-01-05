@@ -1,3 +1,7 @@
 .wallets__content .transaction__content {
     -fx-spacing: 3;
 }
+
+.wallets__content .transactions {
+    -fx-border-width: 0;
+}

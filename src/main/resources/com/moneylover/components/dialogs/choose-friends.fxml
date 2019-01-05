@@ -6,10 +6,13 @@
 <?import javafx.scene.layout.HBox?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../../../../assets/css/components/dialogs/choose-friends.css"
+      stylesheets="
+        @../../../../assets/css/content.css,
+        @../../../../assets/css/components/dialogs/choose-friends.css
+      "
       fx:controller="com.moneylover.app.controllers.Pages.TransactionController"
-      styleClass="friends">
-    <Text>Add new friend</Text>
+      styleClass="dialog-container">
+    <Text styleClass="font--size-20">Add new friend</Text>
     <HBox styleClass="friends__form">
         <TextField styleClass="friends__form__field" HBox.hgrow="ALWAYS"/>
         <fx:include source="../normal-button.fxml">
@@ -22,7 +25,7 @@
         <CheckBox id="checkBox1" text="C"/>
         <CheckBox id="checkBox1" text="D"/>
     </VBox>
-    <HBox styleClass="friends__form__button-group" alignment="BOTTOM_RIGHT">
+    <HBox styleClass="button-group" alignment="BOTTOM_RIGHT">
         <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button">
             <text>Cancel</text>
         </fx:include>

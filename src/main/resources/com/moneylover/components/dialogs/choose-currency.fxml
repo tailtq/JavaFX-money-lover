@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="
+        @../../../../assets/css/colors.css,
+        @../../../../assets/css/icons.css,
+        @../../../../assets/css/content.css,
+        @../../../../assets/css/components/dialogs/choose-currency.css
+      "
+      styleClass="dialog-container, white-bg-color">
+    <HBox styleClass="currency__search-form">
+        <Text styleClass="font--size-20">Currency</Text>
+        <TextField styleClass="currency__search-field" HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <GridPane>
+        <Button styleClass="currency__choose-button, currency__usd, white-bg-color"
+                GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <graphic>
+                <VBox styleClass="currency__content">
+                    <Text>United States Dollar</Text>
+                    <Label styleClass="font--size-10, gray-color">USD - $</Label>
+                </VBox>
+            </graphic>
+        </Button>
+        <Button styleClass="currency__choose-button, currency__vnd, white-bg-color"
+                GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <graphic>
+                <VBox styleClass="currency__content">
+                    <Text>Việt Nam Đồng</Text>
+                    <Label styleClass="font--size-10, gray-color">VND - ₫</Label>
+                </VBox>
+            </graphic>
+        </Button>
+
+        <Button styleClass="currency__choose-button, currency__jpy, white-bg-color"
+                GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <graphic>
+                <VBox styleClass="currency__content">
+                    <Text>Yen</Text>
+                    <Label styleClass="font--size-10, gray-color">JPY - ¥</Label>
+                </VBox>
+            </graphic>
+        </Button>
+        <Button styleClass="currency__choose-button, currency__krw, white-bg-color"
+                GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <graphic>
+                <VBox styleClass="currency__content">
+                    <Text>Won</Text>
+                    <Label styleClass="font--size-10, gray-color">KRW - ₩</Label>
+                </VBox>
+            </graphic>
+        </Button>
+
+        <Button styleClass="currency__choose-button, currency__sgd, white-bg-color"
+                GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <graphic>
+                <VBox styleClass="currency__content">
+                    <Text>Singapore Dollars</Text>
+                    <Label styleClass="font--size-10, gray-color">SGD - S$</Label>
+                </VBox>
+            </graphic>
+        </Button>
+
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+        </columnConstraints>
+    </GridPane>
+</VBox>
+

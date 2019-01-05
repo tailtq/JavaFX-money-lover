@@ -1,13 +1,8 @@
-.friends {
-    -fx-padding: 10px;
-    -fx-spacing: 10;
-}
-
 .friends__list, .friends__form, .friends__form__button-group {
     -fx-spacing: 10;
 }
 
 .friends__form__field {
     -fx-border-radius: 3;
-    -fx-pref-width: 100;
+    -fx-max-width: infinity;
 }

@@ -36,7 +36,7 @@
                 <HBox styleClass="transaction__options"
                       alignment="CENTER"
                       GridPane.columnIndex="2" GridPane.rowIndex="1">
-                    <Button styleClass="button--bg-radius-50, warning-bg-color">
+                    <Button styleClass="button--bg-radius-50, warning-bg-color" onAction="#editWallet">
                         <graphic>
                             <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
                         </graphic>
@@ -65,7 +65,7 @@
                 <HBox styleClass="transaction__options"
                       alignment="CENTER"
                       GridPane.columnIndex="2" GridPane.rowIndex="2">
-                    <Button styleClass="button--bg-radius-50, warning-bg-color">
+                    <Button styleClass="button--bg-radius-50, warning-bg-color" onAction="#editWallet">
                         <graphic>
                             <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
                         </graphic>

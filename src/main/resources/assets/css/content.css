@@ -1,5 +1,11 @@
+/* Container */
 .content .header {
     -fx-vgap: 10;
+}
+
+.dialog-container {
+    -fx-spacing: 10;
+    -fx-padding: 10;
 }
 
 .container {
@@ -11,6 +17,19 @@
     -fx-pref-width: 320px;
     -fx-background-color: #fff;
     -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
+}
+/* Fonts */
+.font--size-10 {
+    -fx-font-size: 10px;
+}
+
+.font--size-20 {
+    -fx-font-size: 20px;
+}
+
+/* Button */
+.button-group {
+    -fx-spacing: 5;
 }
 
 .button--bg-radius-50 {

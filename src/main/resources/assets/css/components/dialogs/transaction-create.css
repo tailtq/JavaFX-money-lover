@@ -15,10 +15,6 @@
     -fx-padding: 6px 10px;
 }
 
-.friends__form__button-group {
-    -fx-spacing: 5;
-}
-
 .transaction__create-form > VBox {
     -fx-spacing: 5;
 }
