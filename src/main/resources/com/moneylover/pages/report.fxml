@@ -7,10 +7,10 @@
 <?import javafx.scene.chart.PieChart?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../../../assets/css/pages/report.css"
+      stylesheets="@../../../assets/css/content.css, @../../../assets/css/pages/report.css"
       alignment="CENTER"
-      styleClass="report__container">
-    <VBox styleClass="report__content">
+      styleClass="container">
+    <VBox styleClass="container__content">
         <VBox alignment="CENTER">
             <BarChart fx:id="barChart" legendVisible="false">
                 <xAxis>

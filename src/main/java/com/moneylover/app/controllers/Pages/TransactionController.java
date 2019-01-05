@@ -77,7 +77,7 @@ public class TransactionController extends BaseViewController implements LoaderI
     }
 
     @FXML
-    public void showEditTransactionDialog(Event e) throws IOException {
+    public void editTransaction(Event e) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
@@ -91,14 +91,10 @@ public class TransactionController extends BaseViewController implements LoaderI
     }
 
     @FXML
-    public void showDeleteTransactionDialog(Event e) {
+    public void deleteTransaction(Event e) {
         ButtonBar.ButtonData buttonData = this.showDeleteDialog();
         if (buttonData == ButtonBar.ButtonData.YES) {
             System.out.println("Yes");
-        } else if (buttonData == ButtonBar.ButtonData.NO) {
-            System.out.println("No");
-        } else {
-            System.out.println("Cancel");
         }
     }
 

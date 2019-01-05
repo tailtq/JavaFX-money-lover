@@ -1,14 +1,3 @@
-.transactions__container {
-    -fx-pref-width: 450px;
-}
-
-.transactions__content {
-    -fx-max-width: 400px;
-    -fx-pref-width: 320px;
-    -fx-background-color: #fff;
-    -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
-}
-
 .transaction__button-group, .type__button-group {
     -fx-background-color: #fff;
     -fx-effect: dropshadow(three-pass-box, #000000, 1, 0, 0, 0.5);
@@ -46,10 +35,8 @@
     -fx-font-size: 24px;
 }
 
-.transaction__time__dddd,
 .transaction__content__type.subcategory,
-.transaction__time__mmyyyy,
-.transaction__content__note {
+.transaction__time__mmyyyy {
     -fx-text-fill: rgba(0,0,0,.54);
 }
 
@@ -72,8 +59,4 @@
 
 .transaction__options {
     -fx-spacing: 8;
-}
-
-.transaction__edit-button, .transaction__delete-button {
-    -fx-background-radius: 50%;
 }

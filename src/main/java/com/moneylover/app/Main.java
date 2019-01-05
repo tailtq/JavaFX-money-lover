@@ -21,6 +21,7 @@ public class Main extends Application {
         Parent sidebar = sidebarLoader.load();
         this.headerLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/header.fxml"));
         this.content.getChildren().add(this.headerLoader.load());
+        this.content.getStylesheets().add(getClass().getResource("/assets/css/content.css").toExternalForm());
 
         this.layout.getChildren().addAll(sidebar, this.content);
         this.changeMainView(sidebarLoader.getController());
