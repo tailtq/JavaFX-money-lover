@@ -3,6 +3,7 @@
     -fx-font-family: 'SansSerif';
     -fx-background-color: #1aa333;
     -fx-text-fill: #fff;
+    -fx-effect: dropshadow(three-pass-box, #000000, 1, 0, 0, 0);
 }
 
 .cancel-button {

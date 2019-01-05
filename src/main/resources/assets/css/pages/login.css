@@ -1,0 +1,12 @@
+.login__container {
+    -fx-padding: 20;
+    -fx-spacing: 15;
+}
+
+.form__field-group {
+    -fx-spacing: 3;
+}
+
+.form__field {
+    /*-fx-max-width: infinity;*/
+}
