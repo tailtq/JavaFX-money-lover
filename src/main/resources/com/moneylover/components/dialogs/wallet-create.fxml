@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<GridPane xmlns="http://javafx.com/javafx/8.0.111"
+          xmlns:fx="http://javafx.com/fxml/1"
+          stylesheets="
+            @../../../../assets/css/content.css,
+            @../../../../assets/css/components/dialogs/transaction-create.css
+          "
+          styleClass="transaction__create-form">
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Text>Name</Text>
+        <TextField styleClass="transaction__create-form__select"/>
+    </VBox>
+
+    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <Text>Currency</Text>
+        <Button text="Wallet1" styleClass="transaction__create-form__select" onAction="#chooseCountry"/>
+    </VBox>
+
+    <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
+        <Text>Initial Balance</Text>
+        <TextField fx:id="amount" styleClass="transaction__create-form__select"/>
+    </VBox>
+
+    <HBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="BASELINE_RIGHT" styleClass="button-group">
+        <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button">
+            <text>Cancel</text>
+        </fx:include>
+        <fx:include source="../normal-button.fxml" styleClass="form__button">
+            <text>Done</text>
+        </fx:include>
+    </HBox>
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
+    </columnConstraints>
+</GridPane>

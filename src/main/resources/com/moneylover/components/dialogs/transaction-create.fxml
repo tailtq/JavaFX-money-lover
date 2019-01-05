@@ -13,7 +13,10 @@
 <?import javafx.scene.layout.HBox?>
 <GridPane xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"
-          stylesheets="@../../../../assets/css/components/dialogs/create-transaction.css"
+          stylesheets="
+            @../../../../assets/css/content.css,
+            @../../../../assets/css/components/dialogs/transaction-create.css
+          "
           styleClass="transaction__create-form">
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
         <Text>Wallet</Text>
@@ -58,7 +61,7 @@
         </CheckBox>
     </VBox>
 
-    <HBox GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="friends__form__button-group" alignment="BOTTOM_RIGHT">
+    <HBox GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="button-group" alignment="BOTTOM_RIGHT">
         <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button">
             <text>Cancel</text>
         </fx:include>
