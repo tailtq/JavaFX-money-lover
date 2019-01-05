@@ -1,5 +1,6 @@
 package com.moneylover.app.controllers.Pages;
 
+import com.moneylover.app.controllers.BaseViewController;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -14,14 +15,16 @@ import javafx.stage.Stage;
 import com.moneylover.app.controllers.Contracts.LoaderInterface;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Optional;
 
-public class TransactionController implements LoaderInterface {
+public class TransactionController extends BaseViewController implements LoaderInterface {
 
     @FXML
     private Button leftTime, middleTime, rightTime;
 
     @FXML
-    private VBox transactionContent;
+    private VBox transactionContent, transactionTimes;
 
     @FXML
     private Label inflow;
@@ -42,8 +45,9 @@ public class TransactionController implements LoaderInterface {
     public VBox loadView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction.fxml"));
         fxmlLoader.setController(this);
+        VBox vBox = fxmlLoader.load();
 
-        return fxmlLoader.load();
+        return vBox;
     }
 
     @FXML
@@ -58,8 +62,11 @@ public class TransactionController implements LoaderInterface {
 
     @FXML
     public void showCreateTransactionDialog(Event e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/create-transaction.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
+        fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
+
+        this.transactedAt.setValue(LocalDate.now());
 
         Scene scene = new Scene(parent, 500, 300);
         Stage stage = new Stage();
@@ -67,6 +74,32 @@ public class TransactionController implements LoaderInterface {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.showAndWait();
+    }
+
+    @FXML
+    public void showEditTransactionDialog(Event e) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
+        fxmlLoader.setController(this);
+        Parent parent = fxmlLoader.load();
+
+        Scene scene = new Scene(parent, 500, 300);
+        Stage stage = new Stage();
+        stage.setTitle("Edit Transaction");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    @FXML
+    public void showDeleteTransactionDialog(Event e) {
+        ButtonBar.ButtonData buttonData = this.showDeleteDialog();
+        if (buttonData == ButtonBar.ButtonData.YES) {
+            System.out.println("Yes");
+        } else if (buttonData == ButtonBar.ButtonData.NO) {
+            System.out.println("No");
+        } else {
+            System.out.println("Cancel");
+        }
     }
 
     @FXML

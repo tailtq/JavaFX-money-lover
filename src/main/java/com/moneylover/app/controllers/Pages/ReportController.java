@@ -44,7 +44,6 @@ public class ReportController implements LoaderInterface {
     public VBox loadView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report.fxml"));
         fxmlLoader.setController(this);
-
         VBox content = fxmlLoader.load();
 
         // TODO: Calculate data
@@ -68,12 +67,10 @@ public class ReportController implements LoaderInterface {
         }
 
         this.barChart.getData().add(series);
-        this.barChart.setLegendVisible(false);
     }
 
     public void loadPieChartData(PieChart pieChart, ArrayList<Pair<String, Integer>> values) {
         ObservableList data = pieChart.getData();
-        pieChart.setLegendVisible(false);
 
         for (Pair<String, Integer> value: values) {
             PieChart.Data category = new PieChart.Data(value.getKey(), value.getValue());

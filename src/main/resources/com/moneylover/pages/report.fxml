@@ -8,32 +8,35 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../assets/css/pages/report.css"
+      alignment="CENTER"
       styleClass="report__container">
-    <VBox alignment="CENTER">
-        <BarChart fx:id="barChart" legendVisible="false">
-            <xAxis>
-                <CategoryAxis side="BOTTOM"/>
-            </xAxis>
-            <yAxis>
-                <NumberAxis side="LEFT"/>
-            </yAxis>
-        </BarChart>
-        <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonths">
-            <text>View</text>
-        </fx:include>
+    <VBox styleClass="report__content">
+        <VBox alignment="CENTER">
+            <BarChart fx:id="barChart" legendVisible="false">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </BarChart>
+            <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonths">
+                <text>View</text>
+            </fx:include>
+        </VBox>
+        <HBox alignment="CENTER">
+            <VBox alignment="CENTER">
+                <PieChart fx:id="expenseChart" legendVisible="false"/>
+                <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
+                    <text>View</text>
+                </fx:include>
+            </VBox>
+            <VBox alignment="CENTER">
+                <PieChart fx:id="incomeChart" legendVisible="false"/>
+                <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
+                    <text>View</text>
+                </fx:include>
+            </VBox>
+        </HBox>
     </VBox>
-    <HBox alignment="CENTER">
-        <VBox alignment="CENTER">
-            <PieChart fx:id="expenseChart" legendVisible="false"/>
-            <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
-                <text>View</text>
-            </fx:include>
-        </VBox>
-        <VBox alignment="CENTER">
-            <PieChart fx:id="incomeChart" legendVisible="false"/>
-            <fx:include source="../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
-                <text>View</text>
-            </fx:include>
-        </VBox>
-    </HBox>
 </VBox>

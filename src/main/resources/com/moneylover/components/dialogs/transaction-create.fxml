@@ -14,7 +14,6 @@
 <GridPane xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"
           stylesheets="@../../../../assets/css/components/dialogs/create-transaction.css"
-          fx:controller="com.moneylover.app.controllers.Pages.TransactionController"
           styleClass="transaction__create-form">
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
         <Text>Wallet</Text>
@@ -39,7 +38,7 @@
 
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
         <Text>Date</Text>
-        <DatePicker fx:id="transactedAt" styleClass="transaction__create-form__select"/>
+        <DatePicker fx:id="transactedAt" styleClass="transaction__create-form__select, transaction__create-form__date-picker"/>
     </VBox>
 
     <VBox GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
