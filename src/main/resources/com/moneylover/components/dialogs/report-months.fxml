@@ -29,7 +29,7 @@
                        styleClass="transaction__content__type, text-bold, category"
                        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                 <Label text="2018"
-                       styleClass="transaction__content__note"
+                       styleClass="transaction__content__note, gray-color"
                        GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             </GridPane>
             <Label text="-2,960,000.00 ₫"
@@ -47,7 +47,7 @@
                        styleClass="transaction__content__type, text-bold, category"
                        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                 <Label text="2018"
-                       styleClass="transaction__content__note"
+                       styleClass="transaction__content__note, gray-color"
                        GridPane.columnIndex="0" GridPane.rowIndex="1"/>
             </GridPane>
             <Label text="+2,960,000.00 ₫"
