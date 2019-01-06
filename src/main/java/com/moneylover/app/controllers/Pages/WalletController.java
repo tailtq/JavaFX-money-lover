@@ -51,7 +51,7 @@ public class WalletController extends BaseViewController implements LoaderInterf
     }
 
     @FXML
-    public void chooseCountry() throws IOException {
+    public void chooseCurrency() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/choose-currency.fxml"));
         fxmlLoader.setController(this);
         VBox parent = fxmlLoader.load();

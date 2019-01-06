@@ -1,5 +1,6 @@
 package com.moneylover.app.controllers;
 
+import com.moneylover.app.controllers.Pages.BudgetController;
 import com.moneylover.app.controllers.Pages.ReportController;
 import com.moneylover.app.controllers.Pages.WalletController;
 import javafx.beans.property.BooleanProperty;
@@ -65,9 +66,15 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void pressBudget(Event e) {
+    public void pressBudget(Event e) throws IOException {
         Node button = (Node) e.getSource();
+        this.controller = new BudgetController();
         boolean result = this.handleSidebarButtonClass(button);
+
+        if (result) {
+            this.mainView = this.controller.loadView();
+            this.setChangeScene(true);
+        }
     }
 
     @FXML
