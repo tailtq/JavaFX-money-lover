@@ -24,6 +24,14 @@
     -fx-font-size: 10px;
 }
 
+.font--size-11 {
+    -fx-font-size: 11px;
+}
+
+.font--size-12 {
+    -fx-font-size: 12px;
+}
+
 .font--size-20 {
     -fx-font-size: 20px;
 }
@@ -31,6 +39,11 @@
 /* Button */
 .button-group {
     -fx-spacing: 5;
+}
+
+.tab-button-group {
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, #000000, 1, 0, 0, 0.5);
 }
 
 .button--bg-radius-50 {

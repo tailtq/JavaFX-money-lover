@@ -1,7 +1,54 @@
-.tab-down-button {
-    -fx-padding: 0;
+.tab-pane {
+    -fx-tab-min-height: 0;
+    -fx-tab-max-height: 0;
 }
 
-.tab-down-button .arrow {
+.tab-pane .tab-header-area {
+    -fx-padding: 0 0 0 0;
+}
+
+.tab-pane .tab-header-area .headers-region .tab {
+    -fx-padding: 0 0 0 0;
+}
+
+.budget__tab {
     -fx-padding: 0;
+    -fx-spacing: 0;
+}
+
+.budget__tab .transactions {
+    -fx-border-width: 1 0 0;
+    -fx-border-color: #e0e0e0;
+}
+
+.budget__tab .budget__date-range {
+    -fx-padding: 10 10 3;
+    -fx-background-color: rgb(244, 244, 244);
+}
+
+.budget__amount {
+    -fx-spacing: 3;
+}
+
+.budget__options {
+    -fx-spacing: 5;
+}
+
+.budget__detail {
+    -fx-vgap: 5px;
+}
+
+.progress-bar {
+    -fx-pref-height: 8;
+    -fx-max-width: infinity;
+}
+
+.progress-bar .bar {
+    -fx-padding: 1px;
+    -fx-background-insets: 0;
+    -fx-background-color: #2db84c;
+}
+
+.progress-bar:indeterminate > .bar {
+    -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
 }

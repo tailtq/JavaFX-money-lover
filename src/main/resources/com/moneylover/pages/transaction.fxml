@@ -18,7 +18,7 @@
       styleClass="container"
       alignment="TOP_CENTER">
     <VBox styleClass="container__content">
-        <HBox styleClass="transaction__button-group" alignment="TOP_CENTER">
+        <HBox styleClass="tab-button-group" alignment="TOP_CENTER">
             <fx:include source="../components/tag-button.fxml"
                         fx:id="leftTime"
                         onAction="#changeTime">

@@ -1,5 +1,6 @@
 package com.moneylover.app.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -31,5 +32,25 @@ public class BaseViewController {
         Optional<ButtonType> result = alert.showAndWait();
 
         return result.get().getButtonData();
+    }
+
+    protected boolean activeButton(Node button) {
+        ObservableList<Node> nodes = button.getParent().getChildrenUnmodifiable();
+        boolean notActive = false;
+
+        for (Node node: nodes) {
+            ObservableList<String> classes = node.getStyleClass();
+
+            if (node == button) {
+                if (!classes.toString().contains("active")) {
+                    classes.add("active");
+                    notActive = true;
+                }
+            } else {
+                classes.remove("active");
+            }
+        }
+
+        return notActive;
     }
 }
