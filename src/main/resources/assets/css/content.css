@@ -18,6 +18,7 @@
     -fx-background-color: #fff;
     -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
 }
+
 /* Fonts */
 .font--size-10 {
     -fx-font-size: 10px;

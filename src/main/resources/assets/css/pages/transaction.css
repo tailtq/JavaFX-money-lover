@@ -60,3 +60,7 @@
 .transaction__options {
     -fx-spacing: 8;
 }
+
+.transaction__amount {
+    -fx-spacing: 5;
+}

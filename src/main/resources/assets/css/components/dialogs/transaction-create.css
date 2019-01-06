@@ -19,26 +19,127 @@
     -fx-spacing: 5;
 }
 
-.calendar-cell:hover {
-    -fx-background-color: rgba(135,206,235,0.7);
-    -fx-text-fill: white;
+/*.date-picker-popup {*/
+    /*-fx-padding: 1;*/
+    /*-fx-background-color: lightgray;*/
+/*}*/
+
+/*.date-picker-popup > .month-year-pane {*/
+    /*-fx-padding: 4;*/
+    /*-fx-background-color: #EFEFEF;*/
+/*}*/
+
+/*.date-picker-popup > .month-year-pane > .spinner {*/
+    /*-fx-spacing: 4;*/
+    /*-fx-alignment: CENTER;*/
+    /*-fx-fill-height: false;*/
+/*}*/
+
+/*.date-picker-popup > .month-year-pane > .spinner > .spinner-label {*/
+    /*-fx-font-size: 1.083333em;*/
+    /*-fx-alignment: CENTER;*/
+    /*-fx-text-fill: #606060;*/
+    /*-fx-font-weight: bold;*/
+/*}*/
+
+/*.date-picker-popup > .month-year-pane > .spinner > .left-button {*/
+    /*-fx-padding: 4 6;*/
+    /*-fx-background-color: gray;*/
+/*}*/
+
+/*.date-picker-popup > .month-year-pane > .spinner > .right-button {*/
+    /*-fx-padding: 4 6;*/
+    /*-fx-background-color: gray;*/
+/*}*/
+
+/*.date-picker-popup > .month-year-pane > .spinner > .button > .left-arrow {*/
+    /*-fx-background-color: red;*/
+    /*-fx-background-insets: 0;*/
+    /*-fx-padding: 0.333em 0.167em 0.333em 0.167em;*/
+    /*-fx-shape: "M5.997,5.072L5.995,6.501l-2.998-4l2.998-4l0.002,1.43l-1.976,2.57L5.997,5.072z";*/
+    /*-fx-scale-shape: true;*/
+/*}*/
+
+/*.date-picker-popup > .month-year-pane > .spinner > .button > .right-arrow {*/
+    /*-fx-background-color: red;*/
+    /*-fx-background-insets: 0;*/
+    /*-fx-padding: 0.333em 0.167em 0.333em 0.167em;*/
+    /*-fx-shape: "M2.998-0.07L3-1.499l2.998,4L3,6.501l-0.002-1.43l1.976-2.57L2.998-0.07z";*/
+    /*-fx-scale-shape: true;*/
+/*}*/
+
+/*.date-picker-popup > * > .cell {*/
+    /*-fx-padding: 0 7;*/
+    /*-fx-alignment: BASELINE_CENTER;*/
+/*}*/
+
+/*.date-picker-popup > * > .cell:disabled > * {*/
+    /*!* This is set on the cell's children so the border is not affected. *!*/
+    /*-fx-opacity: 0.4;*/
+/*}*/
+
+/*.date-picker-popup > * > .week-number-header-cell,*/
+/*.date-picker-popup > * > .day-name-cell {*/
+    /*-fx-font-size: 0.833333em;*/
+    /*-fx-padding: 0;*/
+    /*-fx-text-fill: #0070C0;*/
+    /*-fx-font-weight: bold;*/
+/*}*/
+
+/*.date-picker-popup > * > .week-number-cell {*/
+    /*-fx-font-size: 0.75em;*/
+    /*-fx-padding: 0;*/
+/*}*/
+
+/*.date-picker-popup > * > .day-cell {*/
+    /*-fx-text-fill: black;*/
+    /*-fx-border-color: lightgray;*/
+    /*-fx-border-width: 1;*/
+    /*-fx-border-insets: 0;*/
+/*}*/
+
+/*.date-picker-popup > * > .hijrah-day-cell {*/
+    /*-fx-alignment: TOP_LEFT;*/
+    /*-fx-cell-size: 2.75em;*/
+/*}*/
+
+.date-picker-popup > * > .day-cell:focused {
+    -fx-background-color: #2db84c;
+    -fx-border-color: #2db84c;
 }
 
-.calendar-cell:pressed {
-    -fx-background-color: rgba(135,186,215,0.7);
-    -fx-text-fill: white;
+.date-picker-popup > * > .day-cell:hover {
+    -fx-text-fill: #000;
+    -fx-background-color: #f1f3f4;
+    -fx-border-color: #f1f3f4;
 }
 
-.calendar-cell-selected {
-    -fx-background-color: rgba(105,176,195,0.7);
-    -fx-text-fill: white;
+.date-picker-popup > * > .day-cell > .secondary-text {
+    -fx-font-size: 1.0em;
+    -fx-fill: #ff5050;
 }
 
-.calendar-cell-today {
-    -fx-background-color: rgba(155,155,19,0.7);
-    -fx-text-fill: white;
+.date-picker-popup > * > .today {
+    -fx-border-color: #CCE8FF;
+    -fx-background-color: #CCE8FF;
 }
 
-.calendar-cell-inactive {
-    -fx-text-fill: darkgray;
+.date-picker-popup > * > .today:focused {
+    -fx-background-color: #CCE8FF;
+}
+
+.date-picker-popup > * > .selected {
+    -fx-background-color: #2db84c !important;
+    -fx-border-color: #2db84c;
+    -fx-text-fill: #fff;
+}
+
+.date-picker-popup > * > .previous-month,
+.date-picker-popup > * > .next-month {
+    -fx-text-fill: #aaaaaa;
+}
+
+.date-picker-popup > * > .previous-month > .secondary-text,
+.date-picker-popup > * > .next-month > .secondary-text {
+    -fx-fill: #aaaaaa;
 }

@@ -18,7 +18,7 @@
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <Text>Currency</Text>
-        <Button text="Wallet1" styleClass="transaction__create-form__select" onAction="#chooseCountry"/>
+        <Button text="Wallet1" styleClass="transaction__create-form__select" onAction="#chooseCurrency"/>
     </VBox>
 
     <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
