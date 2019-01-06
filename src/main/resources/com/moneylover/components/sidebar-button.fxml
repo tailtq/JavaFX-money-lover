@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.geometry.Insets?>
 
 <Button styleClass="sidebar__button"
         alignment="BOTTOM_CENTER"

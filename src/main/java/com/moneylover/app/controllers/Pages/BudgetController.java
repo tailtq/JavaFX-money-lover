@@ -1,25 +1,24 @@
 package com.moneylover.app.controllers.Pages;
 
+import com.moneylover.app.controllers.BaseViewController;
+import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import com.moneylover.app.controllers.Contracts.LoaderInterface;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-
 import java.io.IOException;
 
-public class BudgetController implements LoaderInterface {
+public class BudgetController extends BaseViewController implements LoaderInterface {
+    @FXML
+    private TabPane tabPane;
+
+    @FXML
+    private VBox runningTab;
+
+    @FXML
+    private VBox finishedTab;
+
     @Override
     public VBox loadView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget.fxml"));
@@ -27,5 +26,25 @@ public class BudgetController implements LoaderInterface {
         VBox vBox = fxmlLoader.load();
 
         return vBox;
+    }
+
+    @FXML
+    private void changeTab(Event e) {
+        Button button = (Button) e.getSource();
+        boolean notActive = this.activeButton(button);
+
+        if (notActive) {
+            int value = Integer.parseInt(button.getUserData().toString());
+            tabPane.getSelectionModel().select(value);
+        }
+    }
+
+    @FXML
+    private void deleteBudget(Event e) {
+        ButtonBar.ButtonData buttonData = this.showDeleteDialog();
+        if (buttonData == ButtonBar.ButtonData.YES) {
+            // Delete Budget
+            System.out.println("Yes");
+        }
     }
 }

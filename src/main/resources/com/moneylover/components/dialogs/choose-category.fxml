@@ -10,7 +10,7 @@
         @../../../../assets/css/icons.css
       "
       fx:controller="com.moneylover.app.controllers.Pages.TransactionController">
-    <HBox styleClass="type__button-group" alignment="TOP_CENTER">
+    <HBox styleClass="tab-button-group" alignment="TOP_CENTER">
         <fx:include source="../tag-button.fxml"
                     onAction="#changeType">
             <text>DEBT / LOAN</text>

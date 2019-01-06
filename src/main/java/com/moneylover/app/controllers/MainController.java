@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class MainController extends BaseViewController implements Initializable {
     private BooleanProperty changeScene = new SimpleBooleanProperty(false);
 
     private VBox mainView;
@@ -42,77 +42,39 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void pressTransaction(Event e) throws IOException {
-        Node button = (Node) e.getSource();
-        this.controller = new TransactionController();
-        boolean result = this.handleSidebarButtonClass(button);
-
-        if (result) {
-            this.mainView = this.controller.loadView();
-            this.setChangeScene(true);
-        }
+    private void pressTransaction(Event e) throws IOException {
+        this.initView(new TransactionController(), (Node) e.getSource());
     }
 
     @FXML
-    public void pressReport(Event e) throws IOException {
-        Node button = (Node) e.getSource();
-        this.controller = new ReportController();
-        boolean result = this.handleSidebarButtonClass(button);
-
-        if (result) {
-            this.mainView = this.controller.loadView();
-            this.setChangeScene(true);
-        }
+    private void pressReport(Event e) throws IOException {
+        this.initView(new ReportController(), (Node) e.getSource());
     }
 
     @FXML
-    public void pressBudget(Event e) throws IOException {
-        Node button = (Node) e.getSource();
-        this.controller = new BudgetController();
-        boolean result = this.handleSidebarButtonClass(button);
-
-        if (result) {
-            this.mainView = this.controller.loadView();
-            this.setChangeScene(true);
-        }
+    private void pressBudget(Event e) throws IOException {
+        this.initView(new BudgetController(), (Node) e.getSource());
     }
 
     @FXML
-    public void pressWallet(Event e) throws IOException {
-        Node button = (Node) e.getSource();
-        this.controller = new WalletController();
-        boolean result = this.handleSidebarButtonClass(button);
+    private void pressWallet(Event e) throws IOException {
+        this.initView(new WalletController(), (Node) e.getSource());
+    }
 
-        if (result) {
+    private void initView(LoaderInterface controller, Node button) throws IOException {
+        this.controller = controller;
+        boolean notActive = this.activeButton(button);
+
+        if (notActive) {
             this.mainView = this.controller.loadView();
             this.setChangeScene(true);
         }
-    }
-
-    private boolean handleSidebarButtonClass(Node button) {
-        ObservableList<Node> nodes = button.getParent().getChildrenUnmodifiable();
-        boolean newScene = false;
-
-        for (Node node: nodes) {
-            ObservableList<String> classes = node.getStyleClass();
-
-            if (node == button) {
-                if (!classes.toString().contains("active")) {
-                    classes.add("active");
-                    newScene = true;
-                }
-            } else {
-                classes.remove("active");
-            }
-        }
-
-        return newScene;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            this.controller = new TransactionController();
+            this.controller = new BudgetController();
             this.mainView = this.controller.loadView();
         } catch (IOException e) {
             e.printStackTrace();
