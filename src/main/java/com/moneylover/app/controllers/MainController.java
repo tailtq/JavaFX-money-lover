@@ -1,10 +1,7 @@
 package com.moneylover.app.controllers;
 
-import com.moneylover.app.controllers.Pages.BudgetController;
-import com.moneylover.app.controllers.Pages.ReportController;
-import com.moneylover.app.controllers.Pages.WalletController;
+import com.moneylover.app.controllers.Pages.*;
 import javafx.beans.property.BooleanProperty;
-import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -12,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import com.moneylover.app.controllers.Contracts.LoaderInterface;
-import com.moneylover.app.controllers.Pages.TransactionController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -61,6 +57,11 @@ public class MainController extends BaseViewController implements Initializable 
         this.initView(new WalletController(), (Node) e.getSource());
     }
 
+    @FXML
+    private void pressUser(Event e) throws IOException {
+        this.initView(new UserController(), (Node) e.getSource());
+    }
+
     private void initView(LoaderInterface controller, Node button) throws IOException {
         this.controller = controller;
         boolean notActive = this.activeButton(button);
@@ -74,7 +75,7 @@ public class MainController extends BaseViewController implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            this.controller = new BudgetController();
+            this.controller = new TransactionController();
             this.mainView = this.controller.loadView();
         } catch (IOException e) {
             e.printStackTrace();

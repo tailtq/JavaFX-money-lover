@@ -27,4 +27,8 @@
     <fx:include source="sidebar-button.fxml" onAction="#pressWallet" styleClass="wallet">
         <text>Wallets</text>
     </fx:include>
+
+    <fx:include source="sidebar-button.fxml" onAction="#pressUser" styleClass="user">
+        <text>User</text>
+    </fx:include>
 </VBox>
