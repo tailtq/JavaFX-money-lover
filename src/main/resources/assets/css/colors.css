@@ -6,6 +6,10 @@
     -fx-text-fill: #2db84c;
 }
 
+.success-bg-color {
+    -fx-background-color: #2db84c;
+}
+
 .warning-color {
     -fx-text-fill: #ffc107;
 }

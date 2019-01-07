@@ -1,7 +1,7 @@
 package com.moneylover.app.controllers.Pages;
 
 import com.moneylover.app.controllers.BaseViewController;
-import javafx.collections.ObservableList;
+import com.moneylover.app.controllers.Contracts.UseCategoryInterface;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,9 +16,10 @@ import com.moneylover.app.controllers.Contracts.LoaderInterface;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Optional;
 
-public class TransactionController extends BaseViewController implements LoaderInterface {
+public class TransactionController extends BaseViewController implements LoaderInterface, UseCategoryInterface {
+    @FXML
+    private TabPane categoriesTabPane;
 
     @FXML
     private Button leftTime, middleTime, rightTime;
@@ -99,21 +100,14 @@ public class TransactionController extends BaseViewController implements LoaderI
     }
 
     @FXML
-    public void showCategoryDialog(Event e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/choose-category.fxml"));
-        Parent parent = fxmlLoader.load();
-
-        Scene scene = new Scene(parent, 300, 200);
-        Stage stage = new Stage();
-        stage.setTitle("Choose Category");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
+    private void chooseCategory(Event e) throws IOException {
+        this.showCategoryDialog(e);
     }
 
     @FXML
     public void showFriendDialog(Event e) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/choose-friends.fxml"));
+        fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
         Scene scene = new Scene(parent, 300, 200);
@@ -125,21 +119,7 @@ public class TransactionController extends BaseViewController implements LoaderI
     }
 
     @FXML
-    public void changeType(Event e) {
-        Node button = (Node) e.getSource();
-        ObservableList<Node> nodes = button.getParent().getChildrenUnmodifiable();
-
-        for (Node node: nodes) {
-            ObservableList<String> classes = node.getStyleClass();
-
-            if (node == button) {
-                if (!classes.toString().contains("active")) {
-                    classes.add("active");
-                }
-            } else {
-                classes.remove("active");
-            }
-        }
-        // Change categoriesView
+    public void changeTab(Event e) {
+        this.activeTab(e, this.categoriesTabPane);
     }
 }

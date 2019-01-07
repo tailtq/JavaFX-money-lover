@@ -1,16 +1,14 @@
 package com.moneylover.app.controllers;
 
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.*;
 
 import java.util.Optional;
 
 public class BaseViewController {
-    public ButtonBar.ButtonData showDeleteDialog() {
+    protected ButtonBar.ButtonData showDeleteDialog() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Delete Transaction");
         alert.setHeaderText("Are you sure?");
@@ -52,5 +50,15 @@ public class BaseViewController {
         }
 
         return notActive;
+    }
+
+    protected void activeTab(Event e, TabPane tabPane) {
+        Button button = (Button) e.getSource();
+        boolean notActive = this.activeButton(button);
+
+        if (notActive) {
+            int value = Integer.parseInt(button.getUserData().toString());
+            tabPane.getSelectionModel().select(value);
+        }
     }
 }

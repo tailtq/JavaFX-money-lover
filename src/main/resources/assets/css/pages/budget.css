@@ -1,16 +1,3 @@
-.tab-pane {
-    -fx-tab-min-height: 0;
-    -fx-tab-max-height: 0;
-}
-
-.tab-pane .tab-header-area {
-    -fx-padding: 0 0 0 0;
-}
-
-.tab-pane .tab-header-area .headers-region .tab {
-    -fx-padding: 0 0 0 0;
-}
-
 .budget__tab {
     -fx-padding: 0;
     -fx-spacing: 0;
@@ -51,4 +38,17 @@
 
 .progress-bar:indeterminate > .bar {
     -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
+}
+
+/* Budget Show */
+.budget-show__title {
+    -fx-spacing: 5;
+}
+
+.budget__statistic {
+    -fx-vgap: 5 !important;
+}
+
+.budget__statistic .transaction__time {
+    -fx-spacing: 0 !important;
 }

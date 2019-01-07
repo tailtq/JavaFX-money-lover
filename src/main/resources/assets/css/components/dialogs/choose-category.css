@@ -6,6 +6,14 @@
     -fx-padding: 5;
 }
 
+.category .normal-button {
+    -fx-effect: none;
+}
+
+.category .normal-button:hover {
+    -fx-background-color: rgba(45,184,76,.08);
+}
+
 .subcategories {
     -fx-spacing: 3;
 }
