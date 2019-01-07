@@ -27,3 +27,9 @@
 .report__view-button {
 
 }
+
+.report__date-range {
+    -fx-font-size: 10px;
+    -fx-background-color: transparent;
+    -fx-max-width: 85px;
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+
+<MenuButton xmlns:fx="http://javafx.com/fxml"
+            fx:id="changeStatusButton"
+            mnemonicParsing="false"
+            styleClass="header__wallet__select-btn"
+            text="Wallet1">
+    <items>
+        <MenuItem text="Select Wallet" disable="true"/>
+        <MenuItem text="Wallet1" styleClass="header__wallet"/>
+        <MenuItem text="Wallet2" styleClass="header__wallet"/>
+    </items>
+</MenuButton>

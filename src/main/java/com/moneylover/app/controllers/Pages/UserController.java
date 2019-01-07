@@ -10,7 +10,7 @@ public class UserController implements LoaderInterface {
 
     @Override
     public VBox loadView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/user.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/user/user.fxml"));
         fxmlLoader.setController(this);
         VBox parent = fxmlLoader.load();
 

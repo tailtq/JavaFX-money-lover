@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../../../assets/css/content.css"
+      styleClass="root__content">
+    <HBox stylesheets="@../../../../assets/css/components/header.css"
+          styleClass="header">
+        <BorderPane minWidth="430">
+            <left>
+                <fx:include source="../../components/buttons/wallet-dropdown.fxml"/>
+            </left>
+            <right>
+                <fx:include source="../../components/normal-button.fxml" onAction="#createWallet">
+                    <text>ADD WALLET</text>
+                </fx:include>
+            </right>
+        </BorderPane>
+    </HBox>
+
+    <VBox xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          stylesheets="
+            @../../../../assets/css/pages/transaction.css,
+            @../../../../assets/css/pages/wallet.css,
+            @../../../../assets/css/colors.css
+          "
+          alignment="TOP_CENTER"
+          styleClass="container">
+        <VBox styleClass="container__content, wallets__content">
+            <VBox styleClass="transactions__times" fx:id="transactionTimes">
+                <GridPane styleClass="transactions">
+                    <ImageView fitHeight="40"
+                               fitWidth="40"
+                               styleClass="transaction__content__image"
+                               GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Image url="@../../../../assets/images/categories/debt.png"
+                               backgroundLoading="true"/>
+                    </ImageView>
+                    <VBox styleClass="transaction__content"
+                          GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Wallet 1"
+                               styleClass="transaction__content__type, text-bold, category"/>
+                        <Label text="+2,960,000.00 ₫"
+                               styleClass="gray-color"/>
+                    </VBox>
+                    <HBox styleClass="transaction__options"
+                          alignment="CENTER"
+                          GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Button styleClass="button--bg-radius-50, warning-bg-color" onAction="#editWallet">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
+                            </graphic>
+                        </Button>
+                        <Button styleClass="button--bg-radius-50, danger-bg-color" onAction="#deleteWallet">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+                            </graphic>
+                        </Button>
+                    </HBox>
+
+                    <ImageView fitHeight="40"
+                               fitWidth="40"
+                               styleClass="transaction__content__image"
+                               GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Image url="@../../../../assets/images/categories/debt.png"
+                               backgroundLoading="true"/>
+                    </ImageView>
+                    <VBox styleClass="transaction__content"
+                          GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label text="Thursday"
+                               styleClass="transaction__content__type, text-bold, category"/>
+                        <Label text="December 2018"
+                               styleClass="gray-color"/>
+                    </VBox>
+                    <HBox styleClass="transaction__options"
+                          alignment="CENTER"
+                          GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Button styleClass="button--bg-radius-50, warning-bg-color" onAction="#editWallet">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
+                            </graphic>
+                        </Button>
+                        <Button styleClass="button--bg-radius-50, danger-bg-color" onAction="#deleteWallet">
+                            <graphic>
+                                <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="CENTER"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+        </VBox>
+    </VBox>
+</VBox>

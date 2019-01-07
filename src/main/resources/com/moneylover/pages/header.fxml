@@ -3,8 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.Insets?>
-
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../assets/css/components/header.css"
@@ -22,17 +20,11 @@
             </MenuButton>
         </left>
         <right>
-            <fx:include source="normal-button.fxml"
+            <fx:include source="../components/normal-button.fxml"
                         onAction="#showCreateTransactionDialog"
                         fx:id="createButton">
                 <text>ADD TRANSACTION</text>
             </fx:include>
         </right>
     </BorderPane>
-
-    <VBox.margin>
-        <Insets>
-            <bottom>20</bottom>
-        </Insets>
-    </VBox.margin>
 </HBox>

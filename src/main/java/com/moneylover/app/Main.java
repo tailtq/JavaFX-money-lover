@@ -11,19 +11,12 @@ import com.moneylover.app.controllers.MainController;
 public class Main extends Application {
     private HBox layout = new HBox();
 
-    private VBox content = new VBox();
-
-    private FXMLLoader headerLoader;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader sidebarLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/sidebar.fxml"));
         Parent sidebar = sidebarLoader.load();
-        this.headerLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/header.fxml"));
-        this.content.getChildren().add(this.headerLoader.load());
-        this.content.getStylesheets().add(getClass().getResource("/assets/css/content.css").toExternalForm());
 
-        this.layout.getChildren().addAll(sidebar, this.content);
+        this.layout.getChildren().add(sidebar);
         this.changeMainView(sidebarLoader.getController());
 
         primaryStage.setTitle("Hello World");
@@ -35,19 +28,17 @@ public class Main extends Application {
     private void changeMainView(MainController mainController) {
         mainController.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
-                ObservableList<Node> nodes = this.content.getChildren();
+                ObservableList<Node> nodes = this.layout.getChildren();
                 if (nodes.size() == 2) {
                     nodes.remove(1);
                 }
 
                 nodes.add(mainController.getMainView());
-                this.headerLoader.setController(mainController.getController());
                 // The difference between oldValue and newValue triggers an event
                 mainController.setChangeScene(false);
             }
         });
-
-        this.content.getChildren().add(mainController.getMainView());
+        this.layout.getChildren().add(mainController.getMainView());
     }
 
     public static void main(String[] args) {
