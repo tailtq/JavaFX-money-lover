@@ -42,7 +42,7 @@ public class ReportController implements LoaderInterface {
 
     @Override
     public VBox loadView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report/report.fxml"));
         fxmlLoader.setController(this);
         VBox content = fxmlLoader.load();
 

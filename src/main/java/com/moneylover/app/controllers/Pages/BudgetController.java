@@ -36,7 +36,7 @@ public class BudgetController extends BaseViewController implements LoaderInterf
 
     @Override
     public VBox loadView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget/budget.fxml"));
         fxmlLoader.setController(this);
         VBox vBox = fxmlLoader.load();
 

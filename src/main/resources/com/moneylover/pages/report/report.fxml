@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../../../assets/css/content.css, @../../../../assets/css/pages/report.css"
+      styleClass="root__content">
+    <HBox stylesheets="@../../../../assets/css/components/header.css"
+          styleClass="header">
+        <BorderPane minWidth="430">
+            <left>
+                <fx:include source="../../components/buttons/wallet-dropdown.fxml"/>
+            </left>
+            <center>
+                <HBox alignment="CENTER_RIGHT">
+                    <Text styleClass="font--size-10">Range Date</Text>
+                    <DatePicker promptText="Start Date" styleClass="transaction__create-form__select, report__date-range"/>
+                    <DatePicker promptText="End Date" styleClass="transaction__create-form__select, report__date-range"/>
+                </HBox>
+            </center>
+        </BorderPane>
+    </HBox>
+
+    <VBox alignment="CENTER"
+          styleClass="container">
+        <VBox styleClass="container__content">
+            <VBox alignment="CENTER">
+                <BarChart fx:id="barChart" legendVisible="false">
+                    <xAxis>
+                        <CategoryAxis side="BOTTOM"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis side="LEFT"/>
+                    </yAxis>
+                </BarChart>
+                <fx:include source="../../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonths">
+                    <text>View</text>
+                </fx:include>
+            </VBox>
+            <HBox alignment="CENTER">
+                <VBox alignment="CENTER">
+                    <PieChart fx:id="expenseChart" legendVisible="false"/>
+                    <fx:include source="../../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
+                        <text>View</text>
+                    </fx:include>
+                </VBox>
+                <VBox alignment="CENTER">
+                    <PieChart fx:id="incomeChart" legendVisible="false"/>
+                    <fx:include source="../../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
+                        <text>View</text>
+                    </fx:include>
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+</VBox>

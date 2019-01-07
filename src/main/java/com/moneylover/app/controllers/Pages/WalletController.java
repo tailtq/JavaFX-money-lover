@@ -17,7 +17,7 @@ import java.io.IOException;
 public class WalletController extends BaseViewController implements LoaderInterface {
     @Override
     public VBox loadView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallet.fxml"));
         fxmlLoader.setController(this);
         VBox vBox = fxmlLoader.load();
 
