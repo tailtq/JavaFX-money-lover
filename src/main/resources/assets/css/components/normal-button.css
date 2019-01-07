@@ -93,3 +93,11 @@
 .transaction.active {
     -fx-background-image: url("../../images/coloured-transaction.png");
 }
+
+.user {
+    -fx-background-image: url("../../images/user.png");
+}
+
+.user.active {
+    -fx-background-image: url("../../images/coloured-user.png");
+}

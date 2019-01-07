@@ -1,0 +1,8 @@
+.user__content {
+    -fx-padding: 10 10;
+    -fx-spacing: 15;
+}
+
+.user__group {
+    -fx-spacing: 5;
+}
