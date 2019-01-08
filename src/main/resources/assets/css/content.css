@@ -24,15 +24,16 @@
 .dialog-container {
     -fx-spacing: 10;
     -fx-padding: 10;
+    -fx-max-width: 400px;
 }
 
 .container {
-    -fx-pref-width: 450px;
+    -fx-min-width: 450px;
+    -fx-padding: 0 30px;
 }
 
 .container__content {
-    -fx-max-width: 400px;
-    -fx-pref-width: 320px;
+    -fx-max-width: 500px;
     -fx-background-color: #fff;
     -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
 }

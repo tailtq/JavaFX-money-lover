@@ -30,11 +30,7 @@ public class WalletController extends BaseViewController implements LoaderInterf
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, 500, 115));
-        stage.setTitle("Create Wallet");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Create Wallet", 500, 115);
     }
 
     @FXML
@@ -43,11 +39,7 @@ public class WalletController extends BaseViewController implements LoaderInterf
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, 500, 115));
-        stage.setTitle("Edit Wallet");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Edit Wallet", 500, 115);
     }
 
     @FXML
@@ -56,11 +48,7 @@ public class WalletController extends BaseViewController implements LoaderInterf
         fxmlLoader.setController(this);
         VBox parent = fxmlLoader.load();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, 400, 300));
-        stage.setTitle("Choose Currency");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Choose Currency", 400, 300);
     }
 
     @FXML

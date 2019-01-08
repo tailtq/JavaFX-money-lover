@@ -10,10 +10,10 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../../assets/css/content.css"
-      styleClass="root__content">
+      styleClass="root__content" HBox.hgrow="ALWAYS">
     <HBox stylesheets="@../../../../assets/css/components/header.css"
           styleClass="header">
-        <BorderPane minWidth="430">
+        <BorderPane HBox.hgrow="ALWAYS">
             <left>
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml"/>
             </left>
@@ -52,7 +52,7 @@
                                styleClass="gray-color"/>
                     </VBox>
                     <HBox styleClass="transaction__options"
-                          alignment="CENTER"
+                          alignment="CENTER_RIGHT"
                           GridPane.columnIndex="2" GridPane.rowIndex="1">
                         <Button styleClass="button--bg-radius-50, warning-bg-color" onAction="#editWallet">
                             <graphic>
@@ -81,7 +81,7 @@
                                styleClass="gray-color"/>
                     </VBox>
                     <HBox styleClass="transaction__options"
-                          alignment="CENTER"
+                          alignment="CENTER_RIGHT"
                           GridPane.columnIndex="2" GridPane.rowIndex="2">
                         <Button styleClass="button--bg-radius-50, warning-bg-color" onAction="#editWallet">
                             <graphic>
@@ -96,7 +96,7 @@
                     </HBox>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="CENTER"/>
-                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
+                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="58"/>
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
                     </columnConstraints>
                     <rowConstraints>

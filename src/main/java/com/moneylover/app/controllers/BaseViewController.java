@@ -3,11 +3,25 @@ package com.moneylover.app.controllers;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.Optional;
 
 public class BaseViewController {
+    protected void createScreen(Parent parent, String title, int v, int v1) {
+        Stage stage = new Stage();
+        stage.setScene(new Scene(parent, v, v1));
+        stage.setMinWidth(v);
+        stage.setMinHeight(v1);
+        stage.setTitle(title);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+    }
+
     protected ButtonBar.ButtonData showDeleteDialog() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Delete Transaction");

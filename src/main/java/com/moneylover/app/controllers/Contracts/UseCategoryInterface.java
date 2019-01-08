@@ -1,5 +1,6 @@
 package com.moneylover.app.controllers.Contracts;
 
+import com.moneylover.app.controllers.BaseViewController;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

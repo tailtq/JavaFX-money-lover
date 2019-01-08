@@ -65,12 +65,7 @@ public class BudgetController extends BaseViewController implements LoaderInterf
         }
 
         this.showAreaChart(values);
-
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, 500, 700));
-        stage.setTitle("Create Budget");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Budget Detail", 400, 500);
     }
 
     @FXML
@@ -91,12 +86,7 @@ public class BudgetController extends BaseViewController implements LoaderInterf
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        Stage stage = new Stage();
-
-        stage.setScene(new Scene(parent, 500, 700));
-        stage.setTitle("Budget Detail");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Budget Detail", 400, 500);
     }
 
     @FXML
@@ -105,11 +95,7 @@ public class BudgetController extends BaseViewController implements LoaderInterf
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, 500, 170));
-        stage.setTitle("Create Budget");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Create Budget", 500, 170);
     }
 
     @FXML
@@ -118,11 +104,7 @@ public class BudgetController extends BaseViewController implements LoaderInterf
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, 500, 170));
-        stage.setTitle("Edit Budget");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Edit Budget", 500, 170);
     }
 
     @FXML

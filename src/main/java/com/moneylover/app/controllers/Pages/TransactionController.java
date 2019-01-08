@@ -62,19 +62,14 @@ public class TransactionController extends BaseViewController implements LoaderI
     }
 
     @FXML
-    public void showCreateTransactionDialog(Event e) throws IOException {
+    public void createTransaction(Event e) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
         this.transactedAt.setValue(LocalDate.now());
 
-        Scene scene = new Scene(parent, 500, 300);
-        Stage stage = new Stage();
-        stage.setTitle("Add Transaction");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
+        this.createScreen(parent, "Add Transaction", 500, 230);
     }
 
     @FXML
@@ -83,12 +78,7 @@ public class TransactionController extends BaseViewController implements LoaderI
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        Scene scene = new Scene(parent, 500, 300);
-        Stage stage = new Stage();
-        stage.setTitle("Edit Transaction");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
+        this.createScreen(parent, "Edit Transaction", 500, 230);
     }
 
     @FXML
@@ -110,12 +100,7 @@ public class TransactionController extends BaseViewController implements LoaderI
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        Scene scene = new Scene(parent, 300, 200);
-        Stage stage = new Stage();
-        stage.setTitle("Choose Friend");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
+        this.createScreen(parent, "Choose Friend", 300, 200);
     }
 
     @FXML

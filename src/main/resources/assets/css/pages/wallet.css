@@ -4,5 +4,5 @@
 
 .wallets__content .transactions {
     -fx-border-width: 0;
-    -fx-padding: 5 0 10 0;
+    -fx-padding: 5 10 10 10;
 }

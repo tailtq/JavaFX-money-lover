@@ -33,3 +33,7 @@
     -fx-background-color: transparent;
     -fx-max-width: 85px;
 }
+
+.report__content > VBox, .report__content > HBox {
+    -fx-max-width: 380px;
+}
