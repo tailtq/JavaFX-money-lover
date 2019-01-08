@@ -1,5 +1,6 @@
 package com.moneylover.app.controllers.Pages;
 
+import com.moneylover.app.controllers.BaseViewController;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -18,7 +19,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReportController implements LoaderInterface {
+public class ReportController extends BaseViewController implements LoaderInterface {
     @FXML
     private BarChart barChart;
 
@@ -88,11 +89,7 @@ public class ReportController implements LoaderInterface {
         this.barChartDetail.getData().add(clonalData);
         this.barChartDetail.setTitle("Report");
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, 500, 700));
-        stage.setTitle("Report");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Report", 400, 500);
     }
 
     @FXML
@@ -111,11 +108,7 @@ public class ReportController implements LoaderInterface {
         }
         this.pieChartDetail.setTitle("Category");
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, 500, 700));
-        stage.setTitle("Report");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Report", 400, 500);
     }
 
     @FXML
@@ -124,12 +117,7 @@ public class ReportController implements LoaderInterface {
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        Stage stage = new Stage();
-
-        stage.setScene(new Scene(parent, 500, 700));
-        stage.setTitle("Report Detail");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        this.createScreen(parent, "Report Detail", 400, 500);
     }
 
     public XYChart.Series cloneBarChartData(BarChart chart) {

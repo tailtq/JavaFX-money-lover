@@ -17,62 +17,64 @@
           @../../../../assets/css/pages/transaction.css,
           @../../../../assets/css/pages/budget.css"
       styleClass="report--padding-30, report--background-white"
-      alignment="CENTER">
-    <HBox alignment="CENTER" styleClass="budget-show__title">
-        <ImageView fitHeight="50"
-                    fitWidth="50"
-                    styleClass="transaction__content__image"
-                    GridPane.columnIndex="0" GridPane.rowIndex="0">
-            <Image url="@../../../../assets/images/categories/debt.png"
-                   backgroundLoading="true"/>
-        </ImageView>
-        <Text styleClass="font--size-20">Hello</Text>
-    </HBox>
-    <AreaChart fx:id="areaChartDetail" legendVisible="false">
-        <xAxis>
-            <CategoryAxis side="BOTTOM"/>
-        </xAxis>
-        <yAxis>
-            <NumberAxis side="LEFT"/>
-        </yAxis>
-    </AreaChart>
+      alignment="TOP_CENTER">
+    <VBox styleClass="dialog-container" alignment="TOP_CENTER">
+        <HBox alignment="CENTER" styleClass="budget-show__title">
+            <ImageView fitHeight="50"
+                       fitWidth="50"
+                       styleClass="transaction__content__image"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Image url="@../../../../assets/images/categories/debt.png"
+                       backgroundLoading="true"/>
+            </ImageView>
+            <Text styleClass="font--size-20">Hello</Text>
+        </HBox>
+        <AreaChart fx:id="areaChartDetail" legendVisible="false">
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </AreaChart>
 
-    <VBox styleClass="transaction__pane" fx:id="transactionContent" alignment="CENTER">
-        <GridPane styleClass="transaction__statistic, budget__statistic">
-            <VBox styleClass="transaction__time"
-                  GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Label text="Left" styleClass="font--size-12, gray-color"/>
-                <Label text="+$ 2,500.00" styleClass="font--size-13"/>
-            </VBox>
-            <VBox styleClass="transaction__time"
-                  GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Label text="Spent" styleClass="font--size-12, gray-color"/>
-                <Label text="+$ 500.00" styleClass="font--size-13"/>
-            </VBox>
+        <VBox styleClass="transaction__pane" fx:id="transactionContent" alignment="CENTER">
+            <GridPane styleClass="transaction__statistic, budget__statistic">
+                <VBox styleClass="transaction__time"
+                      GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Left" styleClass="font--size-12, gray-color"/>
+                    <Label text="+$ 2,500.00" styleClass="font--size-13"/>
+                </VBox>
+                <VBox styleClass="transaction__time"
+                      GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Spent" styleClass="font--size-12, gray-color"/>
+                    <Label text="+$ 500.00" styleClass="font--size-13"/>
+                </VBox>
 
-            <VBox styleClass="transaction__time"
-                  GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Label text="Recommended daily spending" styleClass="font--size-12, gray-color"/>
-                <Label text="+$ 96.15" styleClass="font--size-13"/>
-            </VBox>
-            <VBox styleClass="transaction__time"
-                  GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Label text="Actual daily spending" styleClass="font--size-12, gray-color"/>
-                <Label text="+$ 100.00" styleClass="font--size-13"/>
-            </VBox>
+                <VBox styleClass="transaction__time"
+                      GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Recommended daily spending" styleClass="font--size-12, gray-color"/>
+                    <Label text="+$ 96.15" styleClass="font--size-13"/>
+                </VBox>
+                <VBox styleClass="transaction__time"
+                      GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Actual daily spending" styleClass="font--size-12, gray-color"/>
+                    <Label text="+$ 100.00" styleClass="font--size-13"/>
+                </VBox>
 
-            <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
-                <ColumnConstraints hgrow="ALWAYS" percentWidth="50" halignment="RIGHT"/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints vgrow="SOMETIMES" />
-                <RowConstraints vgrow="SOMETIMES" />
-            </rowConstraints>
-        </GridPane>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50" halignment="RIGHT"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints vgrow="SOMETIMES" />
+                    <RowConstraints vgrow="SOMETIMES" />
+                </rowConstraints>
+            </GridPane>
+        </VBox>
+
+        <fx:include source="../normal-button.fxml" onAction="#loadBudgetTransactions">
+            <text>View Transactions</text>
+        </fx:include>
     </VBox>
-
-    <fx:include source="../normal-button.fxml" onAction="#loadBudgetTransactions">
-        <text>View Transactions</text>
-    </fx:include>
 </VBox>

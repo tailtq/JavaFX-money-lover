@@ -10,11 +10,11 @@
 <?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../../../../assets/css/content.css, @../../../../assets/css/pages/report.css"
-      styleClass="root__content">
-    <HBox stylesheets="@../../../../assets/css/components/header.css"
+      stylesheets="@../../../../assets/css/content.css"
+      styleClass="root__content" HBox.hgrow="ALWAYS">
+    <HBox stylesheets="@../../../../assets/css/components/header.css, @../../../../assets/css/pages/report.css"
           styleClass="header">
-        <BorderPane minWidth="430">
+        <BorderPane HBox.hgrow="ALWAYS">
             <left>
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml"/>
             </left>
@@ -28,10 +28,10 @@
         </BorderPane>
     </HBox>
 
-    <VBox alignment="CENTER"
-          styleClass="container">
-        <VBox styleClass="container__content">
-            <VBox alignment="CENTER">
+    <VBox stylesheets="@../../../../assets/css/pages/report.css"
+          alignment="CENTER" styleClass="container">
+        <VBox styleClass="container__content, report__content" alignment="TOP_CENTER">
+            <VBox alignment="TOP_CENTER">
                 <BarChart fx:id="barChart" legendVisible="false">
                     <xAxis>
                         <CategoryAxis side="BOTTOM"/>
@@ -44,9 +44,9 @@
                     <text>View</text>
                 </fx:include>
             </VBox>
-            <HBox alignment="CENTER">
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                 <VBox alignment="CENTER">
-                    <PieChart fx:id="expenseChart" legendVisible="false"/>
+                    <PieChart fx:id="expenseChart" legendVisible="false" />
                     <fx:include source="../../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
                         <text>View</text>
                     </fx:include>

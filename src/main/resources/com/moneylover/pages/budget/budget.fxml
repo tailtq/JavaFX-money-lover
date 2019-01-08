@@ -18,10 +18,10 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../../assets/css/content.css"
-      styleClass="root__content">
+      styleClass="root__content" HBox.hgrow="ALWAYS">
     <HBox stylesheets="@../../../../assets/css/components/header.css"
           styleClass="header">
-        <BorderPane minWidth="430">
+        <BorderPane HBox.hgrow="ALWAYS">
             <left>
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml"/>
             </left>
@@ -35,7 +35,6 @@
 
     <VBox stylesheets="
             @../../../../assets/css/colors.css,
-            @../../../../assets/css/content.css,
             @../../../../assets/css/pages/transaction.css,
             @../../../../assets/css/pages/budget.css
           "

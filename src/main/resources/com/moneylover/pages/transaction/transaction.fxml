@@ -12,16 +12,16 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../../assets/css/content.css"
-      styleClass="root__content">
+      styleClass="root__content" HBox.hgrow="ALWAYS">
     <HBox stylesheets="@../../../../assets/css/components/header.css"
           styleClass="header">
-        <BorderPane minWidth="430">
+        <BorderPane HBox.hgrow="ALWAYS">
             <left>
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml"/>
             </left>
             <right>
                 <fx:include source="../../components/normal-button.fxml"
-                            onAction="#showCreateTransactionDialog"
+                            onAction="#createTransaction"
                             fx:id="createButton">
                     <text>ADD TRANSACTION</text>
                 </fx:include>
@@ -30,7 +30,7 @@
     </HBox>
 
     <VBox stylesheets="@../../../../assets/css/pages/transaction.css, @../../../../assets/css/colors.css"
-          styleClass="container"
+          styleClass="container" HBox.hgrow="ALWAYS"
           alignment="TOP_CENTER">
         <VBox styleClass="container__content">
             <HBox styleClass="tab-button-group" alignment="TOP_CENTER">
@@ -118,10 +118,10 @@
                             <Label text="December 2018"
                                    styleClass="transaction__content__note, gray-color"/>
                         </VBox>
-                        <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <VBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT">
                             <Label text="+2,960,000.00 ₫"
                                    styleClass="primary-color"/>
-                            <HBox styleClass="transaction__options" alignment="CENTER">
+                            <HBox styleClass="transaction__options" alignment="CENTER_RIGHT">
                                 <Button styleClass="button--bg-radius-50, warning-bg-color"
                                         onAction="#editTransaction">
                                     <graphic>
@@ -151,10 +151,10 @@
                             <Label text="December 2018"
                                    styleClass="transaction__content__note, gray-color"/>
                         </VBox>
-                        <VBox GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <VBox GridPane.columnIndex="2" GridPane.rowIndex="2" alignment="CENTER_RIGHT">
                             <Label text="+2,960,000.00 ₫"
                                    styleClass="primary-color"/>
-                            <HBox styleClass="transaction__options" alignment="CENTER">
+                            <HBox styleClass="transaction__options" alignment="CENTER_RIGHT">
                                 <Button styleClass="button--bg-radius-50, warning-bg-color"
                                         onAction="#editTransaction">
                                     <graphic>
@@ -171,8 +171,8 @@
                         </VBox>
                         <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="CENTER"/>
-                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
-                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="54"/>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="32" halignment="RIGHT"/>
                         </columnConstraints>
                         <rowConstraints>
                             <RowConstraints vgrow="SOMETIMES"/>
@@ -210,10 +210,10 @@
                             <Label text="December 2018"
                                    styleClass="transaction__content__note, gray-color"/>
                         </VBox>
-                        <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <VBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT">
                             <Label text="+2,960,000.00 ₫"
                                    styleClass="primary-color"/>
-                            <HBox styleClass="transaction__options" alignment="CENTER">
+                            <HBox styleClass="transaction__options" alignment="CENTER_RIGHT">
                                 <Button styleClass="button--bg-radius-50, warning-bg-color"
                                         onAction="#editTransaction">
                                     <graphic>
@@ -230,8 +230,8 @@
                         </VBox>
                         <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" percentWidth="14" halignment="CENTER"/>
-                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="58" halignment="LEFT"/>
-                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="54"/>
+                            <ColumnConstraints hgrow="SOMETIMES" percentWidth="32" halignment="RIGHT"/>
                         </columnConstraints>
                         <rowConstraints>
                             <RowConstraints vgrow="SOMETIMES"/>
