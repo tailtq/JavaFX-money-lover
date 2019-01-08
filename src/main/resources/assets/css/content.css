@@ -1,5 +1,5 @@
-.root__content {
-    -fx-spacing: 20;
+.root__content > .container {
+    /*-fx-padding: 20;*/
 }
 
 /* Tab */
@@ -29,7 +29,7 @@
 
 .container {
     -fx-min-width: 450px;
-    -fx-padding: 0 30px;
+    -fx-padding: 20px 30px 0;
 }
 
 .container__content {
