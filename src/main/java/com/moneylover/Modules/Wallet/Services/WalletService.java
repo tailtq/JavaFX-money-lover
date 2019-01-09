@@ -48,7 +48,7 @@ public class WalletService extends BaseService {
     }
 
     public Wallet getDetail(int id) throws SQLException, NotFoundException {
-        ResultSet resultSet = this.getById(id);
+        ResultSet resultSet = this._getById(id);
 
         if (!resultSet.next()) {
             throw new NotFoundException();

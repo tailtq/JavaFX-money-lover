@@ -4,9 +4,12 @@ import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.User.Entities.User;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 public class UserService extends BaseService {
@@ -48,7 +51,7 @@ public class UserService extends BaseService {
     }
 
     public User getDetail(int id) throws SQLException, NotFoundException {
-        ResultSet resultSet = this.getById(id);
+        ResultSet resultSet = this._getById(id);
 
         if (!resultSet.next()) {
             throw new NotFoundException();
@@ -61,10 +64,15 @@ public class UserService extends BaseService {
     }
 
     private int _create(User user) throws SQLException {
-        String statementString = "INSERT INTO " + getTable() + "() VALUES (?, ?, ?)";
+        String statementString = "INSERT INTO " + getTable() + "(name, email, password, created_at) VALUES (?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        // Continue
-//        statement.setDouble(1, user.getAmount());
+
+        LocalDate currentDate = LocalDate.now();
+        statement.setString(1, user.getName());
+        statement.setString(1, user.getPassword());
+        statement.setString(2, user.getEmail());
+        statement.setString(3, user.getPassword());
+        statement.setDate(4, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
 
         return statement.executeUpdate();
     }

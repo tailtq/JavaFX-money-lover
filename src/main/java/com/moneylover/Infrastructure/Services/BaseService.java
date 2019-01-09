@@ -16,7 +16,7 @@ abstract public class BaseService {
     private Connection connectToDB() throws ClassNotFoundException, SQLException {
         String username = "sa";
         String password = "Abcd@1234";
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=com.moneylover";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=moneylover";
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         Connection connection = DriverManager.getConnection(url, username, password);
 
@@ -51,17 +51,13 @@ abstract public class BaseService {
         statement = getStatement();
         ResultSet resultSet = statement.executeQuery(query);
 
-        closeConnection();
-
         return resultSet;
     }
 
-    protected ResultSet getById(int id) throws SQLException {
+    protected ResultSet _getById(int id) throws SQLException {
         String query = "SELECT * FROM " + getTable() + " WHERE id = " + id;
         statement = getStatement();
         ResultSet resultSet = statement.executeQuery(query);
-
-        closeConnection();
 
         return resultSet;
     }

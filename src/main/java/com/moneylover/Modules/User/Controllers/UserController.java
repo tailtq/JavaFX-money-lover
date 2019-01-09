@@ -4,6 +4,7 @@ import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.User.Entities.User;
 import com.moneylover.Modules.User.Services.UserService;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class UserController {
         return user;
     }
 
-    public User create(User user) throws SQLException, NotFoundException {
+    public User create(User user) throws SQLException, NotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
         User newUser = this.service.create(user);
 
         return newUser;
