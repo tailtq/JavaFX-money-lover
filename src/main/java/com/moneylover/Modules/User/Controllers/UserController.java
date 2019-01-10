@@ -27,7 +27,13 @@ public class UserController {
         return user;
     }
 
-    public User create(User user) throws SQLException, NotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
+    public User login(User user) throws SQLException, NotFoundException {
+        User currentUser = this.service.login(user);
+
+        return currentUser;
+    }
+
+    public User create(User user) throws SQLException, NotFoundException {
         User newUser = this.service.create(user);
 
         return newUser;

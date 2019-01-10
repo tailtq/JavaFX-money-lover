@@ -5,13 +5,13 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.function.Function;
 
 public class UpdatableBcrypt {
-    private final int logRounds = 7;
+    private static final int logRounds = 7;
 
-    public String hash(String password) {
+    public static String hash(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(logRounds));
     }
 
-    public boolean verifyHash(String password, String hash) {
+    public static boolean verifyHash(String password, String hash) {
         return BCrypt.checkpw(password, hash);
     }
 
