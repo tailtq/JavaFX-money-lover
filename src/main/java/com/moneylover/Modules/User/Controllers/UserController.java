@@ -33,6 +33,12 @@ public class UserController {
         return currentUser;
     }
 
+    public User getUserByEmail(String email) throws NotFoundException, SQLException {
+        User user = this.service.getUserByEmail(email);
+
+        return user;
+    }
+
     public User create(User user) throws SQLException, NotFoundException {
         User newUser = this.service.create(user);
 

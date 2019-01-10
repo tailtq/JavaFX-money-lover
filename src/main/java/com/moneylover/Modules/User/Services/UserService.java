@@ -52,7 +52,22 @@ public class UserService extends BaseService {
             throw new NotFoundException();
         }
 
-        return this.getUser(resultSet);
+        user = this.getUser(resultSet);
+//        this.closeConnection();
+
+        return user;
+    }
+
+    public User getUserByEmail(String email) throws SQLException, NotFoundException {
+        ResultSet resultSet = this.get("email = '" + email + "'");
+        if (!resultSet.next()) {
+            throw new NotFoundException();
+        }
+
+        User user = this.getUser(resultSet);
+//        this.closeConnection();
+
+        return user;
     }
 
     public User create(User user) throws SQLException, NotFoundException {
@@ -88,7 +103,7 @@ public class UserService extends BaseService {
         statement.setString(1, user.getName());
         statement.setString(1, user.getPassword());
         statement.setString(2, user.getEmail());
-        statement.setString(3, user.getPassword());
+        statement.setString(3, UpdatableBcrypt.hash(user.getPassword()));
         statement.setDate(4, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
 
         return statement.executeUpdate();
