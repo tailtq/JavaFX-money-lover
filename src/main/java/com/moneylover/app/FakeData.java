@@ -59,14 +59,13 @@ public class FakeData {
         this.currencyController.create(jpy);
     }
 
-    public void createUser() throws InvocationTargetException, SQLException, IllegalAccessException, NotFoundException, NoSuchMethodException, NoSuchFieldException {
+    public void createUser() throws SQLException, NotFoundException {
         User user;
-        UpdatableBcrypt bcrypt = new UpdatableBcrypt();
 
         for (int i = 0; i < 10; i++) {
             user = new User();
             user.setName(this.faker.name().fullName());
-            user.setPassword(bcrypt.hash("123123"));
+            user.setPassword(UpdatableBcrypt.hash("123123"));
             user.setEmail(this.faker.internet().emailAddress());
             user.setPhone(this.faker.phoneNumber().cellPhone());
             user.setBirthday(this.faker.date().birthday());

@@ -10,3 +10,8 @@
 .form__field {
     /*-fx-max-width: infinity;*/
 }
+
+.login__container .sign-up-message {
+    -fx-font-size: 11;
+    -fx-padding: 0;
+}

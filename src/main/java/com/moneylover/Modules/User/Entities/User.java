@@ -15,6 +15,13 @@ public class User extends BaseModel {
 
     private String phone;
 
+    public User() {}
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public static String getTable() {
         return "users";
     }

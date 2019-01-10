@@ -75,4 +75,15 @@ public class BaseViewController {
             tabPane.getSelectionModel().select(value);
         }
     }
+
+    protected void showErrorDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error");
+        alert.setContentText(message);
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(cancelButton);
+
+        alert.showAndWait();
+    }
 }
