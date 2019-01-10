@@ -13,25 +13,25 @@
 
     <VBox styleClass="form__field-group">
         <Label text="Name"/>
-        <TextField promptText="Name" styleClass="form__field"/>
+        <TextField promptText="Name" styleClass="form__field" fx:id="name"/>
     </VBox>
 
     <VBox styleClass="form__field-group">
         <Label text="Email"/>
-        <TextField promptText="Email" styleClass="form__field"/>
+        <TextField promptText="Email" styleClass="form__field" fx:id="email"/>
     </VBox>
 
     <VBox styleClass="form__field-group">
         <Label text="Password"/>
-        <PasswordField promptText="Password" styleClass="form__field"/>
+        <PasswordField promptText="Password" styleClass="form__field" fx:id="password"/>
     </VBox>
 
     <VBox styleClass="form__field-group">
         <Label text="Confirm Password"/>
-        <PasswordField promptText="Confirm Password" styleClass="form__field"/>
+        <PasswordField promptText="Confirm Password" styleClass="form__field" fx:id="passwordConfirmation"/>
     </VBox>
 
-    <fx:include source="../../components/normal-button.fxml">
+    <fx:include source="../../components/normal-button.fxml" onAction="#signUp">
         <text>SIGN UP</text>
     </fx:include>
 

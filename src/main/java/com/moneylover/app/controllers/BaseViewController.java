@@ -86,4 +86,10 @@ public class BaseViewController {
 
         alert.showAndWait();
     }
+
+    protected void setFieldsNull(TextField ... textFields) {
+        for (TextField field: textFields) {
+            field.setText(null);
+        }
+    }
 }

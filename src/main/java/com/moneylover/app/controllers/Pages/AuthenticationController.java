@@ -73,6 +73,7 @@ public class AuthenticationController extends BaseViewController {
         String email = this.email.getText().trim();
         String password = this.password.getText().trim();
         if (email.isEmpty() || password.isEmpty()) {
+            this.setFieldsNull(this.password);
             this.showErrorDialog("Email or password is not valid");
             return;
         }
@@ -82,6 +83,7 @@ public class AuthenticationController extends BaseViewController {
             this.user = this.userController.login(user);
             this.changeScene.set("transaction");
         } catch (NotFoundException e) {
+            this.setFieldsNull(this.password);
             this.showErrorDialog("Email or password is not valid");
         }
     }
@@ -92,5 +94,33 @@ public class AuthenticationController extends BaseViewController {
         VBox parent = fxmlLoader.load();
 
         return new Scene(parent);
+    }
+
+    @FXML
+    public void signUp() throws SQLException, NotFoundException {
+        String name = this.name.getText().trim();
+        String email = this.email.getText().trim();
+        String password = this.password.getText().trim();
+        String passwordConfirmation = this.passwordConfirmation.getText().trim();
+        if (email.isEmpty() || name.isEmpty() || password.isEmpty() || passwordConfirmation.isEmpty()) {
+            this.showErrorDialog("Please input all information!");
+            return;
+        }
+        if (!password.equals(passwordConfirmation)) {
+            this.setFieldsNull(this.password);
+            this.showErrorDialog("Password Confirmation is invalid!");
+            return;
+        }
+
+        User user = new User(name, email, password);
+        try {
+            this.userController.getUserByEmail(user.getEmail());
+            this.setFieldsNull(this.password, this.passwordConfirmation);
+            this.showErrorDialog("Email is used by another user!");
+            return;
+        } catch (NotFoundException e) {
+            this.userController.create(user);
+        }
+        this.changeScene.set("signin");
     }
 }
