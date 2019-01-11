@@ -31,8 +31,8 @@ public class Main extends Application {
     private void listenSceneChanging() throws IOException {
         this.authenticationController.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
             try {
-                if (newValue == "signin" || newValue == "signup") {
-                    if (newValue == "signup") {
+                if (newValue.equals("signin") || newValue.equals("signup")) {
+                    if (newValue.equals("signup")) {
                         this.primaryStage.setScene(this.authenticationController.loadSignUpForm());
                     } else {
                         this.primaryStage.setScene(this.authenticationController.loadSignInForm());

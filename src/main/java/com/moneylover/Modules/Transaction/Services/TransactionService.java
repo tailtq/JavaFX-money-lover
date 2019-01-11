@@ -14,6 +14,11 @@ public class TransactionService extends BaseService {
         super();
     }
 
+    @Override
+    protected Object toObject(ResultSet resultSet) throws SQLException {
+        return null;
+    }
+
     protected String getTable() {
         return Transaction.getTable();
     }

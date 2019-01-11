@@ -61,7 +61,7 @@ public class AuthenticationController extends BaseViewController {
 
     @FXML
     private void changeScene() {
-        if (changeScene.get() == "signin") {
+        if (changeScene.get().equals("signin")) {
             changeScene.set("signup");
         } else {
             changeScene.set("signin");

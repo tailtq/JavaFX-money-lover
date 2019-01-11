@@ -27,6 +27,20 @@ public class CurrencyService extends BaseService {
         return currencies;
     }
 
+    public Currency getDetail(int id) throws SQLException, NotFoundException {
+        ResultSet resultSet = this._getById(id);
+
+        if (resultSet.wasNull()) {
+            throw new NotFoundException();
+        }
+
+        Currency currency = new Currency();
+//         Continue
+//        closeConnection();
+
+        return currency;
+    }
+
     public Currency create(Currency currency) throws SQLException, NotFoundException {
         int id = this._create(currency);
 
@@ -39,26 +53,14 @@ public class CurrencyService extends BaseService {
         return this.getDetail(id);
     }
 
-    public Currency getDetail(int id) throws SQLException, NotFoundException {
-        ResultSet resultSet = this._getById(id);
-
-        if (resultSet.wasNull()) {
-            throw new NotFoundException();
-        }
-
-        Currency currency = new Currency();
-        // Continue
-        closeConnection();
-
-        return currency;
-    }
+    /*====================================================================================*/
 
     private ArrayList<Currency> _list() throws SQLException {
         ArrayList<Currency> currencies = new ArrayList<>();
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {
-            // Continue
+            currencies.add(this.toObject(resultSet));
         }
 
         return currencies;
@@ -67,7 +69,6 @@ public class CurrencyService extends BaseService {
     private int _create(Currency currency) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(name, symbol, image, code, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        // Continue
         LocalDate currentDate = LocalDate.now();
         statement.setString(1, currency.getName());
         statement.setString(2, currency.getSymbol());
@@ -86,5 +87,19 @@ public class CurrencyService extends BaseService {
 //        statement.setDouble(1, currency.getAmount());
 
         return statement.executeUpdate();
+    }
+
+    @Override
+    protected Currency toObject(ResultSet resultSet) throws SQLException {
+        Currency currency = new Currency();
+        currency.setId(resultSet.getInt("id"));
+        currency.setName(resultSet.getNString("name"));
+        currency.setImage(resultSet.getString("image"));
+        currency.setSymbol(resultSet.getNString("symbol"));
+        currency.setCode(resultSet.getNString("code"));
+        currency.setCreatedAt(resultSet.getDate("created_at"));
+        currency.setUpdatedAt(resultSet.getDate("updated_at"));
+
+        return currency;
     }
 }

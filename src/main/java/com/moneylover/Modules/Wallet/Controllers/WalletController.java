@@ -1,6 +1,7 @@
 package com.moneylover.Modules.Wallet.Controllers;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
+import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Modules.Wallet.Services.WalletService;
 
@@ -30,6 +31,12 @@ public class WalletController {
         Wallet newWallet = this.service.create(wallet);
 
         return newWallet;
+    }
+
+    public boolean attachUsers(ArrayList<UserWallet> userWallets) throws SQLException {
+        boolean result = this.service.attachUsers(userWallets);
+
+        return result;
     }
 
     public Wallet update(Wallet wallet, int id) throws SQLException, NotFoundException {
