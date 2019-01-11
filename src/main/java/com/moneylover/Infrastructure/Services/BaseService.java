@@ -11,6 +11,8 @@ abstract public class BaseService {
         connection = connectToDB();
     }
 
+    abstract protected Object toObject(ResultSet resultSet) throws SQLException;
+
     abstract protected String getTable();
 
     private Connection connectToDB() throws ClassNotFoundException, SQLException {
@@ -34,6 +36,10 @@ abstract public class BaseService {
     protected void closeConnection() throws SQLException {
         statement.close();
         connection.close();
+    }
+
+    protected void closeStatement() throws SQLException {
+        statement.close();
     }
 
     protected ResultSet get(String... args) throws SQLException {

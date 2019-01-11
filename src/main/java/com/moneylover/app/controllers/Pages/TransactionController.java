@@ -2,6 +2,7 @@ package com.moneylover.app.controllers.Pages;
 
 import com.moneylover.app.controllers.BaseViewController;
 import com.moneylover.app.controllers.Contracts.UseCategoryInterface;
+import com.moneylover.app.controllers.PageController;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,7 @@ import com.moneylover.app.controllers.Contracts.LoaderInterface;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class TransactionController extends BaseViewController implements LoaderInterface, UseCategoryInterface {
+public class TransactionController extends PageController implements UseCategoryInterface {
     @FXML
     private TabPane categoriesTabPane;
 

@@ -7,9 +7,13 @@ import com.moneylover.Modules.Currency.Controllers.CurrencyController;
 import com.moneylover.Modules.Currency.Entities.Currency;
 import com.moneylover.Modules.User.Controllers.UserController;
 import com.moneylover.Modules.User.Entities.User;
+import com.moneylover.Modules.Wallet.Controllers.WalletController;
+import com.moneylover.Modules.Wallet.Entities.UserWallet;
+import com.moneylover.Modules.Wallet.Entities.Wallet;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class FakeData {
     private static FakeData fakeData;
@@ -20,19 +24,23 @@ public class FakeData {
 
     private UserController userController;
 
-    public FakeData() throws SQLException, ClassNotFoundException, NotFoundException {
+    private WalletController walletController;
+
+    public FakeData() throws SQLException, ClassNotFoundException {
         this.faker = new Faker();
         this.currencyController = new CurrencyController();
         this.userController = new UserController();
+        this.walletController = new WalletController();
     }
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws SQLException, NotFoundException, ClassNotFoundException {
         try {
             fakeData = new FakeData();
 //        fakeData.createCurrencies();
-            fakeData.createUser();
+//            fakeData.createUser();
+            fakeData.createWallets();
         } catch (Exception e) {
-            System.out.println(e.toString());
+            throw e;
         }
     }
 
@@ -71,5 +79,39 @@ public class FakeData {
             user.setBirthday(this.faker.date().birthday());
             this.userController.create(user);
         }
+    }
+
+    public void createWallets() throws SQLException, NotFoundException {
+        Wallet wallet;
+        ArrayList<Currency> currencies = this.currencyController.list();
+        int currenciesQuantity = currencies.size();
+
+        for (int i = 0; i < 10; i++) {
+            int number = this.faker.number().numberBetween(0, currenciesQuantity - 1);
+
+            wallet = new Wallet();
+            wallet.setCurrencyId(currencies.get(number).getId());
+            wallet.setName("Wallet " + i);
+            wallet.setInflow((float) this.faker.number().randomDouble(1, 1000000, 10000000));
+            wallet.setOutflow((float) this.faker.number().randomDouble(1, 1000000, 10000000));
+            this.walletController.create(wallet);
+        }
+
+        ArrayList<UserWallet> userWallets = new ArrayList<>();
+        ArrayList<User> users = this.userController.list();
+        ArrayList<Wallet> wallets = this.walletController.list();
+        int usersQuantity = users.size();
+        int walletsQuantity = wallets.size();
+
+        for (int i = 0; i < 20; i++) {
+            int number1 = (int)(Math.random() * (usersQuantity - 1));
+            int number2 = (int)(Math.random() * (walletsQuantity - 1));
+            int userId = users.get(number1).getId();
+            int walletId = wallets.get(number2).getId();
+
+            UserWallet userWallet = new UserWallet(userId, walletId);
+            userWallets.add(userWallet);
+        }
+        this.walletController.attachUsers(userWallets);
     }
 }

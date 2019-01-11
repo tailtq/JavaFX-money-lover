@@ -1,6 +1,7 @@
 package com.moneylover.app.controllers.Pages;
 
 import com.moneylover.app.controllers.BaseViewController;
+import com.moneylover.app.controllers.PageController;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReportController extends BaseViewController implements LoaderInterface {
+public class ReportController extends PageController {
     @FXML
     private BarChart barChart;
 

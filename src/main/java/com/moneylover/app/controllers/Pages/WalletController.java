@@ -2,19 +2,17 @@ package com.moneylover.app.controllers.Pages;
 
 import com.moneylover.app.controllers.BaseViewController;
 import com.moneylover.app.controllers.Contracts.LoaderInterface;
+import com.moneylover.app.controllers.PageController;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class WalletController extends BaseViewController implements LoaderInterface {
+public class WalletController extends PageController {
     @Override
     public VBox loadView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallet.fxml"));

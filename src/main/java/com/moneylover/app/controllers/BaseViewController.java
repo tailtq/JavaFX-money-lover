@@ -31,6 +31,7 @@ public class BaseViewController {
         DialogPane dialog = alert.getDialogPane();
         dialog.getStylesheets().add(getClass().getResource("/assets/css/alerts/transaction-delete.css").toExternalForm());
         dialog.getStyleClass().add("transaction__delete-dialog");
+
         ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);

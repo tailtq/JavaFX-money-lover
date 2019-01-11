@@ -4,7 +4,6 @@
 <?import javafx.scene.control.MenuItem?>
 
 <MenuButton xmlns:fx="http://javafx.com/fxml"
-            fx:id="changeStatusButton"
             mnemonicParsing="false"
             styleClass="header__wallet__select-btn"
             text="Wallet1">

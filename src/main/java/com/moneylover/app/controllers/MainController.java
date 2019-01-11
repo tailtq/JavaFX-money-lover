@@ -1,5 +1,6 @@
 package com.moneylover.app.controllers;
 
+import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.controllers.Pages.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -12,6 +13,8 @@ import com.moneylover.app.controllers.Contracts.LoaderInterface;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController extends BaseViewController implements Initializable {
@@ -77,7 +80,10 @@ public class MainController extends BaseViewController implements Initializable 
         try {
             this.controller = new TransactionController();
             this.mainView = this.controller.loadView();
-        } catch (IOException e) {
+            com.moneylover.Modules.Wallet.Controllers.WalletController walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
+            ArrayList<Wallet> wallets = walletController.list();
+            this.controller.setWallets(wallets);
+        } catch (IOException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

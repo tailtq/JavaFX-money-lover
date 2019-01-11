@@ -24,6 +24,7 @@ public class UserService extends BaseService {
 
     public ArrayList<User> list() throws SQLException {
         ArrayList<User> users = this._list();
+        this.closeStatement();
 
         return users;
     }
@@ -52,8 +53,8 @@ public class UserService extends BaseService {
             throw new NotFoundException();
         }
 
-        user = this.getUser(resultSet);
-//        this.closeConnection();
+        user = this.toObject(resultSet);
+        this.closeStatement();
 
         return user;
     }
@@ -64,8 +65,8 @@ public class UserService extends BaseService {
             throw new NotFoundException();
         }
 
-        User user = this.getUser(resultSet);
-//        this.closeConnection();
+        User user = this.toObject(resultSet);
+        this.closeStatement();
 
         return user;
     }
@@ -89,7 +90,7 @@ public class UserService extends BaseService {
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {
-            // Continue
+            users.add(this.toObject(resultSet));
         }
 
         return users;
@@ -119,8 +120,10 @@ public class UserService extends BaseService {
         return statement.executeUpdate();
     }
 
-    private User getUser(ResultSet resultSet) throws SQLException {
+    @Override
+    protected User toObject(ResultSet resultSet) throws SQLException {
         User user = new User();
+        user.setId(resultSet.getInt("id"));
         user.setName(resultSet.getNString("name"));
         user.setPassword(resultSet.getString("password"));
         user.setEmail(resultSet.getString("email"));
