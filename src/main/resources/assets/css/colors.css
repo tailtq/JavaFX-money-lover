@@ -26,6 +26,10 @@
     -fx-background-color: #f25a5a;
 }
 
+.white-color {
+    -fx-text-fill: #fff;
+}
+
 .white-bg-color {
     -fx-background-color: #fff;
 }

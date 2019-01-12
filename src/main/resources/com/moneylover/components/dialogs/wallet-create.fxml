@@ -13,7 +13,7 @@
           styleClass="transaction__create-form">
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
         <Text>Name</Text>
-        <TextField styleClass="transaction__create-form__select"/>
+        <TextField styleClass="transaction__create-form__select" fx:id="textFieldTransactionName"/>
     </VBox>
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
@@ -23,7 +23,7 @@
 
     <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
         <Text>Initial Balance</Text>
-        <TextField fx:id="amount" styleClass="transaction__create-form__select"/>
+        <TextField styleClass="transaction__create-form__select" fx:id="textFieldTransactionAmount"/>
     </VBox>
 
     <HBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="BASELINE_RIGHT" styleClass="button-group">

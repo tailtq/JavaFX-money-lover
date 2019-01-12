@@ -13,12 +13,12 @@
 
     <VBox styleClass="form__field-group">
         <Label text="Email"/>
-        <TextField promptText="Email" styleClass="form__field" fx:id="email"/>
+        <TextField promptText="Email" styleClass="form__field" fx:id="email" text="tailedn98@gmail.com"/>
     </VBox>
 
     <VBox styleClass="form__field-group">
         <Label text="Password"/>
-        <PasswordField promptText="Password" styleClass="form__field" fx:id="password"/>
+        <PasswordField promptText="Password" styleClass="form__field" fx:id="password" text="123123123"/>
     </VBox>
 
     <fx:include source="../../components/normal-button.fxml" onAction="#login">

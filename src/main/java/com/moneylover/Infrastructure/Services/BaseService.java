@@ -33,11 +33,6 @@ abstract public class BaseService {
         return connection.prepareStatement(statementString);
     }
 
-    protected void closeConnection() throws SQLException {
-        statement.close();
-        connection.close();
-    }
-
     protected void closeStatement() throws SQLException {
         statement.close();
     }
@@ -68,12 +63,22 @@ abstract public class BaseService {
         return resultSet;
     }
 
+    protected boolean deleteBy(String table, String conditions) throws SQLException {
+        String statementString = "DELETE FROM " + table + " WHERE " + conditions;
+        statement = getStatement();
+        boolean result = statement.execute(statementString);
+
+        closeStatement();
+
+        return result;
+    }
+
     public boolean deleteById(int id) throws SQLException {
         String statementString = "DELETE FROM " + getTable() + " WHERE id = " + id;
         statement = getStatement();
         boolean result = statement.execute(statementString);
 
-        closeConnection();
+        closeStatement();
 
         return result;
     }
