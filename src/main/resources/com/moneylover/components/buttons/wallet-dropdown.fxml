@@ -9,7 +9,5 @@
             text="Wallet1">
     <items>
         <MenuItem text="Select Wallet" disable="true"/>
-        <MenuItem text="Wallet1" styleClass="header__wallet"/>
-        <MenuItem text="Wallet2" styleClass="header__wallet"/>
     </items>
 </MenuButton>

@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import com.moneylover.app.controllers.MainController;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main extends Application {
     private Stage primaryStage;
@@ -39,11 +40,10 @@ public class Main extends Application {
                     }
                     this.primaryStage.setMinWidth(270);
                 } else {
-                    this.user = this.authenticationController.getUser();
                     this.loadMainScene();
                 }
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+            } catch (IOException | SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
         });
         this.primaryStage.setScene(this.authenticationController.loadView());
@@ -51,7 +51,7 @@ public class Main extends Application {
         this.primaryStage.show();
     }
 
-    private void loadMainScene() throws IOException {
+    private void loadMainScene() throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader sidebarLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/sidebar.fxml"));
         Parent sidebar = sidebarLoader.load();
 
@@ -65,7 +65,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void changeMainView(MainController mainController) {
+    private void changeMainView(MainController mainController) throws SQLException, IOException, ClassNotFoundException {
         mainController.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
                 ObservableList<Node> nodes = this.layout.getChildren();
@@ -74,10 +74,16 @@ public class Main extends Application {
                 }
 
                 nodes.add(mainController.getMainView());
+                try {
+                    mainController.setWallets();
+                } catch (IOException | SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 // The difference between oldValue and newValue triggers an event
                 mainController.setChangeScene(false);
             }
         });
+        mainController.setUser(this.authenticationController.getUser());
         this.layout.getChildren().add(mainController.getMainView());
     }
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
+    <ImageView fitHeight="35"
+               fitWidth="35"
+               styleClass="transaction__content__image">
+        <Image url="@../../../../assets/images/header-wallet.png"
+               backgroundLoading="true"/>
+    </ImageView>
+    <VBox styleClass="transaction__content">
+        <Label fx:id="labelWalletName"
+               styleClass="transaction__content__type, text-bold, category"/>
+        <Label fx:id="labelWalletAmount" text="+2,960,000.00 ₫"/>
+    </VBox>
+    <Pane HBox.hgrow="ALWAYS"></Pane>
+    <MenuButton xmlns:fx="http://javafx.com/fxml"
+                mnemonicParsing="false"
+                styleClass="wallet__select-btn, white-color"
+                text="Options">
+        <items>
+            <MenuItem styleClass="white-color, warning-bg-color" onAction="#deleteWallet">
+                <text>Edit</text>
+                <graphic>
+                    <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
+                </graphic>
+            </MenuItem>
+            <MenuItem styleClass="white-color, danger-bg-color" onAction="#deleteWallet">
+                <text>Delete</text>
+                <graphic>
+                    <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+                </graphic>
+            </MenuItem>
+        </items>
+    </MenuButton>
+</HBox>

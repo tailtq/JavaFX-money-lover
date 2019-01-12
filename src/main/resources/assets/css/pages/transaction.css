@@ -47,6 +47,10 @@
     -fx-spacing: 7;
 }
 
+.transaction__content {
+    -fx-padding: 0 10px;
+}
+
 .transaction__content__image {
     -fx-pref-width: 40px;
     -fx-pref-height: 40px;

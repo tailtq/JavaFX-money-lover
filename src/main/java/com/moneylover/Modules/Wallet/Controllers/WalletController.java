@@ -21,6 +21,12 @@ public class WalletController {
         return wallets;
     }
 
+    public ArrayList<Wallet> listByUser(int id) throws SQLException {
+        ArrayList<Wallet> wallets = this.service.list(id);
+
+        return wallets;
+    }
+
     public Wallet getDetail(int id) throws SQLException, NotFoundException {
         Wallet wallet = this.service.getDetail(id);
 
@@ -46,6 +52,6 @@ public class WalletController {
     }
 
     public boolean delete(int id) throws SQLException {
-        return this.service.deleteById(id);
+        return this.service.delete(id);
     }
 }

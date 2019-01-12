@@ -28,6 +28,17 @@ public class WalletService extends BaseService {
         return wallets;
     }
 
+    /**
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Wallet> list(int id) throws SQLException {
+        ArrayList<Wallet> wallets = this._list(id);
+
+        return wallets;
+    }
+
     public Wallet getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
 
@@ -60,6 +71,12 @@ public class WalletService extends BaseService {
         return this.getDetail(id);
     }
 
+    public boolean delete(int id) throws SQLException {
+        this.deleteBy("user_wallet", "wallet_id = " + id);
+
+        return this.deleteById(id);
+    }
+
     /*====================================================================================*/
 
     private ArrayList<Wallet> _list() throws SQLException {
@@ -69,6 +86,20 @@ public class WalletService extends BaseService {
         while (resultSet.next()) {
             wallets.add(this.toObject(resultSet));
         }
+
+        return wallets;
+    }
+
+    private ArrayList<Wallet> _list(int id) throws SQLException {
+        ArrayList<Wallet> wallets = new ArrayList<>();
+        String query = "SELECT * FROM " + getTable() + " INNER JOIN user_wallet ON wallets.id = user_wallet.wallet_id WHERE user_id = " + id + " ORDER BY created_at DESC";
+        statement = getStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            wallets.add(this.toObject(resultSet));
+        }
+        this.closeStatement();
 
         return wallets;
     }
