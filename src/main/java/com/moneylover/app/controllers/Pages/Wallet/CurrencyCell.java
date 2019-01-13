@@ -3,8 +3,6 @@ package com.moneylover.app.controllers.Pages.Wallet;
 import com.moneylover.Modules.Currency.Entities.Currency;
 import com.moneylover.app.controllers.Contracts.DialogInterface;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,6 +57,8 @@ public class CurrencyCell extends ListCell<Currency> implements DialogInterface 
     private void selectCurrency(Event e) {
         this.selectedCurrencyId.set(this.currency.getId());
 
-        this.closeScene(e);
+        Node node = (Node) e.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
     }
 }

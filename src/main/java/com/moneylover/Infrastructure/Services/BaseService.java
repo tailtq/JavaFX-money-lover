@@ -7,6 +7,8 @@ abstract public class BaseService {
 
     protected Statement statement;
 
+    protected PreparedStatement preparedStatement;
+
     public BaseService() throws SQLException, ClassNotFoundException {
         connection = connectToDB();
     }
@@ -26,19 +28,29 @@ abstract public class BaseService {
     }
 
     protected Statement getStatement() throws SQLException {
-        return connection.createStatement();
+        statement = connection.createStatement();
+
+        return statement;
     }
 
     protected PreparedStatement getPreparedStatement(String statementString) throws SQLException {
-        return connection.prepareStatement(statementString);
+        preparedStatement = connection.prepareStatement(statementString);
+
+        return preparedStatement;
     }
 
     protected PreparedStatement getPreparedStatement(String statementString, int option) throws SQLException {
-        return connection.prepareStatement(statementString, option);
+        preparedStatement = connection.prepareStatement(statementString, option);
+
+        return preparedStatement;
     }
 
     protected void closeStatement() throws SQLException {
         statement.close();
+    }
+
+    protected void closePreparedStatement() throws SQLException {
+        preparedStatement.close();
     }
 
     protected ResultSet get(String... args) throws SQLException {

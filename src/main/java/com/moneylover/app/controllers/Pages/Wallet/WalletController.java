@@ -1,20 +1,16 @@
 package com.moneylover.app.controllers.Pages.Wallet;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
-import com.moneylover.Modules.Currency.Controllers.CurrencyController;
-import com.moneylover.Modules.Currency.Entities.Currency;
 import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.controllers.PageController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -33,20 +29,15 @@ public class WalletController extends PageController {
 
     private CurrencyController currencyController;
 
-    private ObservableList<Currency> currencies = FXCollections.observableArrayList();
-
     public WalletController(BooleanProperty changeWallet) throws SQLException, ClassNotFoundException {
         this.changeWallet = changeWallet;
         this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
-        this.currencyController = new CurrencyController();
+        this.currencyController = new CurrencyController(this.selectedCurrencyId);
     }
 
     /*========================== Draw ==========================*/
     @FXML
     private ListView listViewWallets;
-
-    @FXML
-    private ListView listViewCurrencies;
 
     @FXML
     private TextField textFieldTransactionName;
@@ -56,8 +47,6 @@ public class WalletController extends PageController {
 
     @FXML
     private Button selectCurrency;
-
-    private String currencyClassName;
 
     private IntegerProperty selectedCurrencyId = new SimpleIntegerProperty(0);
 
@@ -77,7 +66,7 @@ public class WalletController extends PageController {
             @Override
             public ListCell<Wallet> call(ListView param) {
                 try {
-                    return new WalletCell(deletedWalletId);
+                    return new WalletCell(currencyController.getCurrencies(), updatedWalletId, deletedWalletId);
                 } catch (IOException | SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
                     return null;
@@ -87,11 +76,27 @@ public class WalletController extends PageController {
     }
 
     private void handleWalletId() {
+        this.updatedWalletId.addListener((observableValue, oldValue, newValue) -> {
+            int i = 0;
+            for (Wallet wallet: this.wallets) {
+                if (wallet.getId() == newValue.intValue()) {
+                    try {
+                        this.wallets.set(i, this.walletController.getDetail(wallet.getId()));
+                        this.loadHeaderWallets();
+                    } catch (SQLException | NotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+                i++;
+            }
+        });
         this.deletedWalletId.addListener((observableValue, oldValue, newValue) -> {
             int i = 0;
             for (Wallet wallet: this.wallets) {
                 if (wallet.getId() == newValue.intValue()) {
                     this.wallets.remove(i);
+                    this.loadHeaderWallets();
                     return;
                 }
                 i++;
@@ -100,79 +105,26 @@ public class WalletController extends PageController {
     }
 
     @Override
-    public void setWallets(ArrayList<Wallet> wallets) {
-        this.wallets.setAll(wallets);
+    public void setWallets(ObservableList<Wallet> wallets) {
+        super.setWallets(wallets);
         this.setListViewWallets();
-
-        MenuItem menuItem;
-        for (Wallet wallet: wallets) {
-            menuItem = new MenuItem(wallet.getName());
-            menuItem.getStyleClass().add("header__wallet");
-            this.dropdownWallets.getItems().add(menuItem);
-        }
     }
 
     @FXML
     public void createWallet(Event e) throws IOException, SQLException {
-        if (this.currencies.isEmpty()) {
-            this.currencies.setAll(this.currencyController.list());
-        }
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/wallet-create.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
+
+        this.selectedCurrencyId.set(0);
+        this.currencyController.handleSelectedCurrencyId(this.selectCurrency);
 
         this.createScreen(parent, "Create Wallet", 500, 115);
     }
 
     @FXML
     private void listCurrencies() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/choose-currency/choose-currency.fxml")
-        );
-        fxmlLoader.setController(this);
-        VBox parent = fxmlLoader.load();
-
-        this.handleSelectedCurrencyId();
-        this.listViewCurrencies.setItems(this.currencies);
-        this.listViewCurrencies.setCellFactory(new Callback<ListView, ListCell>() {
-            @Override
-            public ListCell<Currency> call(ListView param) {
-                try {
-                    return new CurrencyCell(selectedCurrencyId);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-        });
-        this.createScreen(parent, "Choose Currency", 400, 300);
-    }
-
-    private void handleSelectedCurrencyId() {
-        this.selectedCurrencyId.addListener((observableValue, oldValue, newValue) -> {
-            for (Currency currency: this.currencies) {
-                if (currency.getId() == newValue.intValue()) {
-                    ObservableList<String> classes = this.selectCurrency.getStyleClass();
-                    if (this.currencyClassName != null) {
-                        classes.remove(currencyClassName);
-                    } else {
-                        classes.add("select-currency__stylesheet");
-                        this.selectCurrency.setAlignment(Pos.CENTER_LEFT);
-                    }
-                    this.currencyClassName = "currency__" + currency.getCode().toLowerCase();
-                    this.selectCurrency.setText(currency.getName());
-                    this.selectCurrency.getStyleClass().add(currencyClassName);
-                    return;
-                }
-            }
-        });
-    }
-
-    @FXML
-    private void changeAmount(Event e) {
-//        String amount = this.textFieldTransactionAmount.getText();
-//        NumberFormat nf = NumberFormat.getNumberInstance();
-//        System.out.println(nf.format(new BigDecimal(amount)));
+        this.currencyController.loadCurrencies();
     }
 
     @FXML
@@ -191,8 +143,8 @@ public class WalletController extends PageController {
             ArrayList<UserWallet> userWallet = new ArrayList<>();
             userWallet.add(new UserWallet(this.user.getId(), wallet.getId()));
             this.walletController.attachUsers(userWallet);
-
             this.wallets.add(0, wallet);
+
             this.closeScene(event);
         } catch (SQLException e) {
             e.printStackTrace();

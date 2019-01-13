@@ -25,7 +25,7 @@
                 styleClass="wallet__select-btn, white-color"
                 text="Options">
         <items>
-            <MenuItem styleClass="white-color, warning-bg-color" onAction="#deleteWallet">
+            <MenuItem styleClass="white-color, warning-bg-color" onAction="#editWallet">
                 <text>Edit</text>
                 <graphic>
                     <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />

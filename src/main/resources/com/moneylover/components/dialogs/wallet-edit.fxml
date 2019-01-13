@@ -33,7 +33,7 @@
         <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button" onAction="#closeScene">
             <text>Cancel</text>
         </fx:include>
-        <fx:include source="../normal-button.fxml" styleClass="form__button" onAction="#storeWallet">
+        <fx:include source="../normal-button.fxml" styleClass="form__button" onAction="#updateWallet">
             <text>Done</text>
         </fx:include>
     </HBox>

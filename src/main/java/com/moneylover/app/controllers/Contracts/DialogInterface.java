@@ -1,12 +1,14 @@
 package com.moneylover.app.controllers.Contracts;
 
 import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.Optional;
@@ -48,9 +50,13 @@ public interface DialogInterface {
         alert.showAndWait();
     }
 
-    default void closeScene(Event e) {
-        Node node = (Node) e.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
+    default void createScreen(Parent parent, String title, int v, int v1) {
+        Stage stage = new Stage();
+        stage.setScene(new Scene(parent, v, v1));
+        stage.setMinWidth(v);
+        stage.setMinHeight(v1);
+        stage.setTitle(title);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 }

@@ -6,6 +6,8 @@ import com.moneylover.app.controllers.Pages.*;
 import com.moneylover.app.controllers.Pages.Wallet.WalletController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,7 +24,7 @@ import java.util.ResourceBundle;
 public class MainController extends BaseViewController implements Initializable {
     private User user;
 
-    private ArrayList<Wallet> wallets;
+    private ObservableList<Wallet> wallets = FXCollections.observableArrayList();
 
     private LoaderInterface controller;
 
@@ -57,15 +59,14 @@ public class MainController extends BaseViewController implements Initializable 
     }
 
     public void setWallets() throws IOException, SQLException, ClassNotFoundException {
-        if (this.wallets == null) {
+        if (this.wallets.isEmpty()) {
             this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
-            this.wallets = walletController.listByUser(this.user.getId());
+            this.wallets.addAll(walletController.listByUser(this.user.getId()));
         }
-
-        this.controller.setWallets(wallets);
+        this.controller.setWallets(this.wallets);
         this.changeWallet.addListener((observableValue, aBoolean, t1) -> {
             try {
-                ArrayList<Wallet> updatedWallets = walletController.listByUser(this.user.getId());
+                ObservableList<Wallet> updatedWallets = FXCollections.observableArrayList(walletController.listByUser(this.user.getId()));
                 this.controller.setWallets(updatedWallets);
             } catch (IOException | SQLException e) {
                 e.printStackTrace();

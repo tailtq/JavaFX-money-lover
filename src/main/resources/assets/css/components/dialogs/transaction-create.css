@@ -25,7 +25,7 @@
     -fx-background-position: 12px 40%;
 }
 
-.select-currency__stylesheet {
+.select-currency--stylesheet {
     -fx-padding: 7 5 7 37;
     -fx-font-size: 10;
 }
