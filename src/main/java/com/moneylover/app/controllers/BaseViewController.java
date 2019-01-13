@@ -4,23 +4,9 @@ import com.moneylover.app.controllers.Contracts.DialogInterface;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 public class BaseViewController implements DialogInterface {
-    protected void createScreen(Parent parent, String title, int v, int v1) {
-        Stage stage = new Stage();
-        stage.setScene(new Scene(parent, v, v1));
-        stage.setMinWidth(v);
-        stage.setMinHeight(v1);
-        stage.setTitle(title);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
-    }
-
     protected boolean activeButton(Node button) {
         ObservableList<Node> nodes = button.getParent().getChildrenUnmodifiable();
         boolean notActive = false;

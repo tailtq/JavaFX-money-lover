@@ -62,10 +62,10 @@ public class WalletService extends BaseService {
         return result;
     }
 
-    public Wallet update(Wallet wallet, int id) throws SQLException, NotFoundException {
+    public boolean update(Wallet wallet, int id) throws SQLException, NotFoundException {
         this._update(wallet, id);
 
-        return this.getDetail(id);
+        return true;
     }
 
     public boolean delete(int id) throws SQLException {
@@ -118,7 +118,7 @@ public class WalletService extends BaseService {
             result = resultSet.getInt(1);
         }
 
-        statement.close();
+        this.closePreparedStatement();
 
         return result;
     }
@@ -141,14 +141,21 @@ public class WalletService extends BaseService {
         return true;
     }
 
-    private int _update(Wallet wallet, int id) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET created_at = ? WHERE id = ?";
+    private boolean _update(Wallet wallet, int id) throws SQLException {
+        String statementString = "UPDATE " + getTable() + " SET currency_id = ?, name = ?, inflow = ?, outflow = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        // Continue
-//        state.setInt(2, id)
-//        statement.setDouble(1, wallet.getAmount());
+        LocalDate currentDate = LocalDate.now();
+        statement.setInt(1, wallet.getCurrencyId());
+        statement.setNString(2, wallet.getName());
+        statement.setFloat(3, wallet.getInflow());
+        statement.setFloat(4, wallet.getOutflow());
+        statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setInt(6, id);
+        statement.executeUpdate();
 
-        return statement.executeUpdate();
+        this.closePreparedStatement();
+
+        return true;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.moneylover.app.controllers.Contracts;
 
 import com.moneylover.Modules.User.Entities.User;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -12,5 +13,5 @@ public interface LoaderInterface {
 
     void setUser(User user) throws IOException;
 
-    void setWallets(ArrayList<Wallet> wallets) throws IOException;
+    void setWallets(ObservableList<Wallet> wallets) throws IOException;
 }
