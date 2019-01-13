@@ -52,6 +52,7 @@ public class MainController extends BaseViewController implements Initializable 
 
     public void setUser(User user) throws SQLException, IOException, ClassNotFoundException {
         this.user = user;
+        this.controller.setUser(this.user);
         this.setWallets();
     }
 

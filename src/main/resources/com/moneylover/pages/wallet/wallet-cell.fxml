@@ -17,7 +17,7 @@
     <VBox styleClass="transaction__content">
         <Label fx:id="labelWalletName"
                styleClass="transaction__content__type, text-bold, category"/>
-        <Label fx:id="labelWalletAmount" text="+2,960,000.00 ₫"/>
+        <Label fx:id="labelWalletAmount"/>
     </VBox>
     <Pane HBox.hgrow="ALWAYS"></Pane>
     <MenuButton xmlns:fx="http://javafx.com/fxml"

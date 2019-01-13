@@ -13,6 +13,20 @@ public class Wallet extends BaseModel {
 
     private float outflow;
 
+    public Wallet() {}
+
+    public Wallet(int currencyId, String name, float amount) {
+        this.currencyId = currencyId;
+        this.name = name;
+        this.inflow = 0;
+        this.outflow = 0;
+        if (amount > 0) {
+            this.inflow = amount;
+        } else if (amount < 0) {
+            this.outflow = amount;
+        }
+    }
+
     public static String getTable() {
         return "wallets";
     }

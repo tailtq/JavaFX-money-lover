@@ -5,10 +5,7 @@ import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -106,15 +103,24 @@ public class WalletService extends BaseService {
 
     private int _create(Wallet wallet) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(currency_id, name, inflow, outflow, created_at) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, wallet.getCurrencyId());
         statement.setString(2, wallet.getName());
         statement.setFloat(3, wallet.getInflow());
         statement.setFloat(4, wallet.getOutflow());
         statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
 
-        return statement.executeUpdate();
+        int result = 0;
+        ResultSet resultSet = statement.getGeneratedKeys();
+        while (resultSet.next()) {
+            result = resultSet.getInt(1);
+        }
+
+        statement.close();
+
+        return result;
     }
 
     private boolean _attachUsers(ArrayList<UserWallet> userWallets) throws SQLException {
@@ -152,7 +158,7 @@ public class WalletService extends BaseService {
         wallet.setCurrencyId(resultSet.getInt("currency_id"));
         wallet.setName(resultSet.getNString("name"));
         wallet.setInflow(resultSet.getFloat("inflow"));
-        wallet.setInflow(resultSet.getFloat("outflow"));
+        wallet.setOutflow(resultSet.getFloat("outflow"));
         wallet.setCreatedAt(resultSet.getDate("created_at"));
         wallet.setUpdatedAt(resultSet.getDate("updated_at"));
 

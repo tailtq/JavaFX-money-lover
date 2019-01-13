@@ -2,7 +2,6 @@ package com.moneylover.app.controllers.Pages.Wallet;
 
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.controllers.Contracts.DialogInterface;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -21,24 +20,25 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
     private Wallet wallet;
 
-    private IntegerProperty handledWalletId;
+    private IntegerProperty deletedWalletId;
 
     private HBox walletCell;
 
-    @FXML
-    private Label labelWalletName;
-
-    @FXML
-    private Label labelWalletAmount;
-
-    public WalletCell(IntegerProperty handledWalletId) throws IOException, SQLException, ClassNotFoundException {
+    public WalletCell(IntegerProperty deletedWalletId) throws IOException, SQLException, ClassNotFoundException {
         this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
-        this.handledWalletId = handledWalletId;
+        this.deletedWalletId = deletedWalletId;
 
         FXMLLoader walletCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallet-cell.fxml"));
         walletCellLoader.setController(this);
         walletCell = walletCellLoader.load();
     }
+
+    /*========================== Draw ==========================*/
+    @FXML
+    private Label labelWalletName;
+
+    @FXML
+    private Label labelWalletAmount;
 
     protected void updateItem(Wallet item, boolean empty) {
         super.updateItem(item, empty);
@@ -48,11 +48,12 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
             float amount = item.getInflow() - item.getOutflow();
             String amountText = Float.toString(amount);
             if (amount > 0) {
-                this.labelWalletAmount.getStyleClass().add("danger-color");
+                this.labelWalletAmount.getStyleClass().add("success-color");
                 amountText = "+" + amountText;
             } else if (amount < 0) {
-                this.labelWalletAmount.getStyleClass().add("success-color");
-                amountText = "-" + amountText;
+                this.labelWalletAmount.getStyleClass().add("danger-color");
+            } else {
+                this.labelWalletAmount.getStyleClass().removeAll("success-color, danger-color");
             }
 
             this.labelWalletName.setText(item.getName());
@@ -67,6 +68,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/wallet-create.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
+//        this.deletedWalletId.set(id);
 
 //            this.createScreen(parent, "Edit Wallet", 500, 115);
     }
@@ -77,9 +79,10 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
         if (buttonData == ButtonBar.ButtonData.YES) {
             try {
-                int id =this.wallet.getId();
+                int id = this.wallet.getId();
+
                 this.walletController.delete(id);
-                this.handledWalletId.set(id);
+                this.deletedWalletId.set(id);
             } catch (SQLException e1) {
                 e1.printStackTrace();
                 this.showErrorDialog("An error has occurred");
