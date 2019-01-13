@@ -33,6 +33,10 @@ abstract public class BaseService {
         return connection.prepareStatement(statementString);
     }
 
+    protected PreparedStatement getPreparedStatement(String statementString, int option) throws SQLException {
+        return connection.prepareStatement(statementString, option);
+    }
+
     protected void closeStatement() throws SQLException {
         statement.close();
     }

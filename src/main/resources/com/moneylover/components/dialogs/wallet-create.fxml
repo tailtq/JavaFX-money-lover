@@ -7,30 +7,31 @@
 <GridPane xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"
           stylesheets="
+            @../../../../assets/css/icons.css,
             @../../../../assets/css/content.css,
             @../../../../assets/css/components/dialogs/transaction-create.css
           "
           styleClass="transaction__create-form">
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <Text>Name</Text>
+        <Text>Name *</Text>
         <TextField styleClass="transaction__create-form__select" fx:id="textFieldTransactionName"/>
     </VBox>
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
-        <Text>Currency</Text>
-        <Button text="Wallet1" styleClass="transaction__create-form__select" onAction="#chooseCurrency"/>
+        <Text>Currency *</Text>
+        <Button text="Select Currency" fx:id="selectCurrency" styleClass="transaction__create-form__select, select-currency" onAction="#listCurrencies" alignment="CENTER"/>
     </VBox>
 
     <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
         <Text>Initial Balance</Text>
-        <TextField styleClass="transaction__create-form__select" fx:id="textFieldTransactionAmount"/>
+        <TextField styleClass="transaction__create-form__select" fx:id="textFieldTransactionAmount" onKeyTyped="#changeAmount"/>
     </VBox>
 
     <HBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="BASELINE_RIGHT" styleClass="button-group">
-        <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button">
+        <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button" onAction="#closeScene">
             <text>Cancel</text>
         </fx:include>
-        <fx:include source="../normal-button.fxml" styleClass="form__button">
+        <fx:include source="../normal-button.fxml" styleClass="form__button" onAction="#storeWallet">
             <text>Done</text>
         </fx:include>
     </HBox>

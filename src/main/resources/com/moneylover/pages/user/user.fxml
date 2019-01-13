@@ -12,7 +12,7 @@
           styleClass="header">
         <BorderPane HBox.hgrow="ALWAYS">
             <left>
-                <fx:include source="../../components/buttons/wallet-dropdown.fxml" fx:id="mDdWallets"/>
+                <fx:include source="../../components/buttons/wallet-dropdown.fxml" fx:id="dropdownWallets"/>
             </left>
         </BorderPane>
     </HBox>
