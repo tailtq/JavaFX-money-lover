@@ -26,32 +26,34 @@
           alignment="TOP_CENTER">
         <VBox styleClass="container__content, user__content">
             <VBox styleClass="user__group">
-                <Text>Email</Text>
-                <TextField styleClass="transaction__create-form__select" promptText="Email" disable="true"/>
+                <Text>Name</Text>
+                <TextField styleClass="transaction__create-form__select" fx:id="textFieldName" promptText="Name"/>
             </VBox>
 
             <VBox styleClass="user__group">
-                <Text>Name</Text>
-                <TextField styleClass="transaction__create-form__select" promptText="Name"/>
+                <Text>Email</Text>
+                <TextField styleClass="transaction__create-form__select" fx:id="textFieldEmail" promptText="Email"
+                           disable="true"/>
             </VBox>
 
             <VBox styleClass="user__group">
                 <Text>Phone</Text>
-                <TextField styleClass="transaction__create-form__select" promptText="Phone"/>
+                <TextField styleClass="transaction__create-form__select" fx:id="textFieldPhone" promptText="Phone"/>
             </VBox>
 
             <VBox styleClass="user__group">
                 <Text>Password</Text>
-                <TextField styleClass="transaction__create-form__select" promptText="Password"/>
+                <TextField styleClass="transaction__create-form__select" fx:id="textFieldPassword" promptText="Password"/>
             </VBox>
 
             <VBox styleClass="user__group">
                 <Text>Password Confirmation</Text>
-                <TextField styleClass="transaction__create-form__select" promptText="Password Confirmation"/>
+                <TextField styleClass="transaction__create-form__select" fx:id="textFieldPasswordConfirmation"
+                           promptText="Password Confirmation"/>
             </VBox>
 
             <VBox alignment="CENTER_RIGHT">
-                <fx:include source="../../components/normal-button.fxml">
+                <fx:include source="../../components/normal-button.fxml" onAction="#updateUser">
                     <text>Change</text>
                 </fx:include>
             </VBox>

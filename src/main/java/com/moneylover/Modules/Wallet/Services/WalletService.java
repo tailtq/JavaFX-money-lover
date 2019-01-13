@@ -104,6 +104,7 @@ public class WalletService extends BaseService {
     private int _create(Wallet wallet) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(currency_id, name, inflow, outflow, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, wallet.getCurrencyId());
         statement.setString(2, wallet.getName());
@@ -144,6 +145,7 @@ public class WalletService extends BaseService {
     private boolean _update(Wallet wallet, int id) throws SQLException {
         String statementString = "UPDATE " + getTable() + " SET currency_id = ?, name = ?, inflow = ?, outflow = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
+
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, wallet.getCurrencyId());
         statement.setNString(2, wallet.getName());

@@ -6,8 +6,8 @@ import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 
-public class BaseViewController implements DialogInterface {
-    protected boolean activeButton(Node button) {
+abstract public class BaseViewController implements DialogInterface {
+    boolean activeButton(Node button) {
         ObservableList<Node> nodes = button.getParent().getChildrenUnmodifiable();
         boolean notActive = false;
 
@@ -39,7 +39,7 @@ public class BaseViewController implements DialogInterface {
 
     protected void setFieldsNull(TextField ... textFields) {
         for (TextField field: textFields) {
-            field.setText(null);
+            field.setText("");
         }
     }
 }

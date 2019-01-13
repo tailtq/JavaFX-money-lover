@@ -31,13 +31,12 @@ public class UserService extends BaseService {
 
     public User getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
-
         if (!resultSet.next()) {
             throw new NotFoundException();
         }
 
-        User user = new User();
-        // Continue
+        User user = toObject(resultSet);
+        this.closeStatement();
 
         return user;
     }
@@ -77,10 +76,10 @@ public class UserService extends BaseService {
         return this.getDetail(id);
     }
 
-    public User update(User user, int id) throws SQLException, NotFoundException {
+    public boolean update(User user, int id) throws SQLException {
         this._update(user, id);
 
-        return this.getDetail(id);
+        return true;
     }
 
     /*====================================================================================*/
@@ -101,8 +100,7 @@ public class UserService extends BaseService {
         PreparedStatement statement = this.getPreparedStatement(statementString);
 
         LocalDate currentDate = LocalDate.now();
-        statement.setString(1, user.getName());
-        statement.setString(1, user.getPassword());
+        statement.setNString(1, user.getName());
         statement.setString(2, user.getEmail());
         statement.setString(3, UpdatableBcrypt.hash(user.getPassword()));
         statement.setDate(4, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
@@ -111,11 +109,24 @@ public class UserService extends BaseService {
     }
 
     private int _update(User user, int id) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET created_at = ? WHERE id = ?";
+        String passwordStatement = "";
+        int i = 3;
+        if (!user.getPassword().equals("")) {
+            passwordStatement = "password = ?,";
+        }
+
+        String statementString = "UPDATE " + getTable() + " SET name = ?, phone = ?, " + passwordStatement + " updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        // Continue
-//        state.setInt(2, id)
-//        statement.setDouble(1, user.getAmount());
+
+        if (!user.getPassword().equals("")) {
+            statement.setString(i++, UpdatableBcrypt.hash(user.getPassword()));
+        }
+
+        LocalDate currentDate = LocalDate.now();
+        statement.setNString(1, user.getName());
+        statement.setString(2, user.getPhone());
+        statement.setDate(i++, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setDouble(i, id);
 
         return statement.executeUpdate();
     }
@@ -125,8 +136,8 @@ public class UserService extends BaseService {
         User user = new User();
         user.setId(resultSet.getInt("id"));
         user.setName(resultSet.getNString("name"));
-        user.setPassword(resultSet.getString("password"));
         user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("password"));
         user.setPhone(resultSet.getString("phone"));
         user.setBirthday(resultSet.getDate("birthday"));
         user.setCreatedAt(resultSet.getDate("created_at"));

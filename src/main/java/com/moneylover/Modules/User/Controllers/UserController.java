@@ -45,10 +45,10 @@ public class UserController {
         return newUser;
     }
 
-    public User update(User user, int id) throws SQLException, NotFoundException {
-        User updatedUser = this.service.update(user, id);
+    public boolean update(User user, int id) throws SQLException {
+        boolean result = this.service.update(user, id);
 
-        return updatedUser;
+        return result;
     }
 
     public boolean delete(int id) throws SQLException {

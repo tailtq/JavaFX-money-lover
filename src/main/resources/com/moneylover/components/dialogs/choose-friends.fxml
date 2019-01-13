@@ -10,7 +10,7 @@
         @../../../../assets/css/content.css,
         @../../../../assets/css/components/dialogs/choose-friends.css
       "
-      fx:controller="com.moneylover.app.controllers.Pages.TransactionController"
+      fx:controller="com.moneylover.app.controllers.Pages.Transaction.TransactionController"
       styleClass="dialog-container">
     <Text styleClass="font--size-20">Add new friend</Text>
     <HBox styleClass="friends__form">

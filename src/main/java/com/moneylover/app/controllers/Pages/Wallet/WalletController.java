@@ -111,7 +111,12 @@ public class WalletController extends PageController {
     }
 
     @FXML
-    public void createWallet(Event e) throws IOException, SQLException {
+    private void listCurrencies() throws IOException {
+        this.currencyController.loadCurrencies();
+    }
+
+    @FXML
+    public void createWallet(Event e) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/wallet-create.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
@@ -120,11 +125,6 @@ public class WalletController extends PageController {
         this.currencyController.handleSelectedCurrencyId(this.selectCurrency);
 
         this.createScreen(parent, "Create Wallet", 500, 115);
-    }
-
-    @FXML
-    private void listCurrencies() throws IOException {
-        this.currencyController.loadCurrencies();
     }
 
     @FXML

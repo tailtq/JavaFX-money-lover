@@ -1,8 +1,11 @@
 package com.moneylover.app.controllers;
 
+import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.User.Entities.User;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.controllers.Pages.*;
+import com.moneylover.app.controllers.Pages.Transaction.TransactionController;
+import com.moneylover.app.controllers.Pages.User.UserController;
 import com.moneylover.app.controllers.Pages.Wallet.WalletController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,11 +21,12 @@ import com.moneylover.app.controllers.Contracts.LoaderInterface;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController extends BaseViewController implements Initializable {
     private User user;
+
+    private com.moneylover.Modules.User.Controllers.UserController userController;
 
     private ObservableList<Wallet> wallets = FXCollections.observableArrayList();
 
@@ -34,7 +38,13 @@ public class MainController extends BaseViewController implements Initializable 
 
     private BooleanProperty changeWallet = new SimpleBooleanProperty(false);
 
+    private BooleanProperty changeUser = new SimpleBooleanProperty(false);
+
     private VBox mainView;
+
+    public MainController() throws SQLException, ClassNotFoundException {
+        this.userController = new com.moneylover.Modules.User.Controllers.UserController();
+    }
 
     public BooleanProperty getChangeScene() {
         return changeScene;
@@ -65,18 +75,18 @@ public class MainController extends BaseViewController implements Initializable 
         }
         this.controller.setWallets(this.wallets);
         this.changeWallet.addListener((observableValue, aBoolean, t1) -> {
-            try {
-                ObservableList<Wallet> updatedWallets = FXCollections.observableArrayList(walletController.listByUser(this.user.getId()));
-                this.controller.setWallets(updatedWallets);
-            } catch (IOException | SQLException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                ObservableList<Wallet> updatedWallets = FXCollections.observableArrayList(walletController.listByUser(this.user.getId()));
+//                this.controller.setWallets(updatedWallets);
+//            } catch (IOException | SQLException e) {
+//                e.printStackTrace();
+//            }
         });
     }
 
     @FXML
     private void pressTransaction(Event e) throws IOException, SQLException, ClassNotFoundException {
-        this.initView(new TransactionController(), (Node) e.getSource());
+        this.initView(new TransactionController(this.changeWallet), (Node) e.getSource());
     }
 
     @FXML
@@ -96,7 +106,8 @@ public class MainController extends BaseViewController implements Initializable 
 
     @FXML
     private void pressUser(Event e) throws IOException, SQLException, ClassNotFoundException {
-        this.initView(new UserController(), (Node) e.getSource());
+        this.listenUserChange();
+        this.initView(new UserController(this.changeWallet, this.changeUser), (Node) e.getSource());
     }
 
     private void initView(LoaderInterface controller, Node button) throws IOException, SQLException, ClassNotFoundException {
@@ -105,6 +116,7 @@ public class MainController extends BaseViewController implements Initializable 
 
         if (notActive) {
             this.mainView = this.controller.loadView();
+            this.controller.setUser(this.user);
             this.setWallets();
             this.setChangeScene(true);
         }
@@ -113,10 +125,24 @@ public class MainController extends BaseViewController implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            this.controller = new WalletController(this.changeScene);
+            this.controller = new TransactionController(this.changeWallet);
             this.mainView = this.controller.loadView();
-        } catch (IOException | SQLException | ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void listenUserChange() {
+        this.changeUser.addListener((observableValue, oldValue, newValue) -> {
+            if (newValue) {
+                try {
+                    this.user = this.userController.getDetail(this.user.getId());
+                    this.controller.setUser(this.user);
+                } catch (SQLException | NotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            this.changeUser.set(false);
+        });
     }
 }

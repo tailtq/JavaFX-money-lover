@@ -1,6 +1,5 @@
 package com.moneylover.app;
 
-import com.moneylover.Modules.User.Entities.User;
 import com.moneylover.app.controllers.Pages.AuthenticationController;
 import javafx.scene.*;
 import javafx.stage.Stage;
@@ -19,8 +18,6 @@ public class Main extends Application {
     private AuthenticationController authenticationController;
 
     private HBox layout = new HBox();
-
-    private User user;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
