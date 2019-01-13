@@ -69,6 +69,7 @@ public class CurrencyService extends BaseService {
     private int _create(Currency currency) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(name, symbol, image, code, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString);
+
         LocalDate currentDate = LocalDate.now();
         statement.setString(1, currency.getName());
         statement.setString(2, currency.getSymbol());

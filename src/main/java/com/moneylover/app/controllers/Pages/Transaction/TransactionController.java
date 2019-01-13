@@ -1,24 +1,24 @@
-package com.moneylover.app.controllers.Pages;
+package com.moneylover.app.controllers.Pages.Transaction;
 
-import com.moneylover.app.controllers.BaseViewController;
 import com.moneylover.app.controllers.Contracts.UseCategoryInterface;
 import com.moneylover.app.controllers.PageController;
+import javafx.beans.property.BooleanProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import com.moneylover.app.controllers.Contracts.LoaderInterface;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
 public class TransactionController extends PageController implements UseCategoryInterface {
+    public TransactionController(BooleanProperty changeWallet) {
+        this.changeWallet = changeWallet;
+    }
+
     @FXML
     private TabPane categoriesTabPane;
 

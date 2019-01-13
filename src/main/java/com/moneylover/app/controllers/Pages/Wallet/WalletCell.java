@@ -2,7 +2,6 @@ package com.moneylover.app.controllers.Pages.Wallet;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.Currency.Entities.Currency;
-import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.controllers.Contracts.DialogInterface;
 import javafx.beans.property.IntegerProperty;
@@ -31,11 +30,9 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
     private IntegerProperty deletedWalletId;
 
-    public IntegerProperty selectedCurrencyId = new SimpleIntegerProperty(0);
-
     private HBox walletCell;
 
-    public WalletCell(ObservableList<Currency> currencies, IntegerProperty updatedWalletId, IntegerProperty deletedWalletId) throws IOException, SQLException, ClassNotFoundException {
+    WalletCell(ObservableList<Currency> currencies, IntegerProperty updatedWalletId, IntegerProperty deletedWalletId) throws IOException, SQLException, ClassNotFoundException {
         this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
         this.currencyController = new CurrencyController(this.selectedCurrencyId, currencies);
         this.updatedWalletId = updatedWalletId;
@@ -48,7 +45,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
     /*========================== Draw ==========================*/
     @FXML
-    public ListView listViewCurrencies;
+    private ListView listViewCurrencies;
 
     @FXML
     private Label labelWalletName;
@@ -63,7 +60,9 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
     private TextField textFieldTransactionAmount;
 
     @FXML
-    public Button selectCurrency;
+    private Button selectCurrency;
+
+    private IntegerProperty selectedCurrencyId = new SimpleIntegerProperty(0);
 
     protected void updateItem(Wallet item, boolean empty) {
         super.updateItem(item, empty);
@@ -88,12 +87,11 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
     @FXML
     private void listCurrencies() throws IOException {
-        this.currencyController.handleSelectedCurrencyId(this.selectCurrency);
         this.currencyController.loadCurrencies();
     }
 
     @FXML
-    public void editWallet() throws SQLException, IOException {
+    private void editWallet() throws SQLException, IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/components/dialogs/wallet-edit.fxml")
         );
@@ -111,7 +109,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
     }
 
     @FXML
-    public void updateWallet(Event event) {
+    private void updateWallet(Event event) {
         String name = this.textFieldTransactionName.getText().trim();
         String amountText = this.textFieldTransactionAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
@@ -150,7 +148,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
     }
 
     @FXML
-    public void closeScene(Event e) {
+    private void closeScene(Event e) {
         Node node = (Node) e.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
