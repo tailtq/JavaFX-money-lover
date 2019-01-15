@@ -1,12 +1,15 @@
 package com.moneylover.app;
 
 import com.github.javafaker.Faker;
+import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Helpers.UpdatableBcrypt;
 import com.moneylover.Modules.Currency.Controllers.CurrencyController;
 import com.moneylover.Modules.Currency.Entities.Currency;
 import com.moneylover.Modules.Time.Controllers.TimeController;
 import com.moneylover.Modules.Time.Entities.Time;
+import com.moneylover.Modules.Type.Controllers.TypeController;
+import com.moneylover.Modules.Type.Entities.Type;
 import com.moneylover.Modules.User.Controllers.UserController;
 import com.moneylover.Modules.User.Entities.User;
 import com.moneylover.Modules.Wallet.Controllers.WalletController;
@@ -14,7 +17,6 @@ import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class FakeData {
@@ -30,23 +32,27 @@ public class FakeData {
 
     private TimeController timeController;
 
+    private TypeController typeController;
+
     public FakeData() throws SQLException, ClassNotFoundException {
         this.faker = new Faker();
         this.currencyController = new CurrencyController();
         this.userController = new UserController();
         this.walletController = new WalletController();
         this.timeController = new TimeController();
+        this.typeController = new TypeController();
     }
 
-    public static void main(String args[]) throws SQLException, NotFoundException, ClassNotFoundException {
+    public static void main(String args[]) throws SQLException, ClassNotFoundException, NotFoundException {
         try {
             fakeData = new FakeData();
-            LocalDate currentDate = LocalDate.now();
-            System.out.println(currentDate.getMonth().getValue());
 //            fakeData.createCurrencies();
 //            fakeData.createUser();
 //            fakeData.createWallets();
 //            fakeData.createTimes();
+//            fakeData.createTypes();
+            fakeData.createCategories();
+//            fakeData.createSubCategories();
         } catch (Exception e) {
             throw e;
         }
@@ -57,21 +63,21 @@ public class FakeData {
         vnd.setName("Việt Nam Đồng");
         vnd.setCode("VND");
         vnd.setSymbol("₫");
-        vnd.setImage("/assets/images/flags/currency_vnd.png");
+        vnd.setIcon("currency__vnd");
         this.currencyController.create(vnd);
 
         Currency usd = new Currency();
         usd.setName("United States Dollar");
         usd.setCode("USD");
         usd.setSymbol("$");
-        usd.setImage("/assets/images/flags/currency_usd.png");
+        usd.setIcon("currency__usd");
         this.currencyController.create(usd);
 
         Currency jpy = new Currency();
         jpy.setName("Yen");
         jpy.setCode("JPY");
         jpy.setSymbol("¥");
-        jpy.setImage("/assets/images/flags/currency_jpy.png");
+        jpy.setIcon("currency__jpy");
         this.currencyController.create(jpy);
     }
 
@@ -132,5 +138,23 @@ public class FakeData {
         }
 
         this.timeController.create(times);
+    }
+
+    public void createTypes() throws NotFoundException, SQLException {
+        ArrayList<Type> types = new ArrayList<>();
+        types.add(new Type(CommonConstants.DEBT_LOAN,"Debt/Loan"));
+        types.add(new Type(CommonConstants.EXPENSE, "Expense"));
+        types.add(new Type(CommonConstants.INCOME, "Income"));
+
+        this.typeController.create(types);
+    }
+
+    public void createCategories() throws SQLException {
+        ArrayList<Type> types = this.typeController.list();
+
+    }
+
+    public void createSubCategories() {
+
     }
 }

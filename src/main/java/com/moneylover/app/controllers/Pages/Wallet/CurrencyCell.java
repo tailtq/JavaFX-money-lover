@@ -45,7 +45,7 @@ public class CurrencyCell extends ListCell<Currency> implements DialogInterface 
         if (empty) {
             setGraphic(null);
         } else {
-            this.currencyCell.getStyleClass().add("currency__" + item.getCode().toLowerCase());
+            this.currencyCell.getStyleClass().add(item.getIcon());
             this.currencyName.setText(item.getName());
             this.currencyCode.setText(item.getCode() + " - " + item.getSymbol());
             setGraphic(this.currencyCell);

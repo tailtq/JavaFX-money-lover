@@ -67,13 +67,13 @@ public class CurrencyService extends BaseService {
     }
 
     private int _create(Currency currency) throws SQLException {
-        String statementString = "INSERT INTO " + getTable() + "(name, symbol, image, code, created_at) VALUES (?, ?, ?, ?, ?)";
+        String statementString = "INSERT INTO " + getTable() + "(name, symbol, icon, code, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString);
 
         LocalDate currentDate = LocalDate.now();
         statement.setString(1, currency.getName());
         statement.setString(2, currency.getSymbol());
-        statement.setString(3, currency.getImage());
+        statement.setString(3, currency.getIcon());
         statement.setString(4, currency.getCode());
         statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
 
@@ -95,7 +95,7 @@ public class CurrencyService extends BaseService {
         Currency currency = new Currency();
         currency.setId(resultSet.getInt("id"));
         currency.setName(resultSet.getNString("name"));
-        currency.setImage(resultSet.getString("image"));
+        currency.setIcon(resultSet.getString("icon"));
         currency.setSymbol(resultSet.getNString("symbol"));
         currency.setCode(resultSet.getNString("code"));
         currency.setCreatedAt(resultSet.getDate("created_at"));

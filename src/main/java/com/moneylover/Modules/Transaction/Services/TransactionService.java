@@ -86,6 +86,20 @@ public class TransactionService extends BaseService {
     @Override
     protected Transaction toObject(ResultSet resultSet) throws SQLException {
         Transaction transaction = new Transaction();
+        transaction.setId(resultSet.getInt("id"));
+        transaction.setWalletId(resultSet.getInt("wallet_id"));
+        transaction.setTimeId(resultSet.getInt("time_id"));
+        transaction.setTypeId(resultSet.getInt("type_id"));
+        transaction.setCategoryId(resultSet.getInt("category_id"));
+        transaction.setSubCategoryId(resultSet.getInt("sub_category_id"));
+        transaction.setTransactedAt(resultSet.getDate("transacted_at"));
+        transaction.setAmount(resultSet.getFloat("amount"));
+        transaction.setLocation(resultSet.getString("location"));
+        transaction.setNote(resultSet.getNString("note"));
+        transaction.setImage(resultSet.getString("image"));
+        transaction.setIsReported(resultSet.getByte("is_reported"));
+        transaction.setCreatedAt(resultSet.getDate("created_at"));
+        transaction.setUpdatedAt(resultSet.getDate("updated_at"));
 
         return transaction;
     }

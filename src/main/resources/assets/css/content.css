@@ -127,3 +127,8 @@
 .date-picker-popup > * > .next-month > .secondary-text {
     -fx-fill: #aaaaaa;
 }
+
+/* ListView */
+.list-view {
+    -fx-selection-bar: rgba(45,184,76,.08);
+}

@@ -9,7 +9,7 @@ public class Currency extends BaseModel {
 
     private String symbol;
 
-    private String image;
+    private String icon;
 
     public static String getTable() {
         return "currencies";
@@ -39,11 +39,11 @@ public class Currency extends BaseModel {
         this.symbol = symbol;
     }
 
-    public String getImage() {
-        return image;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
