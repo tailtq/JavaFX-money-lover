@@ -24,7 +24,7 @@ public class SubCategory extends BaseModel {
     }
 
     public static String getTable() {
-        return "categories";
+        return "sub_categories";
     }
 
     public int getTypeId() {

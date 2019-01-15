@@ -32,6 +32,12 @@ public class TransactionController {
         return newTransaction;
     }
 
+    public boolean create(ArrayList<Transaction> transactions) throws SQLException, NotFoundException {
+        this.service.create(transactions);
+
+        return true;
+    }
+
     public Transaction update(Transaction transaction, int id) throws SQLException, NotFoundException {
         Transaction updatedTransaction = this.service.update(transaction, id);
 
