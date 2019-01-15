@@ -32,39 +32,39 @@
         <Tab>
             <VBox>
                 <VBox styleClass="category">
-                    <fx:include source="../normal-button.fxml" styleClass="image-button, bill" alignment="TOP_LEFT">
+                    <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill" alignment="TOP_LEFT">
                         <text>Button</text>
                     </fx:include>
                     <VBox styleClass="subcategories">
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_electricity" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_electricity" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_gas" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_gas" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_rentals" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_rentals" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_television" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_television" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_internet" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_internet" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_phone" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_phone" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_water" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_water" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
                     </VBox>
                 </VBox>
                 <VBox styleClass="category">
-                    <fx:include source="../normal-button.fxml" styleClass="image-button, education" alignment="TOP_LEFT">
+                    <fx:include source="../normal-button.fxml" styleClass="image-button, i_education" alignment="TOP_LEFT">
                         <text>Button</text>
                     </fx:include>
                     <VBox styleClass="subcategories">
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, education_books" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_education_books" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
                     </VBox>
@@ -74,39 +74,39 @@
         <Tab>
             <VBox>
                 <VBox styleClass="category">
-                    <fx:include source="../normal-button.fxml" styleClass="image-button, bill" alignment="TOP_LEFT">
+                    <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill" alignment="TOP_LEFT">
                         <text>Button</text>
                     </fx:include>
                     <VBox styleClass="subcategories">
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_electricity" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_electricity" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_gas" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_gas" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_rentals" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_rentals" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_television" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_television" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_internet" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_internet" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_phone" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_phone" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, bill_water" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_water" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
                     </VBox>
                 </VBox>
                 <VBox styleClass="category">
-                    <fx:include source="../normal-button.fxml" styleClass="image-button, education" alignment="TOP_LEFT">
+                    <fx:include source="../normal-button.fxml" styleClass="image-button, i_education" alignment="TOP_LEFT">
                         <text>Button</text>
                     </fx:include>
                     <VBox styleClass="subcategories">
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, education_books" alignment="TOP_LEFT">
+                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_education_books" alignment="TOP_LEFT">
                             <text>Button</text>
                         </fx:include>
                     </VBox>

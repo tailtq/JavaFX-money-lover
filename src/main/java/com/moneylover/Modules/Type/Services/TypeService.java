@@ -69,19 +69,21 @@ public class TypeService extends BaseService {
 
     private int _create(Type type) throws SQLException {
         String statementString = "INSERT INTO types(money_type, name, created_at) VALUES (?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         LocalDate currentDate = LocalDate.now();
         statement.setString(1, type.getMoneyType());
         statement.setString(2, type.getName());
         statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return id;
     }
 
     private boolean _create(ArrayList<Type> types) throws SQLException {
         String statementString = "INSERT INTO types(money_type, name, created_at) VALUES (?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement = this.getPreparedStatement(statementString);
         int i = 0;
 
         for (Type type : types) {

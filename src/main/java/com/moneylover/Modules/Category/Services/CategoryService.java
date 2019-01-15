@@ -37,6 +37,19 @@ public class CategoryService extends BaseService {
         return category;
     }
 
+    public Category getDetail(String name) throws SQLException, NotFoundException {
+        ResultSet resultSet = this._getDetailBy("name = '" + name + "'");
+
+        if (!resultSet.next()) {
+            throw new NotFoundException();
+        }
+
+        Category category = this.toObject(resultSet);
+        this.closeStatement();
+
+        return category;
+    }
+
     public Category create(Category category) throws SQLException, NotFoundException {
         int id = this._create(category);
 
@@ -68,28 +81,31 @@ public class CategoryService extends BaseService {
     }
 
     private int _create(Category category) throws SQLException {
-        String statementString = "INSERT INTO categories(type_id, money_type, name, created_at) VALUES (?, ?, ?, ?)";
+        String statementString = "INSERT INTO categories(type_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString);
 
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, category.getTypeId());
-        statement.setString(2, category.getName());
-        statement.setString(2, category.getName());
-        statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setString(2, category.getMoneyType());
+        statement.setString(3, category.getName());
+        statement.setString(4, category.getIcon());
+        statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
 
         return statement.executeUpdate();
     }
 
     private boolean _create(ArrayList<Category> categories) throws SQLException {
-        String statementString = "INSERT INTO categories(type_id, money_type, name, icon, created_at) VALUES (?, ?, ?)";
+        String statementString = "INSERT INTO categories(type_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         int i = 0;
 
         for (Category category : categories) {
             LocalDate currentDate = LocalDate.now();
-            statement.setString(1, category.getMoneyType());
-            statement.setString(2, category.getName());
-            statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            statement.setInt(1, category.getTypeId());
+            statement.setString(2, category.getMoneyType());
+            statement.setString(3, category.getName());
+            statement.setString(4, category.getIcon());
+            statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
             statement.addBatch();
             i++;
             if (i % 1000 == 0 || i == categories.size()) {
@@ -114,6 +130,7 @@ public class CategoryService extends BaseService {
     protected Category toObject(ResultSet resultSet) throws SQLException {
         Category category = new Category();
         category.setId(resultSet.getInt("id"));
+        category.setTypeId(resultSet.getInt("type_id"));
         category.setMoneyType(resultSet.getString("money_type"));
         category.setName(resultSet.getString("name"));
         category.setIcon(resultSet.getString("icon"));

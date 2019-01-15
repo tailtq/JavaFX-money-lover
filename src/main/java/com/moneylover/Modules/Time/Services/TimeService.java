@@ -97,19 +97,20 @@ public class TimeService extends BaseService {
 
     private int _create(Time time) throws SQLException {
         String statementString = "INSERT INTO times(month, year, created_at) VALUES (?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, time.getMonth());
         statement.setInt(2, time.getYear());
         statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return id;
     }
 
     private boolean _create(ArrayList<Time> times) throws SQLException {
         String statementString = "INSERT INTO times(month, year, created_at) VALUES (?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement = this.getPreparedStatement(statementString);
         int i = 0;
 
         for (Time time: times) {

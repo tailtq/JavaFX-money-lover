@@ -1,42 +1,52 @@
-.bill {
+.i_bill {
     -fx-background-image: url("../images/categories/bill.png");
 }
 
-.bill_rentals {
+.i_bill_rentals {
     -fx-background-image: url("../images/categories/bill_rentals.png");
 }
 
-.bill_internet {
+.i_bill_internet {
     -fx-background-image: url("../images/categories/bill_internet.png");
 }
 
-.bill_phone {
+.i_bill_phone {
     -fx-background-image: url("../images/categories/bill_phone.png");
 }
 
-.bill_television {
+.i_bill_television {
     -fx-background-image: url("../images/categories/bill_television.png");
 }
 
-.bill_water {
+.i_bill_water {
     -fx-background-image: url("../images/categories/bill_water.png");
 }
 
-.bill_electricity {
+.i_bill_electricity {
     -fx-background-image: url("../images/categories/bill_electricity.png");
 }
 
-.bill_gas {
+.i_bill_gas {
     -fx-background-image: url("../images/categories/bill_gas.png");
 }
 
-.education {
+.i_education {
     -fx-background-image: url("../images/categories/education.png");
 }
 
-.education_books {
+.i_education_books {
     -fx-background-image: url("../images/categories/education_books.png");
 }
+
+/* DEBT LOAN*/
+.debt {
+
+}
+
+.debt-collection {
+
+}
+
 
 /* FLAGS */
 .currency__usd {

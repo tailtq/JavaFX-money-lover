@@ -4,10 +4,7 @@ import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Currency.Entities.Currency;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -68,16 +65,18 @@ public class CurrencyService extends BaseService {
 
     private int _create(Currency currency) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(name, symbol, icon, code, created_at) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         LocalDate currentDate = LocalDate.now();
         statement.setString(1, currency.getName());
         statement.setString(2, currency.getSymbol());
         statement.setString(3, currency.getIcon());
         statement.setString(4, currency.getCode());
         statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return id;
     }
 
     private int _update(Currency currency, int id) throws SQLException {

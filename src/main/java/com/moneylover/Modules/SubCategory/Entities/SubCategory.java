@@ -15,6 +15,14 @@ public class SubCategory extends BaseModel {
 
     public SubCategory() {}
 
+    public SubCategory(int typeId, int categoryId, String moneyType, String name, String icon) {
+        this.typeId = typeId;
+        this.categoryId = categoryId;
+        this.moneyType = moneyType;
+        this.name = name;
+        this.icon = icon;
+    }
+
     public static String getTable() {
         return "categories";
     }
