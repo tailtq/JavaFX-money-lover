@@ -26,8 +26,8 @@ public class SubCategoryService extends BaseService {
 
     public SubCategory getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
-
-        if (resultSet.wasNull()) {
+        System.out.println(id);
+        if (!resultSet.next()) {
             throw new NotFoundException();
         }
 
@@ -68,27 +68,35 @@ public class SubCategoryService extends BaseService {
     }
 
     private int _create(SubCategory subCategory) throws SQLException {
-        String statementString = "INSERT INTO sub_categories(money_type, name, created_at) VALUES (?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-
+        String statementString = "INSERT INTO sub_categories(type_id, category_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         LocalDate currentDate = LocalDate.now();
-        statement.setString(1, subCategory.getMoneyType());
-        statement.setString(2, subCategory.getName());
-        statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setInt(1, subCategory.getTypeId());
+        statement.setInt(2, subCategory.getCategoryId());
+        statement.setString(3, subCategory.getMoneyType());
+        statement.setString(4, subCategory.getName());
+        statement.setString(5, subCategory.getIcon());
+        statement.setDate(6, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return id;
     }
 
     private boolean _create(ArrayList<SubCategory> subCategories) throws SQLException {
-        String statementString = "INSERT INTO sub_categories(money_type, name, created_at) VALUES (?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        String statementString = "INSERT INTO sub_categories(type_id, category_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement statement = this.getPreparedStatement(statementString);
         int i = 0;
 
         for (SubCategory subCategory : subCategories) {
             LocalDate currentDate = LocalDate.now();
-            statement.setString(1, subCategory.getMoneyType());
-            statement.setString(2, subCategory.getName());
-            statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            System.out.println(subCategory.getTypeId());
+            statement.setInt(1, subCategory.getTypeId());
+            statement.setInt(2, subCategory.getCategoryId());
+            statement.setString(3, subCategory.getMoneyType());
+            statement.setString(4, subCategory.getName());
+            statement.setString(5, subCategory.getIcon());
+            statement.setDate(6, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
             statement.addBatch();
             i++;
             if (i % 1000 == 0 || i == subCategories.size()) {

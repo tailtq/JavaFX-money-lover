@@ -26,6 +26,12 @@ public class CategoryController {
         return category;
     }
 
+    public Category getDetail(String name) throws SQLException, NotFoundException {
+        Category category = this.service.getDetail(name);
+
+        return category;
+    }
+
     public Category create(Category category) throws SQLException, NotFoundException {
         Category newCategory = this.service.create(category);
 

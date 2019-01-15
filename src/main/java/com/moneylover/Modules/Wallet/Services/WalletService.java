@@ -104,7 +104,6 @@ public class WalletService extends BaseService {
     private int _create(Wallet wallet) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(currency_id, name, inflow, outflow, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
-
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, wallet.getCurrencyId());
         statement.setString(2, wallet.getName());
@@ -112,16 +111,10 @@ public class WalletService extends BaseService {
         statement.setFloat(4, wallet.getOutflow());
         statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
         statement.executeUpdate();
-
-        int result = 0;
-        ResultSet resultSet = statement.getGeneratedKeys();
-        while (resultSet.next()) {
-            result = resultSet.getInt(1);
-        }
-
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
 
-        return result;
+        return id;
     }
 
     private boolean _attachUsers(ArrayList<UserWallet> userWallets) throws SQLException {
@@ -145,7 +138,6 @@ public class WalletService extends BaseService {
     private boolean _update(Wallet wallet, int id) throws SQLException {
         String statementString = "UPDATE " + getTable() + " SET currency_id = ?, name = ?, inflow = ?, outflow = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, wallet.getCurrencyId());
         statement.setNString(2, wallet.getName());
@@ -154,7 +146,6 @@ public class WalletService extends BaseService {
         statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
         statement.setInt(6, id);
         statement.executeUpdate();
-
         this.closePreparedStatement();
 
         return true;

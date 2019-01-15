@@ -5,10 +5,7 @@ import com.moneylover.Infrastructure.Helpers.UpdatableBcrypt;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.User.Entities.User;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -97,15 +94,17 @@ public class UserService extends BaseService {
 
     private int _create(User user) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(name, email, password, created_at) VALUES (?, ?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         LocalDate currentDate = LocalDate.now();
         statement.setNString(1, user.getName());
         statement.setString(2, user.getEmail());
         statement.setString(3, UpdatableBcrypt.hash(user.getPassword()));
         statement.setDate(4, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return id;
     }
 
     private int _update(User user, int id) throws SQLException {

@@ -71,6 +71,15 @@ abstract public class BaseService {
         return resultSet;
     }
 
+    protected int getIdAfterCreate(ResultSet resultSet) throws SQLException {
+        int id = 0;
+        while (resultSet.next()) {
+            id = resultSet.getInt(1);
+        }
+
+        return id;
+    }
+
     protected ResultSet _getById(int id) throws SQLException {
         String query = "SELECT * FROM " + getTable() + " WHERE id = " + id;
         statement = getStatement();
