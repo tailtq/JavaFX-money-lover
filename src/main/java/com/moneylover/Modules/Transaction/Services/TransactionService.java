@@ -4,9 +4,9 @@ import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 public class TransactionService extends BaseService {
@@ -43,6 +43,12 @@ public class TransactionService extends BaseService {
         return this.getDetail(id);
     }
 
+    public boolean create(ArrayList<Transaction> transactions) throws SQLException, NotFoundException {
+        this._create(transactions);
+
+        return true;
+    }
+
     public Transaction update(Transaction transaction, int id) throws SQLException, NotFoundException {
         this._update(transaction, id);
 
@@ -66,9 +72,52 @@ public class TransactionService extends BaseService {
 
     private int _create(Transaction transaction) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "() VALUES (?, ?, ?)";
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        LocalDate currentDate = LocalDate.now();
+        statement.setInt(1, transaction.getWalletId());
+        statement.setInt(2, transaction.getTimeId());
+        statement.setInt(3, transaction.getTypeId());
+        statement.setInt(4, transaction.getCategoryId());
+        statement.setInt(5, transaction.getSubCategoryId());
+        statement.setDate(6, Date.valueOf(transaction.getTransactedAt().toString()));
+        statement.setFloat(7, transaction.getAmount());
+        statement.setString(8, transaction.getLocation());
+        statement.setNString(9, transaction.getNote());
+        statement.setString(10, transaction.getImage());
+        statement.setByte(11, transaction.getIsReported());
+        statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
+
+        return id;
+    }
+
+    private int _create(ArrayList<Transaction> transactions) throws SQLException {
+        String statementString = "INSERT INTO " + getTable() + "(wallet_id, time_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_reported, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        // Continue
-//        statement.setDouble(1, transaction.getAmount());
+        int i = 0;
+
+        for (Transaction transaction: transactions) {
+            LocalDate currentDate = LocalDate.now();
+            statement.setInt(1, transaction.getWalletId());
+            statement.setInt(2, transaction.getTimeId());
+            statement.setInt(3, transaction.getTypeId());
+            statement.setInt(4, transaction.getCategoryId());
+            statement.setInt(5, transaction.getSubCategoryId());
+            statement.setDate(6, Date.valueOf(transaction.getTransactedAt().toString()));
+            statement.setFloat(7, transaction.getAmount());
+            statement.setString(8, transaction.getLocation());
+            statement.setNString(9, transaction.getNote());
+            statement.setString(10, transaction.getImage());
+            statement.setByte(11, transaction.getIsReported());
+            statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            statement.addBatch();
+            i++;
+            if (i % 1000 == 0 || i == transactions.size()) {
+                statement.executeBatch(); // Execute every 1000 items.
+            }
+        }
 
         return statement.executeUpdate();
     }

@@ -26,7 +26,7 @@ public class SubCategoryService extends BaseService {
 
     public SubCategory getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
-        System.out.println(id);
+
         if (!resultSet.next()) {
             throw new NotFoundException();
         }

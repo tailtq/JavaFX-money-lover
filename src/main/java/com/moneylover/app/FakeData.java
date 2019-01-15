@@ -12,6 +12,8 @@ import com.moneylover.Modules.SubCategory.Controllers.SubCategoryController;
 import com.moneylover.Modules.SubCategory.Entities.SubCategory;
 import com.moneylover.Modules.Time.Controllers.TimeController;
 import com.moneylover.Modules.Time.Entities.Time;
+import com.moneylover.Modules.Transaction.Controllers.TransactionController;
+import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Type.Controllers.TypeController;
 import com.moneylover.Modules.Type.Entities.Type;
 import com.moneylover.Modules.User.Controllers.UserController;
@@ -21,6 +23,7 @@ import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import javafx.util.Pair;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -43,6 +46,8 @@ public class FakeData {
 
     private SubCategoryController subCategoryController;
 
+    private TransactionController transactionController;
+
     public FakeData() throws SQLException, ClassNotFoundException {
         this.faker = new Faker();
         this.currencyController = new CurrencyController();
@@ -52,6 +57,7 @@ public class FakeData {
         this.typeController = new TypeController();
         this.categoryController = new CategoryController();
         this.subCategoryController = new SubCategoryController();
+        this.transactionController = new TransactionController();
     }
 
     public static void main(String args[]) throws SQLException, ClassNotFoundException, NotFoundException {
@@ -63,7 +69,8 @@ public class FakeData {
 //            fakeData.createTimes();
 //            fakeData.createTypes();
 //            fakeData.createCategories();
-            fakeData.createSubCategories();
+//            fakeData.createSubCategories();
+            fakeData.createTransactions();
         } catch (Exception e) {
             throw e;
         }
@@ -380,5 +387,39 @@ public class FakeData {
         }
 
         this.subCategoryController.create(subCategories);
+    }
+
+    private void createTransactions() throws SQLException, NotFoundException {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        ArrayList<Wallet> wallets = this.walletController.listByUser(1004);
+        ArrayList<Time> times = this.timeController.list();
+        ArrayList<Type> types = this.typeController.list();
+        ArrayList<Category> categories = this.categoryController.list();
+        ArrayList<SubCategory> subCategories = this.subCategoryController.list();
+        int walletsQuantity = wallets.size();
+        int timesQuantity = times.size();
+        int typesQuantity = types.size();
+        int categoriesQuantity = categories.size();
+        int subCategoriesQuantity = subCategories.size();
+
+        for (int i = 0; i < 300; i++) {
+            Transaction transaction = new Transaction();
+            Time time = times.get((int)(Math.random() * (timesQuantity - 1)));
+            transaction.setWalletId(wallets.get((int)(Math.random() * (walletsQuantity - 1))).getId());
+            transaction.setTimeId(time.getId());
+            transaction.setTypeId(types.get((int)(Math.random() * (typesQuantity - 1))).getId());
+            transaction.setCategoryId(categories.get((int)(Math.random() * (categoriesQuantity - 1))).getId());
+            transaction.setSubCategoryId(subCategories.get((int)(Math.random() * (subCategoriesQuantity - 1))).getId());
+            int day = (int)(Math.random() * 25) + 1;
+            transaction.setTransactedAt(Date.valueOf(time.getYear() + "-" + time.getMonth() + "-" + day));
+            transaction.setAmount((float) this.faker.number().randomDouble(1, 1000, 10000000));
+            transaction.setNote("This is note!");
+            transaction.setIsReported((byte) (Math.random()));
+
+            transactions.add(transaction);
+        }
+        System.out.println(transactions.size());
+
+        this.transactionController.create(transactions);
     }
 }

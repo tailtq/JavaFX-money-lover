@@ -25,8 +25,6 @@ public class Transaction extends BaseModel {
 
     private String image;
 
-    private String icon;
-
     private byte isReported;
 
     public static String getTable() {
@@ -111,14 +109,6 @@ public class Transaction extends BaseModel {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
 
     public byte getIsReported() {
