@@ -85,7 +85,7 @@ public class CurrencyController implements DialogInterface {
                     continue;
                 }
                 selectCurrency.setText(currency.getName());
-                classes.add("currency__" + currency.getCode().toLowerCase());
+                classes.add(currency.getIcon());
 
                 return;
             }

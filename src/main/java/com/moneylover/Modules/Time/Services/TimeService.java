@@ -139,11 +139,12 @@ public class TimeService extends BaseService {
 
     @Override
     protected Time toObject(ResultSet resultSet) throws SQLException {
-        Time time = new Time(
-                resultSet.getInt("id"),
-                resultSet.getInt("month"),
-                resultSet.getInt("year")
-        );
+        Time time = new Time();
+        time.setId(resultSet.getInt("id"));
+        time.setMonth(resultSet.getInt("month"));
+        time.setYear(resultSet.getInt("year"));
+        time.setCreatedAt(resultSet.getDate("created_at"));
+        time.setUpdatedAt(resultSet.getDate("updated_at"));
 
         return time;
     }
