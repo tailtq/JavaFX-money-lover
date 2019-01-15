@@ -21,8 +21,6 @@ public class CurrencyController implements DialogInterface {
 
     private IntegerProperty selectedCurrencyId;
 
-    private String className;
-
     CurrencyController(IntegerProperty selectedCurrencyId) throws SQLException, ClassNotFoundException {
         this.selectedCurrencyId = selectedCurrencyId;
         com.moneylover.Modules.Currency.Controllers.CurrencyController currencyController = new com.moneylover.Modules.Currency.Controllers.CurrencyController();

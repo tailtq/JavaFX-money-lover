@@ -71,11 +71,6 @@ public class Main extends Application {
                 }
 
                 nodes.add(mainController.getMainView());
-                try {
-                    mainController.setWallets();
-                } catch (IOException | SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
                 // The difference between oldValue and newValue triggers an event
                 mainController.setChangeScene(false);
             }

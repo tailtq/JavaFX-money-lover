@@ -15,19 +15,25 @@
     -fx-spacing: 10;
 }
 
+/*.transactions__times .scroll-bar:vertical {*/
+    /*-fx-scale-x: 0;*/
+/*}*/
+
 .transactions {
     -fx-vgap: 8;
     -fx-border-color: rgba(0,0,0,.12);
-    -fx-border-width: 5 0 0 0;
+    -fx-border-width: 0 0 5 0;
     -fx-padding: 5 0 5 0;
 }
 
-.transactions Line {
-    -fx-stroke: red
+.transaction__day {
+    -fx-padding: 0 0 5px;
 }
 
 .transaction__time__dd {
     -fx-font-size: 24px;
+    -fx-pref-width: 50;
+    -fx-pref-height: 40;
 }
 
 .transaction__content__type.subcategory,
@@ -45,10 +51,7 @@
 
 .transaction__content, .transaction__time {
     -fx-spacing: 7;
-}
-
-.transaction__content {
-    -fx-padding: 0 10px;
+    -fx-padding: 0 5px;
 }
 
 .transaction__content__image {

@@ -14,40 +14,12 @@ public class TransactionService extends BaseService {
         super();
     }
 
-    @Override
-    protected Object toObject(ResultSet resultSet) throws SQLException {
-        return null;
-    }
-
     protected String getTable() {
         return Transaction.getTable();
     }
 
-    public ArrayList<Transaction> list(int timeId) throws SQLException {
-        ArrayList<Transaction> transactions = this._list(timeId);
-
-        return transactions;
-    }
-
-    public Transaction create(Transaction transaction) throws SQLException, NotFoundException {
-        int id = this._create(transaction);
-
-        return this.getDetail(id);
-    }
-
-    public Transaction update(Transaction transaction, int id) throws SQLException, NotFoundException {
-        this._update(transaction, id);
-
-        return this.getDetail(id);
-    }
-
-    private ArrayList<Transaction> _list(int timeId) throws SQLException {
-        ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-        ResultSet resultSet = this.get("time_id = " + timeId);
-
-        while (resultSet.next()) {
-            // Continue
-        }
+    public ArrayList<Transaction> list(int month) throws SQLException {
+        ArrayList<Transaction> transactions = this._list(month);
 
         return transactions;
     }
@@ -63,6 +35,33 @@ public class TransactionService extends BaseService {
         // Continue
 
         return transaction;
+    }
+
+    public Transaction create(Transaction transaction) throws SQLException, NotFoundException {
+        int id = this._create(transaction);
+
+        return this.getDetail(id);
+    }
+
+    public Transaction update(Transaction transaction, int id) throws SQLException, NotFoundException {
+        this._update(transaction, id);
+
+        return this.getDetail(id);
+    }
+
+    /*====================================================================================*/
+    private ArrayList<Transaction> _list(int month) throws SQLException {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        ResultSet resultSet = this.getByJoin(
+                "INNER JOIN times ON transactions.time_id = times.id",
+                "month = " + month
+        );
+
+        while (resultSet.next()) {
+            transactions.add(this.toObject(resultSet));
+        }
+
+        return transactions;
     }
 
     private int _create(Transaction transaction) throws SQLException {
@@ -82,5 +81,12 @@ public class TransactionService extends BaseService {
 //        statement.setDouble(1, transaction.getAmount());
 
         return statement.executeUpdate();
+    }
+
+    @Override
+    protected Transaction toObject(ResultSet resultSet) throws SQLException {
+        Transaction transaction = new Transaction();
+
+        return transaction;
     }
 }

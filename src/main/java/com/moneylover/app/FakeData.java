@@ -5,6 +5,8 @@ import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Helpers.UpdatableBcrypt;
 import com.moneylover.Modules.Currency.Controllers.CurrencyController;
 import com.moneylover.Modules.Currency.Entities.Currency;
+import com.moneylover.Modules.Time.Controllers.TimeController;
+import com.moneylover.Modules.Time.Entities.Time;
 import com.moneylover.Modules.User.Controllers.UserController;
 import com.moneylover.Modules.User.Entities.User;
 import com.moneylover.Modules.Wallet.Controllers.WalletController;
@@ -12,8 +14,8 @@ import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class FakeData {
     private static FakeData fakeData;
@@ -26,19 +28,25 @@ public class FakeData {
 
     private WalletController walletController;
 
+    private TimeController timeController;
+
     public FakeData() throws SQLException, ClassNotFoundException {
         this.faker = new Faker();
         this.currencyController = new CurrencyController();
         this.userController = new UserController();
         this.walletController = new WalletController();
+        this.timeController = new TimeController();
     }
 
     public static void main(String args[]) throws SQLException, NotFoundException, ClassNotFoundException {
         try {
             fakeData = new FakeData();
-//        fakeData.createCurrencies();
+            LocalDate currentDate = LocalDate.now();
+            System.out.println(currentDate.getMonth().getValue());
+//            fakeData.createCurrencies();
 //            fakeData.createUser();
-            fakeData.createWallets();
+//            fakeData.createWallets();
+//            fakeData.createTimes();
         } catch (Exception e) {
             throw e;
         }
@@ -113,5 +121,16 @@ public class FakeData {
             userWallets.add(userWallet);
         }
         this.walletController.attachUsers(userWallets);
+    }
+
+    public void createTimes() throws NotFoundException, SQLException {
+        ArrayList<Time> times = new ArrayList<>();
+        for (int y = 2018; y <= 2019; y++) {
+            for (int m = 1; m <= 12; m++) {
+                times.add(new Time(m, y));
+            }
+        }
+
+        this.timeController.create(times);
     }
 }

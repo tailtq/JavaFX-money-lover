@@ -40,7 +40,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
         FXMLLoader walletCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallet-cell.fxml"));
         walletCellLoader.setController(this);
-        walletCell = walletCellLoader.load();
+        this.walletCell = walletCellLoader.load();
     }
 
     /*========================== Draw ==========================*/
@@ -80,7 +80,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
             this.labelWalletName.setText(item.getName());
             this.labelWalletAmount.setText(amountText);
-            setGraphic(walletCell);
+            setGraphic(this.walletCell);
         }
         this.wallet = item;
     }

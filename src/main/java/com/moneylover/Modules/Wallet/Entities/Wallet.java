@@ -3,8 +3,6 @@ package com.moneylover.Modules.Wallet.Entities;
 import com.moneylover.Infrastructure.Models.BaseModel;
 
 public class Wallet extends BaseModel {
-    private int id;
-
     private int currencyId;
 
     private String name;
@@ -29,14 +27,6 @@ public class Wallet extends BaseModel {
 
     public static String getTable() {
         return "wallets";
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getCurrencyId() {

@@ -3,11 +3,11 @@ package com.moneylover.Infrastructure.Models;
 import java.util.Date;
 
 abstract public class BaseModel {
-    private int id;
+    protected int id;
 
-    private Date createdAt;
+    protected Date createdAt;
 
-    private Date updatedAt;
+    protected Date updatedAt;
 
     public int getId() {
         return id;
