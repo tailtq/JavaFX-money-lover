@@ -87,9 +87,9 @@ public class WalletService extends BaseService {
         return wallets;
     }
 
-    private ArrayList<Wallet> _list(int id) throws SQLException {
+    private ArrayList<Wallet> _list(int userId) throws SQLException {
         ArrayList<Wallet> wallets = new ArrayList<>();
-        String query = "SELECT * FROM " + getTable() + " INNER JOIN user_wallet ON wallets.id = user_wallet.wallet_id WHERE user_id = " + id + " ORDER BY created_at DESC";
+        String query = "SELECT * FROM " + getTable() + " INNER JOIN user_wallet ON wallets.id = user_wallet.wallet_id WHERE user_id = " + userId + " ORDER BY created_at DESC";
         statement = getStatement();
         ResultSet resultSet = statement.executeQuery(query);
 

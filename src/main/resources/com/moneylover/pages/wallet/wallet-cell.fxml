@@ -8,8 +8,8 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
-    <ImageView fitHeight="35"
-               fitWidth="35"
+    <ImageView fitHeight="32"
+               fitWidth="32"
                styleClass="transaction__content__image">
         <Image url="@../../../../assets/images/header-wallet.png"
                backgroundLoading="true"/>

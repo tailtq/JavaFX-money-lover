@@ -54,17 +54,17 @@ abstract public class BaseService {
     }
 
     protected ResultSet get(String... args) throws SQLException {
-        String condition = "";
-
-        if (args.length > 0) {
-            condition = "WHERE ";
-
-            for (String arg: args) {
-                condition += arg + " ";
-            }
-        }
-
+        String condition = this.handleConditions(args);
         String query = "SELECT * FROM " + getTable() + " " + condition + " ORDER BY created_at DESC";
+        statement = getStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        return resultSet;
+    }
+
+    protected ResultSet getByJoin(String join, String... args) throws SQLException {
+        String condition = this.handleConditions(args);
+        String query = "SELECT * FROM " + getTable() + " " + join + " " + condition + " ORDER BY created_at DESC";
         statement = getStatement();
         ResultSet resultSet = statement.executeQuery(query);
 
@@ -77,6 +77,14 @@ abstract public class BaseService {
         ResultSet resultSet = statement.executeQuery(query);
 
         return resultSet;
+    }
+
+    protected ResultSet _getDetailBy(String... args) throws SQLException {
+        String condition = this.handleConditions(args);
+        String query = "SELECT TOP 1 * FROM " + getTable() + condition;
+        statement = getStatement();
+
+        return statement.executeQuery(query);
     }
 
     protected boolean deleteBy(String table, String conditions) throws SQLException {
@@ -97,5 +105,24 @@ abstract public class BaseService {
         closeStatement();
 
         return result;
+    }
+
+    private String handleConditions(String[] conditions) {
+        String condition = "";
+
+        if (conditions.length > 0) {
+            condition = " WHERE ";
+            int quantity = conditions.length;
+
+            for (int i = 0; i < quantity; i++) {
+                condition += conditions[i];
+
+                if (i != quantity - 1) {
+                    condition += " AND ";
+                }
+            }
+        }
+
+        return condition;
     }
 }

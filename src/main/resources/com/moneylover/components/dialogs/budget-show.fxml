@@ -38,7 +38,7 @@
             </yAxis>
         </AreaChart>
 
-        <VBox styleClass="transaction__pane" fx:id="transactionContent" alignment="CENTER">
+        <VBox styleClass="transaction__pane" alignment="CENTER">
             <GridPane styleClass="transaction__statistic, budget__statistic">
                 <VBox styleClass="transaction__time"
                       GridPane.columnIndex="0" GridPane.rowIndex="0">

@@ -16,7 +16,7 @@
       styleClass="report--padding-30, report--background-white" alignment="TOP_CENTER">
     <VBox styleClass="dialog-container" alignment="TOP_CENTER">
         <PieChart fx:id="pieChartDetail" legendVisible="false"/>
-        <VBox styleClass="transaction__pane" fx:id="transactionContent" alignment="CENTER">
+        <VBox styleClass="transaction__pane" alignment="CENTER">
             <VBox styleClass="transactions__times">
                 <GridPane styleClass="transactions">
                     <ImageView fitHeight="40"

@@ -32,8 +32,6 @@ public class MainController extends BaseViewController implements Initializable 
 
     private LoaderInterface controller;
 
-    private com.moneylover.Modules.Wallet.Controllers.WalletController walletController;
-
     private BooleanProperty changeScene = new SimpleBooleanProperty(false);
 
     private BooleanProperty changeWallet = new SimpleBooleanProperty(false);
@@ -70,7 +68,7 @@ public class MainController extends BaseViewController implements Initializable 
 
     public void setWallets() throws IOException, SQLException, ClassNotFoundException {
         if (this.wallets.isEmpty()) {
-            this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
+            com.moneylover.Modules.Wallet.Controllers.WalletController walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
             this.wallets.addAll(walletController.listByUser(this.user.getId()));
         }
         this.controller.setWallets(this.wallets);
@@ -85,32 +83,32 @@ public class MainController extends BaseViewController implements Initializable 
     }
 
     @FXML
-    private void pressTransaction(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressTransaction(Event e) throws IOException, SQLException, ClassNotFoundException, NotFoundException {
         this.initView(new TransactionController(this.changeWallet), (Node) e.getSource());
     }
 
     @FXML
-    private void pressReport(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressReport(Event e) throws IOException, SQLException, ClassNotFoundException, NotFoundException {
         this.initView(new ReportController(), (Node) e.getSource());
     }
 
     @FXML
-    private void pressBudget(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressBudget(Event e) throws IOException, SQLException, ClassNotFoundException, NotFoundException {
         this.initView(new BudgetController(), (Node) e.getSource());
     }
 
     @FXML
-    private void pressWallet(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressWallet(Event e) throws IOException, SQLException, ClassNotFoundException, NotFoundException {
         this.initView(new WalletController(this.changeWallet), (Node) e.getSource());
     }
 
     @FXML
-    private void pressUser(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressUser(Event e) throws IOException, SQLException, ClassNotFoundException, NotFoundException {
         this.listenUserChange();
         this.initView(new UserController(this.changeWallet, this.changeUser), (Node) e.getSource());
     }
 
-    private void initView(LoaderInterface controller, Node button) throws IOException, SQLException, ClassNotFoundException {
+    private void initView(LoaderInterface controller, Node button) throws IOException, SQLException, ClassNotFoundException, NotFoundException {
         this.controller = controller;
         boolean notActive = this.activeButton(button);
 
@@ -127,7 +125,7 @@ public class MainController extends BaseViewController implements Initializable 
         try {
             this.controller = new TransactionController(this.changeWallet);
             this.mainView = this.controller.loadView();
-        } catch (IOException e) {
+        } catch (IOException | SQLException | ClassNotFoundException | NotFoundException e) {
             e.printStackTrace();
         }
     }

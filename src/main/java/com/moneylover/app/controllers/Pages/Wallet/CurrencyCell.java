@@ -22,14 +22,14 @@ public class CurrencyCell extends ListCell<Currency> implements DialogInterface 
 
     private IntegerProperty selectedCurrencyId;
 
-    public CurrencyCell(IntegerProperty selectedCurrencyId) throws IOException {
+    CurrencyCell(IntegerProperty selectedCurrencyId) throws IOException {
         this.selectedCurrencyId = selectedCurrencyId;
 
         FXMLLoader currencyCellLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/components/dialogs/choose-currency/choose-currency-cell.fxml")
         );
         currencyCellLoader.setController(this);
-        currencyCell = currencyCellLoader.load();
+        this.currencyCell = currencyCellLoader.load();
     }
 
     /*========================== Draw ==========================*/
@@ -48,7 +48,7 @@ public class CurrencyCell extends ListCell<Currency> implements DialogInterface 
             this.currencyCell.getStyleClass().add("currency__" + item.getCode().toLowerCase());
             this.currencyName.setText(item.getName());
             this.currencyCode.setText(item.getCode() + " - " + item.getSymbol());
-            setGraphic(currencyCell);
+            setGraphic(this.currencyCell);
         }
         this.currency = item;
     }
