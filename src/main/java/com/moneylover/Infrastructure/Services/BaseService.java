@@ -55,16 +55,16 @@ abstract public class BaseService {
 
     protected ResultSet get(String... args) throws SQLException {
         String condition = this.handleConditions(args);
-        String query = "SELECT * FROM " + getTable() + " " + condition + " ORDER BY created_at DESC";
+        String query = "SELECT * FROM " + getTable() + condition + " ORDER BY created_at DESC";
         statement = getStatement();
         ResultSet resultSet = statement.executeQuery(query);
 
         return resultSet;
     }
 
-    protected ResultSet getByJoin(String join, String... args) throws SQLException {
+    protected ResultSet getByJoin(String select, String join, String... args) throws SQLException {
         String condition = this.handleConditions(args);
-        String query = "SELECT * FROM " + getTable() + " " + join + " " + condition + " ORDER BY created_at DESC";
+        String query = "SELECT " + select + " FROM " + getTable() + " " + join + condition + " ORDER BY created_at DESC";
         statement = getStatement();
         ResultSet resultSet = statement.executeQuery(query);
 

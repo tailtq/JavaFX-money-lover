@@ -105,7 +105,7 @@ public class WalletController extends PageController {
     }
 
     @Override
-    public void setWallets(ObservableList<Wallet> wallets) {
+    public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
         this.setListViewWallets();
     }

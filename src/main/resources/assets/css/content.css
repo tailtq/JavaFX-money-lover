@@ -132,3 +132,17 @@
 .list-view {
     -fx-selection-bar: rgba(45,184,76,.08);
 }
+
+/* Transaction */
+.wallet__select-btn {
+    -fx-background-color: linear-gradient(to bottom right, #2db84c, #4af597);
+    -fx-font-size: 11px;
+}
+
+.wallet__select-btn .menu-button {
+    -fx-opacity: 0.9;
+}
+
+.wallet__select-btn .menu-button:hover {
+    -fx-opacity: 1;
+}

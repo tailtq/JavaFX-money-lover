@@ -70,7 +70,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
             setGraphic(null);
         } else {
             float amount = item.getInflow() - item.getOutflow();
-            String amountText = Float.toString(amount);
+            String amountText = String.format("%.1f", amount) + " " + item.getMoneySymbol();
             if (amount > 0) {
                 this.labelWalletAmount.getStyleClass().add("success-color");
                 amountText = "+" + amountText;
@@ -103,7 +103,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
         this.selectedCurrencyId.set(this.wallet.getCurrencyId());
         this.textFieldTransactionName.setText(this.wallet.getName());
-        this.textFieldTransactionAmount.setText(Float.toString(this.wallet.getInflow() - this.wallet.getOutflow()));
+        this.textFieldTransactionAmount.setText(String.format("%.1f", this.wallet.getInflow() - this.wallet.getOutflow()));
 
         this.createScreen(parent, "Edit Wallet", 500, 115);
     }

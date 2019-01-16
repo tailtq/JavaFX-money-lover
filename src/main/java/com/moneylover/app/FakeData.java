@@ -248,7 +248,7 @@ public class FakeData {
         billSubCategories.add(new Pair<>("Rentals", bill.getIcon() + "_rentals"));
         billSubCategories.add(new Pair<>("Television", bill.getIcon() + "_television"));
         billSubCategories.add(new Pair<>("Water", bill.getIcon() + "_water"));
-        System.out.println(bill.getTypeId());
+
         for (Pair<String, String> pair: billSubCategories) {
             subCategories.add(new SubCategory(
                     bill.getTypeId(),
@@ -418,7 +418,6 @@ public class FakeData {
 
             transactions.add(transaction);
         }
-        System.out.println(transactions.size());
 
         this.transactionController.create(transactions);
     }

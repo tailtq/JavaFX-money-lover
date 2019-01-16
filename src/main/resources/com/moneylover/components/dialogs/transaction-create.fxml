@@ -49,10 +49,10 @@
         <TextField styleClass="transaction__create-form__select"/>
     </VBox>
 
-    <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
-        <Text>With</Text>
-        <Button text="Friends" styleClass="transaction__create-form__select" onAction="#showFriendDialog"/>
-    </VBox>
+    <!--<VBox GridPane.columnIndex="0" GridPane.rowIndex="2">-->
+        <!--<Text>With</Text>-->
+        <!--<Button text="Friends" styleClass="transaction__create-form__select" onAction="#showFriendDialog"/>-->
+    <!--</VBox>-->
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="2">
         <Text/>

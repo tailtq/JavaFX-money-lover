@@ -14,8 +14,8 @@ public class TransactionController {
         service = new TransactionService();
     }
 
-    public ArrayList<Transaction> list(int month) throws SQLException {
-        ArrayList<Transaction> transactions = this.service.list(month);
+    public ArrayList<Transaction> list(int walletId, int month, int year, char operator) throws SQLException {
+        ArrayList<Transaction> transactions = this.service.list(walletId, month, year, operator);
 
         return transactions;
     }

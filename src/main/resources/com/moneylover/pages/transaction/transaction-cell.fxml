@@ -2,26 +2,47 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml">
     <ImageView fitHeight="40"
                fitWidth="40"
-               styleClass="transaction__content__image">
-        <Image url="@../../../../assets/images/categories/debt.png"/>
-    </ImageView>
+               fx:id="imageTransactionCategory"
+               styleClass="transaction__content__image"/>
     <VBox styleClass="transaction__content">
-        <Label text="Thursday"
+        <Label text="Thursday" fx:id="labelTransactionCategoryName"
                styleClass="transaction__content__type, text-bold, category"/>
-        <Label text="December 2018"
+        <Label text="December 2018" fx:id="labelTransactionNote"
                styleClass="transaction__content__note, gray-color"/>
     </VBox>
     <Pane HBox.hgrow="ALWAYS"></Pane>
-    <VBox alignment="CENTER_RIGHT">
-        <Label text="+2,960,000.00 ₫" styleClass="success-color"/>
-    </VBox>
+    <HBox alignment="CENTER_RIGHT" styleClass="transaction__amount">
+        <Label text="+2,960,000.00 ₫"
+               styleClass="success-color"/>
+        <MenuButton xmlns:fx="http://javafx.com/fxml"
+                    mnemonicParsing="false"
+                    styleClass="wallet__select-btn, white-color"
+                    text="Options">
+            <items>
+                <MenuItem styleClass="white-color, warning-bg-color">
+                    <text>Edit</text>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
+                    </graphic>
+                </MenuItem>
+                <MenuItem styleClass="white-color, danger-bg-color">
+                    <text>Delete</text>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+                    </graphic>
+                </MenuItem>
+            </items>
+        </MenuButton>
+    </HBox>
 </HBox>

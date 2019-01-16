@@ -3,10 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.ScrollPane?>
 
 <?import javafx.scene.control.ListView?>
 <VBox xmlns="http://javafx.com/javafx"
@@ -34,18 +31,21 @@
             <VBox styleClass="container__content">
                 <HBox styleClass="tab-button-group" alignment="TOP_CENTER">
                     <fx:include source="../../components/tag-button.fxml"
-                                fx:id="leftTime"
+                                fx:id="leftTimeRange"
+                                userData="-1"
                                 onAction="#changeTime">
                         <text>LAST MONTH</text>
                     </fx:include>
                     <fx:include source="../../components/tag-button.fxml"
-                                fx:id="middleTime"
+                                fx:id="middleTimeRange"
+                                userData="0"
                                 onAction="#changeTime"
                                 styleClass="active">
                         <text>THIS MONTH</text>
                     </fx:include>
                     <fx:include source="../../components/tag-button.fxml"
-                                fx:id="rightTime"
+                                fx:id="rightTimeRange"
+                                userData="1"
                                 onAction="#changeTime">
                         <text>FUTURE</text>
                     </fx:include>

@@ -23,7 +23,7 @@
                                fitWidth="40"
                                styleClass="transaction__content__image"
                                GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Image url="@../../../../assets/images/categories/debt.png"
+                        <Image url="@../../../../assets/images/categories/i_debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
                     <Label text="Thursday"
@@ -42,7 +42,7 @@
                                fitWidth="40"
                                styleClass="transaction__content__image"
                                GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Image url="@../../../../assets/images/categories/debt.png"
+                        <Image url="@../../../../assets/images/categories/i_debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
                     <Label text="Thursday"

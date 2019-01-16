@@ -87,7 +87,7 @@
                                                fitWidth="40"
                                                styleClass="transaction__content__image"
                                                GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                        <Image url="@../../../../assets/images/categories/debt.png"
+                                        <Image url="@../../../../assets/images/categories/i_debt.png"
                                                backgroundLoading="true"/>
                                     </ImageView>
                                     <Button styleClass="button--bg-radius-50, success-bg-color" onAction="#showBudget">
@@ -168,7 +168,7 @@
                                                fitWidth="40"
                                                styleClass="transaction__content__image"
                                                GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                        <Image url="@../../../../assets/images/categories/debt.png"
+                                        <Image url="@../../../../assets/images/categories/i_debt.png"
                                                backgroundLoading="true"/>
                                     </ImageView>
                                     <Button styleClass="button--bg-radius-50, success-bg-color">
@@ -215,7 +215,7 @@
                                                fitWidth="40"
                                                styleClass="transaction__content__image"
                                                GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                        <Image url="@../../../../assets/images/categories/debt.png"
+                                        <Image url="@../../../../assets/images/categories/i_debt.png"
                                                backgroundLoading="true"/>
                                     </ImageView>
                                     <Button styleClass="button--bg-radius-50, success-bg-color">
@@ -300,7 +300,7 @@
                                                fitWidth="40"
                                                styleClass="transaction__content__image"
                                                GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                        <Image url="@../../../../assets/images/categories/debt.png"
+                                        <Image url="@../../../../assets/images/categories/i_debt.png"
                                                backgroundLoading="true"/>
                                     </ImageView>
                                     <Button styleClass="button--bg-radius-50, success-bg-color">

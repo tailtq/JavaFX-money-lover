@@ -12,6 +12,8 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
+
 abstract public class PageController extends BaseViewController implements LoaderInterface {
     protected BooleanProperty changeWallet;
 
@@ -28,7 +30,7 @@ abstract public class PageController extends BaseViewController implements Loade
     protected MenuButton dropdownWallets;
 
     @Override
-    public void setWallets(ObservableList<Wallet> wallets) {
+    public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         this.wallets = wallets;
         this.loadHeaderWallets();
     }
