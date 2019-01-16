@@ -10,24 +10,27 @@
 
 <VBox styleClass="transactions" xmlns:fx="http://javafx.com/fxml">
     <HBox styleClass="transaction__day">
-        <Label text="27" styleClass="transaction__time__dd" alignment="CENTER"/>
+        <Label text="27" fx:id="labelTransactionDayOfMonth"
+               styleClass="transaction__time__dd" alignment="CENTER"/>
         <VBox styleClass="transaction__time">
-            <Label text="Thursday" styleClass="gray-color, text-bold"/>
-            <Label text="December 2018" styleClass="transaction__time__mmyyyy"/>
+            <Label text="Thursday" fx:id="labelTransactionDayOfWeek"
+                   styleClass="gray-color, text-bold"/>
+            <Label text="December 2018" fx:id="labelTransactionMonth"
+                   styleClass="transaction__time__mmyyyy"/>
         </VBox>
         <Pane HBox.hgrow="ALWAYS"></Pane>
         <VBox alignment="CENTER_RIGHT">
-            <Label text="-2,960,000.00 ₫" styleClass="black-color, text-bold"/>
+            <Label text="-2,960,000.00 ₫" fx:id="labelTransactionAmount"
+                   styleClass="black-color, text-bold"/>
         </VBox>
     </HBox>
 
     <ListView fx:id="listViewTransactions">
-
         <HBox>
             <ImageView fitHeight="40"
                        fitWidth="40"
                        styleClass="transaction__content__image">
-                <Image url="@../../../../assets/images/categories/debt.png"
+                <Image url="@../../../../assets/images/categories/i_debt.png"
                        backgroundLoading="true"/>
             </ImageView>
             <VBox styleClass="transaction__content">

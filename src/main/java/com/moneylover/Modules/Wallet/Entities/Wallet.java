@@ -11,6 +11,8 @@ public class Wallet extends BaseModel {
 
     private float outflow;
 
+    private String moneySymbol;
+
     public Wallet() {}
 
     public Wallet(int currencyId, String name, float amount) {
@@ -59,5 +61,13 @@ public class Wallet extends BaseModel {
 
     public void setOutflow(float outflow) {
         this.outflow = outflow;
+    }
+
+    public String getMoneySymbol() {
+        return moneySymbol;
+    }
+
+    public void setMoneySymbol(String moneySymbol) {
+        this.moneySymbol = moneySymbol;
     }
 }

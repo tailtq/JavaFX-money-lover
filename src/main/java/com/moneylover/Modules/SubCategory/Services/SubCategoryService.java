@@ -90,7 +90,6 @@ public class SubCategoryService extends BaseService {
 
         for (SubCategory subCategory : subCategories) {
             LocalDate currentDate = LocalDate.now();
-            System.out.println(subCategory.getTypeId());
             statement.setInt(1, subCategory.getTypeId());
             statement.setInt(2, subCategory.getCategoryId());
             statement.setString(3, subCategory.getMoneyType());

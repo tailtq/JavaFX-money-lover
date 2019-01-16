@@ -18,8 +18,8 @@ public class TransactionService extends BaseService {
         return Transaction.getTable();
     }
 
-    public ArrayList<Transaction> list(int month) throws SQLException {
-        ArrayList<Transaction> transactions = this._list(month);
+    public ArrayList<Transaction> list(int walletId, int month, int year, char operator) throws SQLException {
+        ArrayList<Transaction> transactions = this._list(walletId, month, year, operator);
 
         return transactions;
     }
@@ -56,11 +56,18 @@ public class TransactionService extends BaseService {
     }
 
     /*====================================================================================*/
-    private ArrayList<Transaction> _list(int month) throws SQLException {
+    private ArrayList<Transaction> _list(int walledId, int month, int year, char operator) throws SQLException {
         ArrayList<Transaction> transactions = new ArrayList<>();
         ResultSet resultSet = this.getByJoin(
-                "INNER JOIN times ON transactions.time_id = times.id",
-                "month = " + month
+                "transactions.*, " +
+                        "categories.name as category_name, categories.icon as category_icon, " +
+                        "sub_categories.name as sub_category_name, sub_categories.icon as sub_category_icon",
+                "INNER JOIN times ON transactions.time_id = times.id " +
+                        "INNER JOIN categories ON transactions.category_id = categories.id " +
+                        "INNER JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
+                "wallet_id = " + walledId,
+                "month " + operator + " " + month,
+                "year " + operator + " " + year
         );
 
         while (resultSet.next()) {
@@ -149,6 +156,10 @@ public class TransactionService extends BaseService {
         transaction.setIsReported(resultSet.getByte("is_reported"));
         transaction.setCreatedAt(resultSet.getDate("created_at"));
         transaction.setUpdatedAt(resultSet.getDate("updated_at"));
+        transaction.setCategoryName(resultSet.getString("category_name"));
+        transaction.setCategoryIcon(resultSet.getString("category_icon"));
+        transaction.setSubCategoryName(resultSet.getString("sub_category_name"));
+        transaction.setSubCategoryIcon(resultSet.getString("sub_category_icon"));
 
         return transaction;
     }

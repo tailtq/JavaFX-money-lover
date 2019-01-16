@@ -78,24 +78,34 @@ public class WalletService extends BaseService {
 
     private ArrayList<Wallet> _list() throws SQLException {
         ArrayList<Wallet> wallets = new ArrayList<>();
-        ResultSet resultSet = this.get();
+        ResultSet resultSet = this.getByJoin(
+                "wallets.*, currencies.symbol as money_symbol",
+                "INNER JOIN user_wallet ON wallets.id = user_wallet.wallet_id " +
+                        "INNER JOIN currencies ON wallets.currency_id = currencies.id"
+        );
 
         while (resultSet.next()) {
             wallets.add(this.toObject(resultSet));
         }
+
+        this.closeStatement();
 
         return wallets;
     }
 
     private ArrayList<Wallet> _list(int userId) throws SQLException {
         ArrayList<Wallet> wallets = new ArrayList<>();
-        String query = "SELECT * FROM " + getTable() + " INNER JOIN user_wallet ON wallets.id = user_wallet.wallet_id WHERE user_id = " + userId + " ORDER BY created_at DESC";
-        statement = getStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+        ResultSet resultSet = this.getByJoin(
+                "wallets.*, currencies.symbol as money_symbol",
+                "INNER JOIN user_wallet ON wallets.id = user_wallet.wallet_id " +
+                        "INNER JOIN currencies ON wallets.currency_id = currencies.id",
+                "user_id = " + userId
+        );
 
         while (resultSet.next()) {
             wallets.add(this.toObject(resultSet));
         }
+
         this.closeStatement();
 
         return wallets;
@@ -161,6 +171,7 @@ public class WalletService extends BaseService {
         wallet.setOutflow(resultSet.getFloat("outflow"));
         wallet.setCreatedAt(resultSet.getDate("created_at"));
         wallet.setUpdatedAt(resultSet.getDate("updated_at"));
+        wallet.setMoneySymbol(resultSet.getNString("money_symbol"));
 
         return wallet;
     }
