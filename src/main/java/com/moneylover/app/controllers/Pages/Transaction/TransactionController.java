@@ -105,13 +105,13 @@ public class TransactionController extends PageController implements UseCategory
 
     /*========================== Draw ==========================*/
     @FXML
-    private Button leftTimeRange, middleTimeRange, rightTimeRange;
+    private Button leftTimeRange, middleTimeRange, rightTimeRange, selectCategory;
 
     @FXML
     private ListView transactionDays;
 
     @FXML
-    private MenuButton menuButtonWalletChoose;
+    private MenuButton selectWallet;
 
     @FXML
     private TextField textFieldTransactionAmount, textFieldNote;
@@ -245,12 +245,14 @@ public class TransactionController extends PageController implements UseCategory
     }
 
     @FXML
-    private void createTransaction(Event e) throws IOException {
+    private void createTransaction() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
         this.loadWallets();
+        this.categoryController.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
+        this.categoryController.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
         this.datePickerTransactedAt.setValue(LocalDate.now());
         this.selectedType.set(0);
         this.selectedCategory.set(0);
@@ -260,16 +262,19 @@ public class TransactionController extends PageController implements UseCategory
     }
 
     private void loadWallets() {
-        this.menuButtonWalletChoose.getItems().clear();
+        this.selectWallet.getItems().clear();
 
         for (Wallet wallet: this.wallets) {
             MenuItem item = new MenuItem();
             item.setText(wallet.getName());
             item.getStyleClass().add("header__wallet");
-            item.setOnAction(actionEvent -> {
+            item.setOnAction(e -> {
+                MenuItem menuItem = (MenuItem) e.getSource();
+                this.selectWallet.setText(menuItem.getText());
+                this.selectWallet.getStyleClass().add("header__wallet");
                 this.walletId = wallet.getId();
             });
-            this.menuButtonWalletChoose.getItems().add(item);
+            this.selectWallet.getItems().add(item);
         }
     }
 
@@ -279,7 +284,7 @@ public class TransactionController extends PageController implements UseCategory
     }
 
     @FXML
-    private void storeTransaction() {
+    private void storeTransaction(Event event) {
         String amountText = this.textFieldTransactionAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
         LocalDate transactedAt = this.datePickerTransactedAt.getValue();
@@ -316,6 +321,8 @@ public class TransactionController extends PageController implements UseCategory
         try {
             transaction = this.transactionController.create(transaction);
             this.addTransaction(transaction, this.wallets.get(0));
+
+            this.closeScene(event);
         } catch (SQLException | NotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
