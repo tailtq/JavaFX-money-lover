@@ -13,28 +13,29 @@ public class Day {
 
     private String symbol;
 
+    public Day() {
+
+    }
+
     public Day(int monthNumber, int year) {
         this.monthNumber = monthNumber;
         this.year = year;
-    }
-
-    public Day(int dayOfMonth, String dayOfWeek, String month, String symbol) {
-        this.dayOfMonth = dayOfMonth;
-        this.dayOfWeek = dayOfWeek;
-        this.month = month;
-        this.symbol = symbol;
-    }
-
-    public String getDayOfWeek() {
-        return dayOfWeek;
     }
 
     public int getDayOfMonth() {
         return dayOfMonth;
     }
 
-    public String getMonth() {
-        return month;
+    public void setDayOfMonth(int dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public int getMonthNumber() {
@@ -43,6 +44,14 @@ public class Day {
 
     public void setMonthNumber(int monthNumber) {
         this.monthNumber = monthNumber;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
     }
 
     public int getYear() {
@@ -55,5 +64,9 @@ public class Day {
 
     public String getSymbol() {
         return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 }

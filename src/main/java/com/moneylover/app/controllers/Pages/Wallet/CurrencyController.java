@@ -16,7 +16,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class CurrencyController implements DialogInterface {
+class CurrencyController implements DialogInterface {
     private ObservableList<Currency> currencies = FXCollections.observableArrayList();
 
     private IntegerProperty selectedCurrencyId;

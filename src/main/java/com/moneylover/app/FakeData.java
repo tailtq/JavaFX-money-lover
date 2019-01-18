@@ -219,7 +219,7 @@ public class FakeData {
         Type income = types.get(2);
         ArrayList<Pair<String, String>> incomeCategories = new ArrayList<>();
         incomeCategories.add(new Pair<>("Award", "i_award"));
-        incomeCategories.add(new Pair<>("Gift", "i_gift"));
+        incomeCategories.add(new Pair<>("Gift", "i_give"));
         incomeCategories.add(new Pair<>("Interest money", "i_interest-money"));
         incomeCategories.add(new Pair<>("Others", "i_others"));
         incomeCategories.add(new Pair<>("Salary", "i_salary"));

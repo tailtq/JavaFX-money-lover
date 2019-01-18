@@ -57,7 +57,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
     private TextField textFieldTransactionName;
 
     @FXML
-    private TextField textFieldTransactionAmount;
+    private TextField textFieldWalletAmount;
 
     @FXML
     private Button selectCurrency;
@@ -103,7 +103,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
 
         this.selectedCurrencyId.set(this.wallet.getCurrencyId());
         this.textFieldTransactionName.setText(this.wallet.getName());
-        this.textFieldTransactionAmount.setText(String.format("%.1f", this.wallet.getInflow() - this.wallet.getOutflow()));
+        this.textFieldWalletAmount.setText(String.format("%.1f", this.wallet.getInflow() - this.wallet.getOutflow()));
 
         this.createScreen(parent, "Edit Wallet", 500, 115);
     }
@@ -111,7 +111,7 @@ class WalletCell extends ListCell<Wallet> implements DialogInterface {
     @FXML
     private void updateWallet(Event event) {
         String name = this.textFieldTransactionName.getText().trim();
-        String amountText = this.textFieldTransactionAmount.getText();
+        String amountText = this.textFieldWalletAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
         int currencyId = this.selectedCurrencyId.get();
 

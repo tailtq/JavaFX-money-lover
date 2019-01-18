@@ -1,11 +1,12 @@
 package com.moneylover.app.controllers.Pages.Transaction;
 
+import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.Time.Entities.Day;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.controllers.Contracts.UseCategoryInterface;
 import com.moneylover.app.controllers.PageController;
-import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -19,6 +20,7 @@ import javafx.util.Callback;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,10 +35,13 @@ public class TransactionController extends PageController implements UseCategory
 
     private LocalDate currentDay;
 
+    private CategoryController categoryController;
+
     public TransactionController(BooleanProperty changeWallet) throws SQLException, ClassNotFoundException {
         this.changeWallet = changeWallet;
         this.transactionController = new com.moneylover.Modules.Transaction.Controllers.TransactionController();
         this.currentDay = LocalDate.now();
+        this.categoryController = new CategoryController(this.selectedType, this.selectedCategory, this.selectedSubCategory);
     }
 
     private void getTransactionsByMonth(Wallet wallet, int month, int year, char operator) throws SQLException {
@@ -45,8 +50,8 @@ public class TransactionController extends PageController implements UseCategory
 
         for (Transaction transaction: transactions) {
             boolean hasDay = false;
-            LocalDate dayObj = LocalDate.parse(transaction.getTransactedAt().toString());
-            int day = dayObj.getDayOfMonth();
+            LocalDate localDate = LocalDate.parse(transaction.getTransactedAt().toString());
+            int day = localDate.getDayOfMonth();
 
             for (Pair<Day, ObservableList<Transaction>> pair: this.transactions) {
                 if (pair.getKey().getDayOfMonth() == day) {
@@ -56,47 +61,74 @@ public class TransactionController extends PageController implements UseCategory
             }
 
             if (!hasDay) {
-                Day newDay = new Day(
-                        day,
-                        dayObj.getDayOfWeek().toString(),
-                        dayObj.getMonth().toString(),
-                        wallet.getMoneySymbol()
-                );
-                this.transactions.add(
-                        new Pair<>(newDay, FXCollections.observableArrayList(transaction))
-                );
+                this.addNewDay(transaction, localDate, wallet);
             }
         }
 
         // TODO: should refactor with reversed sort
+        this.sortTransactions();
+    }
+
+    private void addTransaction(Transaction newTransaction, Wallet wallet) {
+        LocalDate newLocalDate = LocalDate.parse(newTransaction.getTransactedAt().toString());
+        int newDayOfMonth = newLocalDate.getDayOfMonth();
+        boolean hasDay = false;
+
+        for (Pair<Day, ObservableList<Transaction>> transaction: transactions) {
+            int day = transaction.getKey().getDayOfMonth();
+
+            if (newDayOfMonth == day) {
+                transaction.getValue().add(newTransaction);
+                hasDay = true;
+                break;
+            }
+        }
+
+        if (!hasDay) {
+            this.addNewDay(newTransaction, newLocalDate, wallet);
+        }
+    }
+
+    private void addNewDay(Transaction newTransaction, LocalDate newLocalDate, Wallet wallet) {
+        Day newDay = new Day();
+        newDay.setDayOfMonth(newLocalDate.getDayOfMonth());
+        newDay.setDayOfWeek(newLocalDate.getDayOfWeek().toString());
+        newDay.setMonth(newLocalDate.getMonth().toString());
+        newDay.setSymbol(wallet.getMoneySymbol());
+        this.transactions.add(new Pair<>(newDay, FXCollections.observableArrayList(newTransaction)));
+    }
+
+    private void sortTransactions() {
         this.transactions.sort(Comparator.comparingInt(a -> a.getKey().getDayOfMonth()));
         FXCollections.reverse(this.transactions);
     }
 
     /*========================== Draw ==========================*/
     @FXML
-    private TabPane categoriesTabPane;
-
-    @FXML
     private Button leftTimeRange, middleTimeRange, rightTimeRange;
 
     @FXML
     private ListView transactionDays;
 
-//    @FXML
-//    private VBox transactionContent, transactionTimes;
-
-//    @FXML
-//    private Label inflow;
+    @FXML
+    private MenuButton menuButtonWalletChoose;
 
     @FXML
-    private TextField amount;
+    private TextField textFieldTransactionAmount, textFieldNote;
 
     @FXML
-    private DatePicker transactedAt;
+    private DatePicker datePickerTransactedAt;
 
-//    @FXML
-//    private TreeView categoriesView;
+    @FXML
+    private CheckBox checkBoxIsReported;
+
+    private int walletId = 0;
+
+    private IntegerProperty selectedType = new SimpleIntegerProperty(0);
+
+    private IntegerProperty selectedCategory = new SimpleIntegerProperty(0);
+
+    private IntegerProperty selectedSubCategory = new SimpleIntegerProperty(0);
 
     @Override
     public VBox loadView() throws IOException {
@@ -110,10 +142,7 @@ public class TransactionController extends PageController implements UseCategory
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
-        this.day = new Day(
-                this.currentDay.getMonthValue(),
-                this.currentDay.getYear()
-        );
+        this.day = new Day(this.currentDay.getMonthValue(), this.currentDay.getYear());
         this.getTransactionsByMonth(wallets.get(0), this.day.getMonthNumber(), this.day.getYear(), '=');
         this.setListViewTransactions();
     }
@@ -216,36 +245,81 @@ public class TransactionController extends PageController implements UseCategory
     }
 
     @FXML
-    public void createTransaction(Event e) throws IOException {
+    private void createTransaction(Event e) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        this.transactedAt.setValue(LocalDate.now());
+        this.loadWallets();
+        this.datePickerTransactedAt.setValue(LocalDate.now());
+        this.selectedType.set(0);
+        this.selectedCategory.set(0);
+        this.selectedSubCategory.set(0);
 
         this.createScreen(parent, "Add Transaction", 500, 230);
     }
 
-    @FXML
-    public void editTransaction(Event e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
-        fxmlLoader.setController(this);
-        Parent parent = fxmlLoader.load();
+    private void loadWallets() {
+        this.menuButtonWalletChoose.getItems().clear();
 
-        this.createScreen(parent, "Edit Transaction", 500, 230);
-    }
-
-    @FXML
-    public void deleteTransaction(Event e) {
-        ButtonBar.ButtonData buttonData = this.showDeleteDialog();
-        if (buttonData == ButtonBar.ButtonData.YES) {
-            System.out.println("Yes");
+        for (Wallet wallet: this.wallets) {
+            MenuItem item = new MenuItem();
+            item.setText(wallet.getName());
+            item.getStyleClass().add("header__wallet");
+            item.setOnAction(actionEvent -> {
+                this.walletId = wallet.getId();
+            });
+            this.menuButtonWalletChoose.getItems().add(item);
         }
     }
 
     @FXML
-    private void chooseCategory(Event e) throws IOException {
-        this.showCategoryDialog(e);
+    private void chooseCategory() throws IOException {
+        this.categoryController.showCategoryDialog();
+    }
+
+    @FXML
+    private void storeTransaction() {
+        String amountText = this.textFieldTransactionAmount.getText();
+        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
+        LocalDate transactedAt = this.datePickerTransactedAt.getValue();
+        boolean isReported = this.checkBoxIsReported.isSelected();
+        int categoryId = this.selectedCategory.get();
+        int subCategoryId = this.selectedSubCategory.get();
+
+        if (this.walletId == 0) {
+            this.showErrorDialog("Wallet is not selected");
+            return;
+        }
+        if (categoryId == 0) {
+            this.showErrorDialog("Category is not selected");
+            return;
+        }
+        if (amount <= 0) {
+            this.showErrorDialog("Amount is not valid");
+            return;
+        }
+
+        Transaction transaction = new Transaction();
+        transaction.setWalletId(this.walletId);
+        transaction.setTypeId(this.selectedType.get());
+        transaction.setCategoryId(categoryId);
+        transaction.setAmount(amount);
+        transaction.setNote(this.textFieldNote.getText());
+        transaction.setTransactedAt(Date.valueOf(transactedAt.toString()));
+        transaction.setIsReported((byte) (isReported ? 1 : 0));
+
+        if (subCategoryId != 0) {
+            transaction.setSubCategoryId(subCategoryId);
+        }
+
+        try {
+            transaction = this.transactionController.create(transaction);
+            this.addTransaction(transaction, this.wallets.get(0));
+        } catch (SQLException | NotFoundException e) {
+            e.printStackTrace();
+            this.showErrorDialog("An error has occurred");
+        }
     }
 
 //    @FXML
@@ -256,9 +330,4 @@ public class TransactionController extends PageController implements UseCategory
 //
 //        this.createScreen(parent, "Choose Friend", 300, 200);
 //    }
-
-    @FXML
-    public void changeTab(Event e) {
-        this.activeTab(e, this.categoriesTabPane);
-    }
 }

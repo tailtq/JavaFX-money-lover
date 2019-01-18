@@ -2,7 +2,6 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.Tab?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -12,110 +11,8 @@
         @../../../../assets/css/components/dialogs/choose-category.css,
         @../../../../assets/css/icons.css
       ">
-    <HBox styleClass="tab-button-group" alignment="TOP_CENTER">
-        <fx:include source="../tag-button.fxml" userData="0"
-                    onAction="#changeTab">
-            <text>DEBT / LOAN</text>
-        </fx:include>
-        <fx:include source="../tag-button.fxml" userData="1"
-                    onAction="#changeTab"
-                    styleClass="active">
-            <text>EXPENSE</text>
-        </fx:include>
-        <fx:include source="../tag-button.fxml" userData="2"
-                    onAction="#changeTab">
-            <text>INCOME</text>
-        </fx:include>
-    </HBox>
+    <HBox styleClass="tab-button-group" alignment="TOP_CENTER" fx:id="buttonGroupTabs"/>
 
-    <TabPane fx:id="categoriesTabPane">
-        <Tab>
-            <VBox>
-                <VBox styleClass="category">
-                    <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill" alignment="TOP_LEFT">
-                        <text>Button</text>
-                    </fx:include>
-                    <VBox styleClass="subcategories">
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_electricity" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_gas" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_rentals" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_television" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_internet" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_phone" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_water" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                    </VBox>
-                </VBox>
-                <VBox styleClass="category">
-                    <fx:include source="../normal-button.fxml" styleClass="image-button, i_education" alignment="TOP_LEFT">
-                        <text>Button</text>
-                    </fx:include>
-                    <VBox styleClass="subcategories">
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_education_books" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                    </VBox>
-                </VBox>
-            </VBox>
-        </Tab>
-        <Tab>
-            <VBox>
-                <VBox styleClass="category">
-                    <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill" alignment="TOP_LEFT">
-                        <text>Button</text>
-                    </fx:include>
-                    <VBox styleClass="subcategories">
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_electricity" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_gas" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_rentals" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_television" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_internet" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_phone" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_bill_water" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                    </VBox>
-                </VBox>
-                <VBox styleClass="category">
-                    <fx:include source="../normal-button.fxml" styleClass="image-button, i_education" alignment="TOP_LEFT">
-                        <text>Button</text>
-                    </fx:include>
-                    <VBox styleClass="subcategories">
-                        <fx:include source="../normal-button.fxml" styleClass="image-button, i_education_books" alignment="TOP_LEFT">
-                            <text>Button</text>
-                        </fx:include>
-                    </VBox>
-                </VBox>
-            </VBox>
-        </Tab>
-        <Tab>
-
-        </Tab>
-    </TabPane>
+    <TabPane fx:id="tabPaneTypes"/>
 </VBox>
 
