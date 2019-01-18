@@ -23,7 +23,7 @@
     </VBox>
     <Pane HBox.hgrow="ALWAYS"></Pane>
     <HBox alignment="CENTER_RIGHT" styleClass="transaction__amount">
-        <Label text="+2,960,000.00 ₫"
+        <Label fx:id="labelAmount"
                styleClass="success-color"/>
         <MenuButton xmlns:fx="http://javafx.com/fxml"
                     mnemonicParsing="false"

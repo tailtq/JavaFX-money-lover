@@ -1,9 +1,113 @@
+.i_debt {
+    -fx-background-image: url("../images/categories/i_debt.png");
+}
+
+.i_debt-collection {
+    -fx-background-image: url("../images/categories/i_debt-collection.png");
+}
+
+.i_loan {
+    -fx-background-image: url("../images/categories/i_loan.png");
+}
+
+.i_repayment {
+    -fx-background-image: url("../images/categories/i_repayment.png");
+}
+
 .i_bill {
     -fx-background-image: url("../images/categories/i_bill.png");
 }
 
-.i_bill_rentals {
-    -fx-background-image: url("../images/categories/i_bill_rentals.png");
+.i_business {
+    -fx-background-image: url("../images/categories/i_business.png");
+}
+
+.i_education {
+    -fx-background-image: url("../images/categories/i_education.png");
+}
+
+.i_entertainment {
+    -fx-background-image: url("../images/categories/i_entertainment.png");
+}
+
+.i_family {
+    -fx-background-image: url("../images/categories/i_family.png");
+}
+
+.i_fee {
+    -fx-background-image: url("../images/categories/i_fee.png");
+}
+
+.i_friend {
+    -fx-background-image: url("../images/categories/i_friend.png");
+}
+
+.i_gift {
+    -fx-background-image: url("../images/categories/i_gift.png");
+}
+
+.i_health {
+    -fx-background-image: url("../images/categories/i_health.png");
+}
+
+.i_insurances {
+    -fx-background-image: url("../images/categories/i_insurances.png");
+}
+
+.i_investment {
+    -fx-background-image: url("../images/categories/i_investment.png");
+}
+
+.i_others {
+    -fx-background-image: url("../images/categories/i_others.png");
+}
+
+.i_shopping {
+    -fx-background-image: url("../images/categories/i_shopping.png");
+}
+
+.i_transportation {
+    -fx-background-image: url("../images/categories/i_transportation.png");
+}
+
+.i_travel {
+    -fx-background-image: url("../images/categories/i_travel.png");
+}
+
+.i_withdrawal {
+    -fx-background-image: url("../images/categories/i_withdrawal.png");
+}
+
+.i_award {
+    -fx-background-image: url("../images/categories/i_award.png");
+}
+
+.i_give {
+    -fx-background-image: url("../images/categories/i_give.png");
+}
+
+.i_interest-money {
+    -fx-background-image: url("../images/categories/i_interest-money.png");
+}
+
+.i_others {
+    -fx-background-image: url("../images/categories/i_others.png");
+}
+
+.i_salary {
+    -fx-background-image: url("../images/categories/i_salary.png");
+}
+
+.i_selling {
+    -fx-background-image: url("../images/categories/i_selling.png");
+}
+
+.i_food {
+    -fx-background-image: url("../images/categories/i_food.png");
+}
+
+.i_bill_gas {
+    -fx-background-image: url("../images/categories/i_bill_gas.png");
 }
 
 .i_bill_internet {
@@ -14,6 +118,10 @@
     -fx-background-image: url("../images/categories/i_bill_phone.png");
 }
 
+.i_bill_rentals {
+    -fx-background-image: url("../images/categories/i_bill_rentals.png");
+}
+
 .i_bill_television {
     -fx-background-image: url("../images/categories/i_bill_television.png");
 }
@@ -22,30 +130,102 @@
     -fx-background-image: url("../images/categories/i_bill_water.png");
 }
 
-.i_bill_electricity {
-    -fx-background-image: url("../images/categories/i_bill_electricity.png");
-}
-
-.i_bill_gas {
-    -fx-background-image: url("../images/categories/i_bill_gas.png");
-}
-
-.i_education {
-    -fx-background-image: url("../images/categories/i_education.png");
-}
-
-.i_education_books {
+.i_education_book {
     -fx-background-image: url("../images/categories/i_education_book.png");
 }
 
-/* DEBT LOAN*/
-.debt {
-
+.i_entertainment_game {
+    -fx-background-image: url("../images/categories/i_entertainment_game.png");
 }
 
-.debt-collection {
-
+.i_entertainment_movie {
+    -fx-background-image: url("../images/categories/i_entertainment_movie.png");
 }
+
+.i_family_children {
+    -fx-background-image: url("../images/categories/i_family_children.png");
+}
+
+.i_family_home-improvement {
+    -fx-background-image: url("../images/categories/i_family_home-improvement.png");
+}
+
+.i_family_home-services {
+    -fx-background-image: url("../images/categories/i_family_home-services.png");
+}
+
+.i_family_pets {
+    -fx-background-image: url("../images/categories/i_family_pets.png");
+}
+
+.i_food_cafe {
+    -fx-background-image: url("../images/categories/i_food_cafe.png");
+}
+
+.i_food_restaurant {
+    -fx-background-image: url("../images/categories/i_food_restaurant.png");
+}
+
+.i_gift_charity {
+    -fx-background-image: url("../images/categories/i_gift_charity.png");
+}
+
+.i_gift_funeral {
+    -fx-background-image: url("../images/categories/i_gift_funeral.png");
+}
+
+.i_gift_marriage {
+    -fx-background-image: url("../images/categories/i_gift_marriage.png");
+}
+
+.i_health_doctor {
+    -fx-background-image: url("../images/categories/i_health_doctor.png");
+}
+
+.i_health_personal-care {
+    -fx-background-image: url("../images/categories/i_health_personal-care.png");
+}
+
+.i_health_pharmacy {
+    -fx-background-image: url("../images/categories/i_health_pharmacy.png");
+}
+
+.i_health_sports {
+    -fx-background-image: url("../images/categories/i_health_sports.png");
+}
+
+.i_shopping_accessory {
+    -fx-background-image: url("../images/categories/i_shopping_accessory.png");
+}
+
+.i_shopping_clothing {
+    -fx-background-image: url("../images/categories/i_shopping_clothing.png");
+}
+
+.i_shopping_electronic {
+    -fx-background-image: url("../images/categories/i_shopping_electronic.png");
+}
+
+.i_shopping_footwear {
+    -fx-background-image: url("../images/categories/i_shopping_footwear.png");
+}
+
+.i_transportation_maintenance {
+    -fx-background-image: url("../images/categories/i_transportation_maintenance.png");
+}
+
+.i_transportation_parking-fee {
+    -fx-background-image: url("../images/categories/i_transportation_parking-fee.png");
+}
+
+.i_transportation_petrol {
+    -fx-background-image: url("../images/categories/i_transportation_petrol.png");
+}
+
+.i_transportation_taxi {
+    -fx-background-image: url("../images/categories/i_transportation_taxi.png");
+}
+
 
 
 /* FLAGS */

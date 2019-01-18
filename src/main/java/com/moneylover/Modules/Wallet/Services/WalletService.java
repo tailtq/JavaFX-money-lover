@@ -1,5 +1,6 @@
 package com.moneylover.Modules.Wallet.Services;
 
+import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Wallet.Entities.UserWallet;
@@ -66,6 +67,10 @@ public class WalletService extends BaseService {
         this._update(wallet, id);
 
         return true;
+    }
+
+    public void calculateAmount(float amount, int id) throws SQLException {
+        this._calculateAmount(amount, id);
     }
 
     public boolean delete(int id) throws SQLException {
@@ -155,6 +160,30 @@ public class WalletService extends BaseService {
         statement.setFloat(4, wallet.getOutflow());
         statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
         statement.setInt(6, id);
+        statement.executeUpdate();
+        this.closePreparedStatement();
+
+        return true;
+    }
+
+    private boolean _calculateAmount(float amount, int id) throws SQLException {
+        String statementString = "UPDATE " + getTable() + " SET inflow = inflow + ?, outflow = outflow + ?, updated_at = ? WHERE id = ?";
+        float inflow = 0;
+        float outflow = 0;
+
+        if (amount > 0) {
+            inflow = amount;
+        } else {
+            outflow = Math.abs(amount);
+        }
+
+        PreparedStatement statement = this.getPreparedStatement(statementString);
+        LocalDate currentDate = LocalDate.now();
+        statement.setFloat(1, inflow);
+        statement.setFloat(2, outflow);
+        statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setInt(4, id);
+        statement.executeUpdate();
         statement.executeUpdate();
         this.closePreparedStatement();
 

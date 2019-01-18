@@ -31,6 +31,8 @@ public class Transaction extends BaseModel {
 
     private String categoryIcon;
 
+    private String categoryMoneyType;
+
     private String subCategoryName;
 
     private String subCategoryIcon;
@@ -141,6 +143,14 @@ public class Transaction extends BaseModel {
 
     public void setCategoryIcon(String categoryIcon) {
         this.categoryIcon = categoryIcon;
+    }
+
+    public String getCategoryMoneyType() {
+        return categoryMoneyType;
+    }
+
+    public void setCategoryMoneyType(String categoryMoneyType) {
+        this.categoryMoneyType = categoryMoneyType;
     }
 
     public String getSubCategoryName() {

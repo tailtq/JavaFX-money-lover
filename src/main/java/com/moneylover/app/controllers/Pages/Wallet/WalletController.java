@@ -43,7 +43,7 @@ public class WalletController extends PageController {
     private TextField textFieldTransactionName;
 
     @FXML
-    private TextField textFieldTransactionAmount;
+    private TextField textFieldWalletAmount;
 
     @FXML
     private Button selectCurrency;
@@ -130,7 +130,7 @@ public class WalletController extends PageController {
     @FXML
     private void storeWallet(Event event) throws NotFoundException {
         String name = this.textFieldTransactionName.getText().trim();
-        String amountText = this.textFieldTransactionAmount.getText();
+        String amountText = this.textFieldWalletAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
         int currencyId = this.selectedCurrencyId.get();
 
