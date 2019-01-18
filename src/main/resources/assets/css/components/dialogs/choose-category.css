@@ -1,9 +1,7 @@
 .category {
     -fx-border-width: 0.5 0 0.5 0;
     -fx-border-color: rgb(224, 224, 224);
-    -fx-spacing: 3;
     -fx-background-color: #fff;
-    -fx-padding: 5;
 }
 
 .category .normal-button {

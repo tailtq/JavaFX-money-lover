@@ -56,9 +56,9 @@ public class Main extends Application {
         this.changeMainView(sidebarLoader.getController());
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(this.layout, 530, 500));
-        primaryStage.setMinWidth(530);
-        primaryStage.setMinHeight(500);
+        primaryStage.setScene(new Scene(this.layout, 750, 550));
+        primaryStage.setMinWidth(750);
+        primaryStage.setMinHeight(550);
         primaryStage.show();
     }
 

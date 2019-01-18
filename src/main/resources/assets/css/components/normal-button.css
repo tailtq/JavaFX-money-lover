@@ -18,7 +18,7 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: 30px;
     -fx-background-position: 20px 45%;
-    -fx-padding: 10 10 10 55;
+    -fx-padding: 12 10 12 55;
     -fx-text-fill: #000;
     -fx-max-width: infinity;
 }

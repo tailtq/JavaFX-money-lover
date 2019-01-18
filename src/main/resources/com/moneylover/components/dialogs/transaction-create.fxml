@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Button?>
@@ -14,24 +13,24 @@
 <GridPane xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"
           stylesheets="
+            @../../../../assets/css/components/header.css,
+            @../../../../assets/css/icons.css,
             @../../../../assets/css/content.css,
             @../../../../assets/css/components/dialogs/transaction-create.css
           "
           styleClass="transaction__create-form">
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
         <Text>Wallet</Text>
-        <MenuButton fx:id="menuButtonWalletChoose"
-                    styleClass="transaction__create-form__select">
-            <items>
-                <MenuItem text="Wallet1" styleClass="header__wallet"/>
-                <MenuItem text="Wallet2" styleClass="header__wallet"/>
-            </items>
-        </MenuButton>
+        <MenuButton fx:id="selectWallet"
+                    styleClass="transaction__create-form__select"/>
     </VBox>
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <Text>Category</Text>
-        <Button styleClass="transaction__create-form__select" onAction="#chooseCategory"/>
+        <Button alignment="TOP_LEFT"
+                styleClass="transaction__create-form__select, select-category, select-category--stylesheet"
+                fx:id="selectCategory"
+                onAction="#chooseCategory"/>
     </VBox>
 
     <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">

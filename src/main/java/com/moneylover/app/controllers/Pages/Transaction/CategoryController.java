@@ -9,6 +9,7 @@ import com.moneylover.app.controllers.BaseViewController;
 import com.moneylover.app.controllers.Contracts.DialogInterface;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,10 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -44,6 +42,12 @@ public class CategoryController extends BaseViewController implements DialogInte
 
     private SubCategoryController subCategoryController;
 
+    private ArrayList<Type> types;
+
+    private ArrayList<Category> categories;
+
+    private ArrayList<SubCategory> subCategories;
+
     private ArrayList<Pair<Type, ArrayList<Pair<Category, ArrayList<SubCategory>>>>> combinedTypes;
 
 
@@ -51,10 +55,10 @@ public class CategoryController extends BaseViewController implements DialogInte
         this.selectedType = selectedType;
         this.selectedCategory = selectedCategory;
         this.selectedSubCategory = selectedSubCategory;
-        ArrayList<Type> types = this.loadTypes();
-        ArrayList<Category> categories = this.loadCategories();
-        ArrayList<SubCategory> subCategories = this.loadSubCategories();
-        this.combineCategories(types, categories, subCategories);
+        this.types = this.loadTypes();
+        this.categories = this.loadCategories();
+        this.subCategories = this.loadSubCategories();
+        this.combineCategories(types, categories, (ArrayList<SubCategory>) subCategories.clone());
     }
 
     public CategoryController(StringProperty selectedCategory, ArrayList<Type> types, ArrayList<Category> categories, ArrayList<SubCategory> subCategories) {
@@ -132,12 +136,7 @@ public class CategoryController extends BaseViewController implements DialogInte
         Parent parent = fxmlLoader.load();
         this.loadTreeViewCategories();
 
-        Scene scene = new Scene(parent, 300, 200);
-        Stage stage = new Stage();
-        stage.setTitle("Choose Category");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
+        this.createScreen(parent, "Choose Category", 330, 500);
     }
 
     private void loadTreeViewCategories() throws IOException {
@@ -203,10 +202,54 @@ public class CategoryController extends BaseViewController implements DialogInte
                 container.getChildren().add(vBoxCategory);
             }
 
-            newTab.setContent(container);
+            ScrollPane scrollPane = new ScrollPane(container);
+            scrollPane.setFitToWidth(true);
+            newTab.setContent(scrollPane);
             this.tabPaneTypes.getTabs().add(newTab);
             this.buttonGroupTabs.getChildren().add(buttonTab);
         }
+    }
+
+    void handleSelectedCategoryId(IntegerProperty selectedButton, Button selectCategory, String type) {
+        selectedButton.addListener((observableValue, oldValue, newValue) -> {
+            ObservableList<String> classes = selectCategory.getStyleClass();
+            int i = 0;
+            System.out.println(type);
+            for (String element: classes) {
+                if (element.contains("i_")) {
+                    classes.remove(i);
+                    break;
+                }
+                i++;
+            }
+
+            if (newValue.intValue() == 0) {
+                selectCategory.setText("");
+                return;
+            }
+
+            if (type.equals("category")) {
+                for (Category category : this.categories) {
+                    if (category.getId() != newValue.intValue()) {
+                        continue;
+                    }
+                    selectCategory.setText(category.getName());
+                    classes.add(category.getIcon());
+
+                    return;
+                }
+            } else {
+                for (SubCategory subCategory : this.subCategories) {
+                    if (subCategory.getId() != newValue.intValue()) {
+                        continue;
+                    }
+                    selectCategory.setText(subCategory.getName());
+                    classes.add(subCategory.getIcon());
+
+                    return;
+                }
+            }
+        });
     }
 
     @FXML
