@@ -14,7 +14,7 @@
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml" fx:id="dropdownWallets"/>
             </left>
             <right>
-                <fx:include source="../../components/normal-button.fxml" onAction="#createWallet">
+                <fx:include source="../../components/buttons/normal-button.fxml" onAction="#createWallet">
                     <text>ADD WALLET</text>
                 </fx:include>
             </right>

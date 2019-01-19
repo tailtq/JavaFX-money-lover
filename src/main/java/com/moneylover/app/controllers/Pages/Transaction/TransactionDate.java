@@ -3,6 +3,7 @@ package com.moneylover.app.controllers.Pages.Transaction;
 import com.moneylover.Modules.Time.Entities.Day;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,11 +15,15 @@ import javafx.util.Callback;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class TransactionDate extends ListCell<Pair<Day, ObservableList<Transaction>>> {
     private VBox hBoxTransactionDate;
 
-    TransactionDate() throws IOException {
+    private IntegerProperty deletedTransactionId;
+
+    TransactionDate(IntegerProperty deletedTransactionId) throws IOException {
+        this.deletedTransactionId = deletedTransactionId;
         FXMLLoader transactionDateLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/pages/transaction/transaction-date.fxml")
         );
@@ -58,8 +63,8 @@ public class TransactionDate extends ListCell<Pair<Day, ObservableList<Transacti
                 @Override
                 public ListCell call(ListView param) {
                     try {
-                        return new TransactionCell();
-                    } catch (IOException e) {
+                        return new TransactionCell(deletedTransactionId);
+                    } catch (IOException | SQLException | ClassNotFoundException e) {
                         e.printStackTrace();
                         return null;
                     }

@@ -46,3 +46,9 @@
     -fx-font-weight: bold;
     -fx-font-family: 'SansSerif';
 }
+
+/* Linear color */
+.bg--linear-succeed-color {
+    -fx-background-color: linear-gradient(to bottom right, #2db84c, #4af597);
+    -fx-font-size: 11px;
+}

@@ -15,7 +15,7 @@
     <Text styleClass="font--size-20">Add new friend</Text>
     <HBox styleClass="friends__form">
         <TextField styleClass="friends__form__field" HBox.hgrow="ALWAYS"/>
-        <fx:include source="../normal-button.fxml">
+        <fx:include source="../buttons/normal-button.fxml">
             <text>Add</text>
         </fx:include>
     </HBox>
@@ -26,10 +26,10 @@
         <CheckBox id="checkBox1" text="D"/>
     </VBox>
     <HBox styleClass="button-group" alignment="BOTTOM_RIGHT">
-        <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button">
+        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button, cancel-button">
             <text>Cancel</text>
         </fx:include>
-        <fx:include source="../normal-button.fxml" styleClass="form__button">
+        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button">
             <text>Done</text>
         </fx:include>
     </HBox>

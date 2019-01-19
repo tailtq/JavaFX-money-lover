@@ -73,7 +73,7 @@
             </GridPane>
         </VBox>
 
-        <fx:include source="../normal-button.fxml" onAction="#loadBudgetTransactions">
+        <fx:include source="../buttons/normal-button.fxml" onAction="#loadBudgetTransactions">
             <text>View Transactions</text>
         </fx:include>
     </VBox>

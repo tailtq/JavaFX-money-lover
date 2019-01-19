@@ -16,11 +16,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -143,7 +141,7 @@ public class CategoryController extends BaseViewController implements DialogInte
         int i = 0;
 
         for (Pair<Type, ArrayList<Pair<Category, ArrayList<SubCategory>>>> type: this.combinedTypes) {
-            FXMLLoader tabLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/tag-button.fxml"));
+            FXMLLoader tabLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/buttons/tag-button.fxml"));
             tabLoader.setController(this);
             Button buttonTab = tabLoader.load();
 
@@ -165,7 +163,7 @@ public class CategoryController extends BaseViewController implements DialogInte
                 Category categoryDetail = category.getKey();
                 VBox vBoxCategory = new VBox();
                 VBox vBoxSubCategories = new VBox();
-                FXMLLoader categoryLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/normal-button.fxml"));
+                FXMLLoader categoryLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/buttons/normal-button.fxml"));
                 Button buttonCategory = categoryLoader.load();
                 buttonCategory.setText(categoryDetail.getName());
                 buttonCategory.getStyleClass().addAll("image-button", categoryDetail.getIcon());
@@ -182,7 +180,7 @@ public class CategoryController extends BaseViewController implements DialogInte
                 vBoxSubCategories.getStyleClass().add("subcategories");
 
                 for (SubCategory subCategory: category.getValue()) {
-                    FXMLLoader subCategoryLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/normal-button.fxml"));
+                    FXMLLoader subCategoryLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/buttons/normal-button.fxml"));
                     Button buttonSubCategory = subCategoryLoader.load();
                     buttonSubCategory.setText(subCategory.getName());
                     buttonSubCategory.getStyleClass().addAll("image-button", subCategory.getIcon());

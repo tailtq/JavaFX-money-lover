@@ -2,5 +2,5 @@
 
 <?import javafx.scene.control.Button?>
 
-<Button stylesheets="@../../../assets/css/components/normal-button.css"
+<Button stylesheets="@../../../../assets/css/components/normal-button.css"
         styleClass="tags__button"/>

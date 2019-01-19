@@ -2,8 +2,7 @@
 
 <?import javafx.scene.control.*?>
 
-<Button styleClass="normal-button"
+<Button styleClass="sidebar__button"
         alignment="BOTTOM_CENTER"
-        stylesheets="@../../../assets/css/components/normal-button.css">
-
+        stylesheets="@../../../../assets/css/components/normal-button.css">
 </Button>

@@ -21,11 +21,11 @@
         <PasswordField promptText="Password" styleClass="form__field" fx:id="password" text="123123123"/>
     </VBox>
 
-    <fx:include source="../../components/normal-button.fxml" onAction="#login">
+    <fx:include source="../../components/buttons/normal-button.fxml" onAction="#login">
         <text>SIGN IN</text>
     </fx:include>
 
-    <fx:include source="../../components/text-button.fxml" styleClass="sign-up-message" onAction="#changeScene">
+    <fx:include source="../../components/buttons/text-button.fxml" styleClass="sign-up-message" onAction="#changeScene">
         <text>Don't have account? Sign up here</text>
     </fx:include>
 </VBox>

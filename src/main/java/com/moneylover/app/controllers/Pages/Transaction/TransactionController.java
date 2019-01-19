@@ -31,6 +31,8 @@ public class TransactionController extends PageController implements UseCategory
 
     private ObservableList<Pair<Day, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
 
+    private IntegerProperty deletedTransactionId = new SimpleIntegerProperty(0);
+
     private Day day;
 
     private LocalDate currentDay;
@@ -103,6 +105,24 @@ public class TransactionController extends PageController implements UseCategory
         FXCollections.reverse(this.transactions);
     }
 
+    private void handleTransactionId() {
+        this.deletedTransactionId.addListener((observableValue, oldValue, newValue) -> {
+            System.out.println(newValue + " " + oldValue);
+            for (Pair<Day, ObservableList<Transaction>> transactions: this.transactions) {
+                int i = 0;
+
+                for (Transaction transaction: transactions.getValue()) {
+                    if (transaction.getId() == newValue.intValue()) {
+                        this.transactions.remove(i);
+
+                        return;
+                    }
+                    i++;
+                }
+            }
+        });
+    }
+
     /*========================== Draw ==========================*/
     @FXML
     private Button leftTimeRange, middleTimeRange, rightTimeRange, selectCategory;
@@ -148,18 +168,23 @@ public class TransactionController extends PageController implements UseCategory
     }
 
     private void setListViewTransactions() {
+        this.handleTransactionId();
+
         this.transactionDays.setItems(this.transactions);
         this.transactionDays.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {
-                    return new TransactionDate();
+                    return new TransactionDate(deletedTransactionId);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }
             }
         });
+//        this.transactionDays.setMouseTransparent(true);
+//        this.transactionDays.set
+        this.transactionDays.setFocusTraversable(false);
     }
 
     @FXML

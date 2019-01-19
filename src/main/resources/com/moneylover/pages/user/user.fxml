@@ -53,7 +53,7 @@
             </VBox>
 
             <VBox alignment="CENTER_RIGHT">
-                <fx:include source="../../components/normal-button.fxml" onAction="#updateUser">
+                <fx:include source="../../components/buttons/normal-button.fxml" onAction="#updateUser">
                     <text>Change</text>
                 </fx:include>
             </VBox>

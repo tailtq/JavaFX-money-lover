@@ -40,20 +40,20 @@
                         <NumberAxis side="LEFT"/>
                     </yAxis>
                 </BarChart>
-                <fx:include source="../../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonths">
+                <fx:include source="../../components/buttons/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonths">
                     <text>View</text>
                 </fx:include>
             </VBox>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                 <VBox alignment="CENTER">
                     <PieChart fx:id="expenseChart" legendVisible="false" />
-                    <fx:include source="../../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
+                    <fx:include source="../../components/buttons/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
                         <text>View</text>
                     </fx:include>
                 </VBox>
                 <VBox alignment="CENTER">
                     <PieChart fx:id="incomeChart" legendVisible="false"/>
-                    <fx:include source="../../components/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
+                    <fx:include source="../../components/buttons/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
                         <text>View</text>
                     </fx:include>
                 </VBox>

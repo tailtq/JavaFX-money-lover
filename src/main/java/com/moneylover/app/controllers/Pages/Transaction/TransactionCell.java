@@ -1,25 +1,33 @@
 package com.moneylover.app.controllers.Pages.Transaction;
 
+import com.jfoenix.controls.JFXPopup;
+import com.moneylover.Modules.Transaction.Controllers.TransactionController;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
+import com.moneylover.app.controllers.Contracts.DialogInterface;
+import javafx.beans.property.IntegerProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
-public class TransactionCell extends ListCell<Transaction> {
+public class TransactionCell extends ListCell<Transaction> implements DialogInterface {
     private HBox transactionCell;
 
-    TransactionCell() throws IOException {
+    private Transaction transaction;
+
+    private TransactionController transactionController;
+
+    TransactionCell(IntegerProperty deletedTransactionId) throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader transactionCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transaction-cell.fxml"));
-        transactionCellLoader.setController(this);
+        transactionCellLoader.setController(new TransactionCellController(deletedTransactionId));
         transactionCell = transactionCellLoader.load();
     }
 
@@ -35,6 +43,9 @@ public class TransactionCell extends ListCell<Transaction> {
 
     @FXML
     private Label labelAmount;
+
+    @FXML
+    private MenuButton option;
 
     @Override
     protected void updateItem(Transaction item, boolean empty) {
@@ -53,22 +64,6 @@ public class TransactionCell extends ListCell<Transaction> {
             this.labelAmount.setText(Float.toString(item.getAmount()));
             setGraphic(this.transactionCell);
         }
-    }
-
-    @FXML
-    public void editTransaction(Event e) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
-//        fxmlLoader.setController(this);
-//        Parent parent = fxmlLoader.load();
-//
-//        this.createScreen(parent, "Edit Transaction", 500, 230);
-    }
-
-    @FXML
-    public void deleteTransaction(Event e) {
-//        ButtonBar.ButtonData buttonData = this.showDeleteDialog();
-//        if (buttonData == ButtonBar.ButtonData.YES) {
-//            System.out.println("Yes");
-//        }
+        this.transaction = item;
     }
 }

@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
-
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Button?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
 <HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml">
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../../../assets/css/components/buttons/optional-buttons.css">
     <ImageView fitHeight="40"
                fitWidth="40"
                fx:id="imageTransactionCategory"
@@ -25,24 +25,10 @@
     <HBox alignment="CENTER_RIGHT" styleClass="transaction__amount">
         <Label fx:id="labelAmount"
                styleClass="success-color"/>
-        <MenuButton xmlns:fx="http://javafx.com/fxml"
-                    mnemonicParsing="false"
-                    styleClass="wallet__select-btn, white-color"
-                    text="Options">
-            <items>
-                <MenuItem styleClass="white-color, warning-bg-color">
-                    <text>Edit</text>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
-                    </graphic>
-                </MenuItem>
-                <MenuItem styleClass="white-color, danger-bg-color">
-                    <text>Delete</text>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
-                    </graphic>
-                </MenuItem>
-            </items>
-        </MenuButton>
+        <Button onAction="#showPopup" styleClass="bg--linear-succeed-color">
+            <graphic>
+                <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white" />
+            </graphic>
+        </Button>
     </HBox>
 </HBox>

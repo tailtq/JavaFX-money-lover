@@ -17,7 +17,7 @@
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml" fx:id="dropdownWallets"/>
             </left>
             <right>
-                <fx:include source="../../components/normal-button.fxml"
+                <fx:include source="../../components/buttons/normal-button.fxml"
                             onAction="#createTransaction">
                     <text>ADD TRANSACTION</text>
                 </fx:include>
@@ -30,20 +30,20 @@
               alignment="TOP_CENTER">
             <VBox styleClass="container__content">
                 <HBox styleClass="tab-button-group" alignment="TOP_CENTER">
-                    <fx:include source="../../components/tag-button.fxml"
+                    <fx:include source="../../components/buttons/tag-button.fxml"
                                 fx:id="leftTimeRange"
                                 userData="-1"
                                 onAction="#changeTime">
                         <text>LAST MONTH</text>
                     </fx:include>
-                    <fx:include source="../../components/tag-button.fxml"
+                    <fx:include source="../../components/buttons/tag-button.fxml"
                                 fx:id="middleTimeRange"
                                 userData="0"
                                 onAction="#changeTime"
                                 styleClass="active">
                         <text>THIS MONTH</text>
                     </fx:include>
-                    <fx:include source="../../components/tag-button.fxml"
+                    <fx:include source="../../components/buttons/tag-button.fxml"
                                 fx:id="rightTimeRange"
                                 userData="1"
                                 onAction="#changeTime">
@@ -76,7 +76,7 @@
                             <RowConstraints vgrow="SOMETIMES" />
                         </rowConstraints>
                     </GridPane>
-                    <fx:include source="../../components/text-button.fxml" styleClass="success-color">
+                    <fx:include source="../../components/buttons/text-button.fxml" styleClass="success-color">
                         <text>VIEW REPORT FOR THIS PERIOD</text>
                         <VBox.margin>
                             <Insets>

@@ -5,7 +5,7 @@
       fx:controller="com.moneylover.app.controllers.MainController"
       stylesheets="@../../../assets/css/components/sidebar.css"
       styleClass="sidebar">
-    <fx:include source="sidebar-button.fxml" onAction="#pressTransaction" styleClass="active, transaction">
+    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressTransaction" styleClass="active, transaction">
         <text>Transactions</text>
         <styleClass>wallet</styleClass>
 
@@ -16,19 +16,19 @@
         </VBox.margin>
     </fx:include>
 
-    <fx:include source="sidebar-button.fxml" onAction="#pressReport" styleClass="report">
+    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressReport" styleClass="report">
         <text>Reports</text>
     </fx:include>
 
-    <fx:include source="sidebar-button.fxml" onAction="#pressBudget" styleClass="budget">
+    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressBudget" styleClass="budget">
         <text>Budgets</text>
     </fx:include>
 
-    <fx:include source="sidebar-button.fxml" onAction="#pressWallet" styleClass="wallet">
+    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressWallet" styleClass="wallet">
         <text>Wallets</text>
     </fx:include>
 
-    <fx:include source="sidebar-button.fxml" onAction="#pressUser" styleClass="user">
+    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressUser" styleClass="user">
         <text>User</text>
     </fx:include>
 </VBox>
