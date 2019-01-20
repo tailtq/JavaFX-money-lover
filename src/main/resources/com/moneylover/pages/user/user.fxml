@@ -4,8 +4,10 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextField?>
 
+<?import javafx.scene.control.PasswordField?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.moneylover.app.User.UserPresenter"
       stylesheets="@../../../../assets/css/content.css"
       styleClass="root__content" HBox.hgrow="ALWAYS">
     <HBox stylesheets="@../../../../assets/css/components/header.css"
@@ -43,17 +45,17 @@
 
             <VBox styleClass="user__group">
                 <Text>Password</Text>
-                <TextField styleClass="transaction__create-form__select" fx:id="textFieldPassword" promptText="Password"/>
+                <PasswordField styleClass="transaction__create-form__select" fx:id="textFieldPassword" promptText="Password"/>
             </VBox>
 
             <VBox styleClass="user__group">
                 <Text>Password Confirmation</Text>
-                <TextField styleClass="transaction__create-form__select" fx:id="textFieldPasswordConfirmation"
+                <PasswordField styleClass="transaction__create-form__select" fx:id="textFieldPasswordConfirmation"
                            promptText="Password Confirmation"/>
             </VBox>
 
             <VBox alignment="CENTER_RIGHT">
-                <fx:include source="../../components/normal-button.fxml" onAction="#updateUser">
+                <fx:include source="../../components/buttons/normal-button.fxml" onAction="#updateUser">
                     <text>Change</text>
                 </fx:include>
             </VBox>

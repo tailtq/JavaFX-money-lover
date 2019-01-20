@@ -28,12 +28,12 @@
 }
 
 .container {
-    -fx-min-width: 650px;
+    -fx-min-width: 600px;
     -fx-padding: 20px 30px 0;
 }
 
 .container__content {
-    -fx-max-width: 500px;
+    -fx-max-width: 480px;
     -fx-background-color: #fff;
     -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
 }
@@ -71,6 +71,10 @@
 
 .button--bg-radius-50 {
     -fx-background-radius: 50%;
+}
+
+.button--bg-radius-0 {
+    -fx-background-radius: 0%;
 }
 
 /* Date Picker */

@@ -44,10 +44,10 @@
     </VBox>
 
     <HBox GridPane.columnIndex="2" GridPane.rowIndex="2" alignment="BASELINE_RIGHT" styleClass="button-group">
-        <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button">
+        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button, cancel-button">
             <text>Cancel</text>
         </fx:include>
-        <fx:include source="../normal-button.fxml" styleClass="form__button">
+        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button">
             <text>Done</text>
         </fx:include>
     </HBox>

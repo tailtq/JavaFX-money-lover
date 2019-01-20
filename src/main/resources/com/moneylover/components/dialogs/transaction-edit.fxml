@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<GridPane xmlns="http://javafx.com/javafx/8.0.111"
+          xmlns:fx="http://javafx.com/fxml/1"
+          stylesheets="
+            @../../../../assets/css/components/header.css,
+            @../../../../assets/css/icons.css,
+            @../../../../assets/css/content.css,
+            @../../../../assets/css/components/dialogs/transaction-create.css
+          "
+          styleClass="transaction__create-form">
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Text>Wallet</Text>
+        <MenuButton fx:id="selectWallet"
+                    styleClass="transaction__create-form__select"/>
+    </VBox>
+
+    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <Text>Category</Text>
+        <Button alignment="TOP_LEFT"
+                styleClass="transaction__create-form__select, select-category, select-category--stylesheet"
+                fx:id="selectCategory"
+                onAction="#chooseCategory"/>
+    </VBox>
+
+    <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
+        <Text>Amount</Text>
+        <TextField fx:id="textFieldTransactionAmount" styleClass="transaction__create-form__select"/>
+    </VBox>
+
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Text>Date</Text>
+        <DatePicker fx:id="datePickerTransactedAt" styleClass="transaction__create-form__select"/>
+    </VBox>
+
+    <VBox GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+        <Text>Note</Text>
+        <TextField fx:id="textFieldNote" styleClass="transaction__create-form__select"/>
+    </VBox>
+
+    <!--<VBox GridPane.columnIndex="0" GridPane.rowIndex="2">-->
+        <!--<Text>With</Text>-->
+        <!--<Button text="Friends" styleClass="transaction__create-form__select" onAction="#showFriendDialog"/>-->
+    <!--</VBox>-->
+
+    <VBox GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="2">
+        <Text/>
+        <CheckBox fx:id="checkBoxIsReported">
+            Exclude from report
+        </CheckBox>
+    </VBox>
+
+    <HBox GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="button-group" alignment="BOTTOM_RIGHT">
+        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button, cancel-button"
+                    onAction="#closeScene">
+            <text>Cancel</text>
+        </fx:include>
+        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button"
+                    onAction="#updateTransaction">
+            <text>Done</text>
+        </fx:include>
+    </HBox>
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
+    </columnConstraints>
+</GridPane>

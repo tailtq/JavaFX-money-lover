@@ -38,10 +38,10 @@ public class TransactionController {
         return true;
     }
 
-    public Transaction update(Transaction transaction, int id) throws SQLException, NotFoundException {
-        Transaction updatedTransaction = this.service.update(transaction, id);
+    public boolean update(Transaction transaction, int id) throws SQLException, NotFoundException {
+        this.service.update(transaction, id);
 
-        return updatedTransaction;
+        return true;
     }
 
     public boolean delete(int id) throws SQLException {

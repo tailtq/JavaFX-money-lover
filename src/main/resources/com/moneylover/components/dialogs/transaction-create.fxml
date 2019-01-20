@@ -61,11 +61,11 @@
     </VBox>
 
     <HBox GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="button-group" alignment="BOTTOM_RIGHT">
-        <fx:include source="../normal-button.fxml" styleClass="form__button, cancel-button"
+        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button, cancel-button"
                     onAction="#closeScene">
             <text>Cancel</text>
         </fx:include>
-        <fx:include source="../normal-button.fxml" styleClass="form__button"
+        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button"
                     onAction="#storeTransaction">
             <text>Done</text>
         </fx:include>

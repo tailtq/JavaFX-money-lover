@@ -80,10 +80,17 @@ public class TransactionService extends BaseService {
         return true;
     }
 
-    public Transaction update(Transaction transaction, int id) throws SQLException, NotFoundException {
-        this._update(transaction, id);
+    public boolean update(Transaction transaction, int id) throws SQLException, NotFoundException {
+        LocalDate day = LocalDate.parse(transaction.getTransactedAt().toString());
+        Time time = this.timeService.getDetail(day.getMonth().getValue(), day.getYear());
+        Category category = this.categoryService.getDetail(transaction.getCategoryId());
+        transaction.setTimeId(time.getId());
 
-        return this.getDetail(id);
+        this._update(transaction, id, category.getMoneyType());
+        transaction = this.getDetail(id);
+        this.walletService.calculateAmount(transaction.getAmount(), transaction.getWalletId());
+
+        return true;
     }
 
     /*====================================================================================*/
@@ -110,9 +117,19 @@ public class TransactionService extends BaseService {
 
     private int _create(Transaction transaction, String moneyType) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(wallet_id, time_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_reported, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        int subcategoryId = transaction.getSubCategoryId();
-        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
         LocalDate currentDate = LocalDate.now();
+        statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
+
+        return id;
+    }
+
+    private PreparedStatement handleCreateProcess(Transaction transaction, String moneyType, String statementString) throws SQLException {
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        int subcategoryId = transaction.getSubCategoryId();
         statement.setInt(1, transaction.getWalletId());
         statement.setInt(2, transaction.getTimeId());
         statement.setInt(3, transaction.getTypeId());
@@ -122,7 +139,6 @@ public class TransactionService extends BaseService {
         statement.setNString(9, transaction.getNote());
         statement.setString(10, transaction.getImage());
         statement.setByte(11, transaction.getIsReported());
-        statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
 
         if (subcategoryId == 0) {
             statement.setNull(5, Types.INTEGER);
@@ -138,11 +154,7 @@ public class TransactionService extends BaseService {
             statement.setFloat(7, transaction.getAmount());
         }
 
-        statement.executeUpdate();
-        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
-        this.closePreparedStatement();
-
-        return id;
+        return statement;
     }
 
     private int _create(ArrayList<Transaction> transactions) throws SQLException {
@@ -174,14 +186,15 @@ public class TransactionService extends BaseService {
         return statement.executeUpdate();
     }
 
-    private int _update(Transaction transaction, int id) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET created_at = ? WHERE id = ?";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-        // Continue
-//        state.setInt(2, id)
-//        statement.setDouble(1, transaction.getAmount());
+    private boolean _update(Transaction transaction, int id, String moneyType) throws SQLException {
+        String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, time_id = ?, type_id = ?, category_id = ?, sub_category_id = ?, transacted_at = ?, amount = ?, location = ?, note = ?, image = ?, is_reported = ?, updated_at = ? WHERE id = ?";
+        PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
+        LocalDate currentDate = LocalDate.now();
+        statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setInt(13, id);
+        statement.executeUpdate();
 
-        return statement.executeUpdate();
+        return true;
     }
 
     @Override
@@ -194,7 +207,7 @@ public class TransactionService extends BaseService {
         transaction.setCategoryId(resultSet.getInt("category_id"));
         transaction.setSubCategoryId(resultSet.getInt("sub_category_id"));
         transaction.setTransactedAt(resultSet.getDate("transacted_at"));
-        transaction.setAmount(resultSet.getFloat("amount"));
+        transaction.setAmount(Math.abs(resultSet.getFloat("amount")));
         transaction.setLocation(resultSet.getString("location"));
         transaction.setNote(resultSet.getNString("note"));
         transaction.setImage(resultSet.getString("image"));

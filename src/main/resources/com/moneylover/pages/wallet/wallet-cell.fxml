@@ -7,7 +7,8 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
+      xmlns:fx="http://javafx.com/fxml"
+      alignment="CENTER">
     <ImageView fitHeight="32"
                fitWidth="32"
                styleClass="transaction__content__image">

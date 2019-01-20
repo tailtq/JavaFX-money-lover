@@ -38,7 +38,7 @@
                 <Label text="-2,960,000.00 ₫"
                        styleClass="danger-color, text-bold"
                        GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                <fx:include source="../normal-button.fxml"
+                <fx:include source="../buttons/normal-button.fxml"
                             onAction="#loadDetail"
                             GridPane.columnIndex="2" GridPane.rowIndex="0">
                     <text>View</text>
@@ -56,7 +56,7 @@
                 <Label text="+2,960,000.00 ₫"
                        styleClass="primary-color, text-bold"
                        GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <fx:include source="../normal-button.fxml"
+                <fx:include source="../buttons/normal-button.fxml"
                             onAction="#loadDetail"
                             GridPane.columnIndex="2" GridPane.rowIndex="1">
                     <text>View</text>

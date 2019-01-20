@@ -31,11 +31,11 @@
         <PasswordField promptText="Confirm Password" styleClass="form__field" fx:id="passwordConfirmation"/>
     </VBox>
 
-    <fx:include source="../../components/normal-button.fxml" onAction="#signUp">
+    <fx:include source="../../components/buttons/normal-button.fxml" onAction="#signUp">
         <text>SIGN UP</text>
     </fx:include>
 
-    <fx:include source="../../components/text-button.fxml" styleClass="sign-up-message" onAction="#changeScene">
+    <fx:include source="../../components/buttons/text-button.fxml" styleClass="sign-up-message" onAction="#changeScene">
         <text>Sign in</text>
     </fx:include>
 </VBox>

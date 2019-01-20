@@ -38,7 +38,12 @@ public class WalletService extends BaseService {
     }
 
     public Wallet getDetail(int id) throws SQLException, NotFoundException {
-        ResultSet resultSet = this._getById(id);
+        ResultSet resultSet = this.getByJoin(
+                "wallets.*, currencies.symbol as money_symbol",
+                "INNER JOIN user_wallet ON wallets.id = user_wallet.wallet_id " +
+                        "INNER JOIN currencies ON wallets.currency_id = currencies.id",
+                "wallets.id = " + id
+        );
 
         if (!resultSet.next()) {
             throw new NotFoundException();
@@ -52,8 +57,19 @@ public class WalletService extends BaseService {
 
     public Wallet create(Wallet wallet) throws SQLException, NotFoundException {
         int id = this._create(wallet);
+        ResultSet resultSet = this.getByJoin(
+                "wallets.*, currencies.symbol as money_symbol",
+                "INNER JOIN currencies ON wallets.currency_id = currencies.id",
+                "wallets.id = " + id
+        );
 
-        return this.getDetail(id);
+        if (resultSet.next()) {
+            wallet = this.toObject(resultSet);
+        }
+
+        this.closeStatement();
+
+        return wallet;
     }
 
     public boolean attachUsers(ArrayList<UserWallet> userWallets) throws SQLException {
