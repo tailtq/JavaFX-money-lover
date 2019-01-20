@@ -1,13 +1,13 @@
 package com.moneylover.app;
 
-import com.moneylover.app.controllers.Pages.AuthenticationController;
+import com.moneylover.app.User.AuthenticationPresenter;
+import com.moneylover.app.User.UserPresenter;
 import javafx.scene.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
 import javafx.fxml.FXMLLoader;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import com.moneylover.app.controllers.MainController;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,14 +15,14 @@ import java.sql.SQLException;
 public class Main extends Application {
     private Stage primaryStage;
 
-    private AuthenticationController authenticationController;
+    private AuthenticationPresenter authenticationController;
 
     private HBox layout = new HBox();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        this.authenticationController = new AuthenticationController();
+        this.authenticationController = new AuthenticationPresenter();
         this.listenSceneChanging();
     }
 
@@ -62,21 +62,21 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void changeMainView(MainController mainController) throws SQLException, IOException, ClassNotFoundException {
-        mainController.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
+    private void changeMainView(MainPresenter mainPresenter) throws SQLException, IOException, ClassNotFoundException {
+        mainPresenter.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
                 ObservableList<Node> nodes = this.layout.getChildren();
                 if (nodes.size() == 2) {
                     nodes.remove(1);
                 }
 
-                nodes.add(mainController.getMainView());
+                nodes.add(mainPresenter.getMainView());
                 // The difference between oldValue and newValue triggers an event
-                mainController.setChangeScene(false);
+                mainPresenter.setChangeScene(false);
             }
         });
-        mainController.setUser(this.authenticationController.getUser());
-        this.layout.getChildren().add(mainController.getMainView());
+        mainPresenter.setWallets();
+        this.layout.getChildren().add(mainPresenter.getMainView());
     }
 
     public static void main(String[] args) {

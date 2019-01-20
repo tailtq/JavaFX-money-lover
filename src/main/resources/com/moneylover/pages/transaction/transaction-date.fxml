@@ -6,9 +6,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.ListView?>
 
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
 <VBox styleClass="transactions" xmlns:fx="http://javafx.com/fxml">
     <HBox styleClass="transaction__day">
         <Label text="27" fx:id="labelTransactionDayOfMonth"

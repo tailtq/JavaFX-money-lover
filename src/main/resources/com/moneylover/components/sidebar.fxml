@@ -2,7 +2,7 @@
 <?import javafx.geometry.Insets?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.moneylover.app.controllers.MainController"
+      fx:controller="com.moneylover.app.MainPresenter"
       stylesheets="@../../../assets/css/components/sidebar.css"
       styleClass="sidebar">
     <fx:include source="buttons/sidebar-button.fxml" onAction="#pressTransaction" styleClass="active, transaction">

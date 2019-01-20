@@ -6,6 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.moneylover.app.Currency.CurrencyPresenter"
       stylesheets="
         @../../../../../assets/css/colors.css,
         @../../../../../assets/css/icons.css,
