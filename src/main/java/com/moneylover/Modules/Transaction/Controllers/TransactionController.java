@@ -5,6 +5,7 @@ import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Transaction.Services.TransactionService;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TransactionController {
@@ -14,8 +15,14 @@ public class TransactionController {
         service = new TransactionService();
     }
 
-    public ArrayList<Transaction> list(int walletId, int month, int year, char operator) throws SQLException {
-        ArrayList<Transaction> transactions = this.service.list(walletId, month, year, operator);
+    public ArrayList<Transaction> listByMonth(int walletId, int month, int year, char operator) throws SQLException {
+        ArrayList<Transaction> transactions = this.service.listByMonth(walletId, month, year, operator);
+
+        return transactions;
+    }
+
+    public ArrayList<Transaction> listByDateRange(int walletId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        ArrayList<Transaction> transactions = this.service.listByDateRange(walletId, startDate, endDate);
 
         return transactions;
     }

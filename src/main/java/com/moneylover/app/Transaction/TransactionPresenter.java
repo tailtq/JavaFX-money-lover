@@ -1,7 +1,7 @@
 package com.moneylover.app.Transaction;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
-import com.moneylover.Modules.Time.Entities.Day;
+import com.moneylover.Modules.Time.Entities.CustomDate;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Infrastructure.Contracts.UseCategoryInterface;
@@ -33,53 +33,35 @@ import java.util.ResourceBundle;
 public class TransactionPresenter extends PagePresenter implements UseCategoryInterface, Initializable {
     private com.moneylover.Modules.Transaction.Controllers.TransactionController transactionController;
 
-    private ObservableList<Pair<Day, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
+    private ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
 
     private StringProperty handledTransactionId = new SimpleStringProperty();
 
-    private Day day;
+    private CustomDate date;
 
-    private LocalDate currentDay;
+    private LocalDate currentDate;
 
     private CategoryPresenter categoryPresenter;
 
     public void loadPresenter() throws SQLException, ClassNotFoundException {
+        this.currentDate = LocalDate.now();
         this.transactionController = new com.moneylover.Modules.Transaction.Controllers.TransactionController();
-        this.currentDay = LocalDate.now();
         this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
     }
 
     private void getTransactionsByMonth(Wallet wallet, int month, int year, char operator) throws SQLException {
         this.transactions.clear();
-        ArrayList<Transaction> transactions = this.transactionController.list(wallet.getId(), month, year, operator);
-
-        for (Transaction transaction: transactions) {
-            boolean hasDay = false;
-            LocalDate localDate = LocalDate.parse(transaction.getTransactedAt().toString());
-            int day = localDate.getDayOfMonth();
-
-            for (Pair<Day, ObservableList<Transaction>> pair: this.transactions) {
-                if (pair.getKey().getDayOfMonth() == day) {
-                    pair.getValue().add(transaction);
-                    hasDay = true;
-                }
-            }
-
-            if (!hasDay) {
-                this.addNewDay(transaction, localDate, wallet);
-            }
-        }
-
-        // TODO: should refactor with reversed sort
-        this.sortTransactions();
+        ArrayList<Transaction> transactions = this.transactionController.listByMonth(wallet.getId(), month, year, operator);
+        TransactionPresenter.sortTransactionsByDate(this.transactions, transactions, wallet.getMoneySymbol());
+        TransactionPresenter.reservedSortTransactions(this.transactions);
     }
 
-    private void addTransaction(Transaction newTransaction, Wallet wallet) {
+    private void addTransaction(Transaction newTransaction, String moneySymbol) {
         LocalDate newLocalDate = LocalDate.parse(newTransaction.getTransactedAt().toString());
         int transactionDayOfMonth = newLocalDate.getDayOfMonth();
         boolean hasDay = false;
 
-        for (Pair<Day, ObservableList<Transaction>> transaction: transactions) {
+        for (Pair<CustomDate, ObservableList<Transaction>> transaction: transactions) {
             int day = transaction.getKey().getDayOfMonth();
 
             if (transactionDayOfMonth == day) {
@@ -90,22 +72,55 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
         }
 
         if (!hasDay) {
-            this.addNewDay(newTransaction, newLocalDate, wallet);
+            TransactionPresenter.addNewDay(this.transactions, newTransaction, newLocalDate, moneySymbol);
         }
     }
 
-    private void addNewDay(Transaction newTransaction, LocalDate newLocalDate, Wallet wallet) {
-        Day newDay = new Day();
-        newDay.setDayOfMonth(newLocalDate.getDayOfMonth());
-        newDay.setDayOfWeek(newLocalDate.getDayOfWeek().toString());
-        newDay.setMonth(newLocalDate.getMonth().toString());
-        newDay.setSymbol(wallet.getMoneySymbol());
-        this.transactions.add(new Pair<>(newDay, FXCollections.observableArrayList(newTransaction)));
+    public static void sortTransactionsByDate(
+            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> sortedTransactions,
+            ArrayList<Transaction> transactions,
+            String moneySymbol
+    ) {
+        for (Transaction transaction: transactions) {
+            boolean hasDay = false;
+            LocalDate localDate = LocalDate.parse(transaction.getTransactedAt().toString());
+            int day = localDate.getDayOfMonth();
+
+            for (Pair<CustomDate, ObservableList<Transaction>> pair: sortedTransactions) {
+                if (pair.getKey().getDayOfMonth() == day) {
+                    pair.getValue().add(transaction);
+                    hasDay = true;
+                }
+            }
+
+            if (!hasDay) {
+                TransactionPresenter.addNewDay(sortedTransactions, transaction, localDate, moneySymbol);
+            }
+        }
     }
 
-    private void sortTransactions() {
-        this.transactions.sort(Comparator.comparingInt(a -> a.getKey().getDayOfMonth()));
-        FXCollections.reverse(this.transactions);
+    public static void addNewDay(
+            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions,
+            Transaction newTransaction,
+            LocalDate newLocalDate,
+            String moneySymbol
+    ) {
+        CustomDate newCustomDate = new CustomDate();
+        newCustomDate.setDayOfMonth(newLocalDate.getDayOfMonth());
+        newCustomDate.setDayOfWeek(newLocalDate.getDayOfWeek().toString());
+        newCustomDate.setMonth(newLocalDate.getMonth().toString());
+        newCustomDate.setMonthNumber(newLocalDate.getMonthValue());
+        newCustomDate.setSymbol(moneySymbol);
+        transactions.add(new Pair<>(newCustomDate, FXCollections.observableArrayList(newTransaction)));
+    }
+
+    private static void sortTransactions(ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions) {
+        transactions.sort(Comparator.comparingInt(a -> a.getKey().getDayOfMonth()));
+    }
+
+    public static void reservedSortTransactions(ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions) {
+        transactions.sort(Comparator.comparingInt(a -> a.getKey().getDayOfMonth()));
+        FXCollections.reverse(transactions);
     }
 
     private void handleTransactionId() {
@@ -117,7 +132,7 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
             int id = Integer.parseInt(newValue.substring(7));
             int i = 0;
 
-            for (Pair<Day, ObservableList<Transaction>> transactionDate: this.transactions) {
+            for (Pair<CustomDate, ObservableList<Transaction>> transactionDate: this.transactions) {
                 int j = 0;
                 for (Transaction transaction: transactionDate.getValue()) {
                     if (transaction.getId() == id) {
@@ -131,7 +146,6 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
                         } else {
                             try {
                                 Transaction updatedTransaction = this.transactionController.getDetail(id);
-                                System.out.println(updatedTransaction.getCategoryIcon() + " " + updatedTransaction.getSubCategoryIcon());
                                 transactionDate.getValue().set(j, updatedTransaction);
                             } catch (SQLException | NotFoundException e) {
                                 e.printStackTrace();
@@ -180,8 +194,8 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
-        this.day = new Day(this.currentDay.getMonthValue(), this.currentDay.getYear());
-        this.getTransactionsByMonth(wallets.get(0), this.day.getMonthNumber(), this.day.getYear(), '=');
+        this.date = new CustomDate(this.currentDate.getMonthValue(), this.currentDate.getYear());
+        this.getTransactionsByMonth(wallets.get(0), this.date.getMonthNumber(), this.date.getYear(), '=');
         this.setListViewTransactions();
     }
 
@@ -210,11 +224,11 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
         Node button = (Node) e.getSource();
         int selectedTimeRange = Integer.parseInt(button.getUserData().toString());
 
-        if (this.day.getMonthNumber() == this.currentDay.getMonthValue()
-                && this.day.getYear() == this.currentDay.getYear()
+        if (this.date.getMonthNumber() == this.currentDate.getMonthValue()
+                && this.date.getYear() == this.currentDate.getYear()
                 && selectedTimeRange == 1) {
             // TODO: Set current tab text is future, hide
-            this.getTransactionsByMonth(this.wallets.get(0), this.day.getMonthNumber(), this.day.getYear(), '>');
+            this.getTransactionsByMonth(this.wallets.get(0), this.date.getMonthNumber(), this.date.getYear(), '>');
             this.leftTimeRange.setText("THIS MONTH");
             this.middleTimeRange.setText("FUTURE");
             this.rightTimeRange.setVisible(false);
@@ -227,30 +241,32 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
     }
 
     private void setDay(int selectedTimeRange) throws SQLException {
-        int month = this.day.getMonthNumber();
-        int year = this.day.getYear();
+        int month = this.date.getMonthNumber();
+        int year = this.date.getYear();
 
-        if (month == 1 && selectedTimeRange == -1) {
-            this.day.setMonthNumber(12);
-            this.day.setYear(year - 1);
+        if (this.leftTimeRange.getText().equals("THIS MONTH")) {
+            this.date.setMonthNumber(this.currentDate.getMonthValue());
+        } else if (month == 1 && selectedTimeRange == -1) {
+            this.date.setMonthNumber(12);
+            this.date.setYear(year - 1);
         } else if (month == 12 && selectedTimeRange == 1) {
-            this.day.setMonthNumber(1);
-            this.day.setYear(year + 1);
+            this.date.setMonthNumber(1);
+            this.date.setYear(year + 1);
         } else if (selectedTimeRange == -1) {
-            this.day.setMonthNumber(--month);
+            this.date.setMonthNumber(--month);
         } else if (selectedTimeRange == 1) {
-            this.day.setMonthNumber(++month);
+            this.date.setMonthNumber(++month);
         }
 
-        month = this.day.getMonthNumber();
-        year = this.day.getYear();
+        month = this.date.getMonthNumber();
+        year = this.date.getYear();
         this.getTransactionsByMonth(this.wallets.get(0), month, year, '=');
         String displayedMonth = (month >= 10) ? Integer.toString(month) : "0" + month;
 
-        int currentMonth = this.currentDay.getMonthValue();
+        int currentMonth = this.currentDate.getMonthValue();
         int prevMonth = (currentMonth == 1) ? 12 : currentMonth - 1;
         int prevMonth2 = (prevMonth == 1) ? 12 : prevMonth - 1;
-        int currentYear = this.currentDay.getYear();
+        int currentYear = this.currentDate.getYear();
         int prevYear = (currentMonth == 1) ? currentYear - 1 : currentYear;
         int prevYear2 = (prevMonth == 1) ? prevYear - 1 : prevYear;
 
@@ -289,7 +305,7 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
 
     @FXML
     private void createTransaction() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-create.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-create.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
@@ -375,7 +391,7 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
 
         try {
             transaction = this.transactionController.create(transaction);
-            this.addTransaction(transaction, this.wallets.get(0));
+            this.addTransaction(transaction, this.wallets.get(0).getMoneySymbol());
 
             this.closeScene(event);
         } catch (SQLException | NotFoundException e) {

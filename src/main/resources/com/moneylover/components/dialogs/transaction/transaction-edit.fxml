@@ -13,10 +13,10 @@
 <GridPane xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"
           stylesheets="
-            @../../../../assets/css/components/header.css,
-            @../../../../assets/css/icons.css,
-            @../../../../assets/css/content.css,
-            @../../../../assets/css/components/dialogs/transaction-create.css
+            @../../../../../assets/css/components/header.css,
+            @../../../../../assets/css/icons.css,
+            @../../../../../assets/css/content.css,
+            @../../../../../assets/css/components/dialogs/transaction-create.css
           "
           styleClass="transaction__create-form">
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
@@ -61,12 +61,12 @@
     </VBox>
 
     <HBox GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="button-group" alignment="BOTTOM_RIGHT">
-        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button, cancel-button"
+        <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button, cancel-button"
                     onAction="#closeScene">
             <text>Cancel</text>
         </fx:include>
-        <fx:include source="../buttons/normal-button.fxml" styleClass="form__button"
-                    onAction="#storeTransaction">
+        <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button"
+                    onAction="#updateTransaction">
             <text>Done</text>
         </fx:include>
     </HBox>

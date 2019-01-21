@@ -121,7 +121,7 @@ public class WalletPresenter extends PagePresenter implements Initializable {
     @FXML
     public void createWallet() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/wallet-create.fxml")
+                getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-create.fxml")
         );
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();

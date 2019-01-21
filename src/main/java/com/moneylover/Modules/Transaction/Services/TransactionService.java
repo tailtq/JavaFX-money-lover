@@ -33,8 +33,14 @@ public class TransactionService extends BaseService {
         return Transaction.getTable();
     }
 
-    public ArrayList<Transaction> list(int walletId, int month, int year, char operator) throws SQLException {
+    public ArrayList<Transaction> listByMonth(int walletId, int month, int year, char operator) throws SQLException {
         ArrayList<Transaction> transactions = this._list(walletId, month, year, operator);
+
+        return transactions;
+    }
+
+    public ArrayList<Transaction> listByDateRange(int walletId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        ArrayList<Transaction> transactions = this._list(walletId, startDate, endDate);
 
         return transactions;
     }
@@ -61,8 +67,8 @@ public class TransactionService extends BaseService {
     }
 
     public Transaction create(Transaction transaction) throws SQLException, NotFoundException {
-        LocalDate day = LocalDate.parse(transaction.getTransactedAt().toString());
-        Time time = this.timeService.getDetail(day.getMonth().getValue(), day.getYear());
+        LocalDate date = LocalDate.parse(transaction.getTransactedAt().toString());
+        Time time = this.timeService.getDetail(date.getMonth().getValue(), date.getYear());
         Category category = this.categoryService.getDetail(transaction.getCategoryId());
         transaction.setTimeId(time.getId());
 
@@ -81,8 +87,8 @@ public class TransactionService extends BaseService {
     }
 
     public boolean update(Transaction transaction, int id) throws SQLException, NotFoundException {
-        LocalDate day = LocalDate.parse(transaction.getTransactedAt().toString());
-        Time time = this.timeService.getDetail(day.getMonth().getValue(), day.getYear());
+        LocalDate date = LocalDate.parse(transaction.getTransactedAt().toString());
+        Time time = this.timeService.getDetail(date.getMonth().getValue(), date.getYear());
         Category category = this.categoryService.getDetail(transaction.getCategoryId());
         transaction.setTimeId(time.getId());
 
@@ -106,6 +112,26 @@ public class TransactionService extends BaseService {
                 "wallet_id = " + walledId,
                 "month " + operator + " " + month,
                 "year " + operator + " " + year
+        );
+
+        while (resultSet.next()) {
+            transactions.add(this.toObject(resultSet));
+        }
+
+        return transactions;
+    }
+
+    private ArrayList<Transaction> _list(int walledId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        ResultSet resultSet = this.getByJoin(
+                "transactions.*, " +
+                        "categories.name as category_name, categories.icon as category_icon, categories.money_type as category_money_type, " +
+                        "sub_categories.name as sub_category_name, sub_categories.icon as sub_category_icon",
+                "INNER JOIN times ON transactions.time_id = times.id " +
+                        "INNER JOIN categories ON transactions.category_id = categories.id " +
+                        "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
+                "wallet_id = " + walledId,
+                "transacted_at >= CAST('" + startDate.toString() + "' AS DATE) AND transacted_at <= CAST('" + endDate.toString() + "' AS DATE)"
         );
 
         while (resultSet.next()) {
@@ -207,7 +233,7 @@ public class TransactionService extends BaseService {
         transaction.setCategoryId(resultSet.getInt("category_id"));
         transaction.setSubCategoryId(resultSet.getInt("sub_category_id"));
         transaction.setTransactedAt(resultSet.getDate("transacted_at"));
-        transaction.setAmount(Math.abs(resultSet.getFloat("amount")));
+        transaction.setAmount(resultSet.getFloat("amount"));
         transaction.setLocation(resultSet.getString("location"));
         transaction.setNote(resultSet.getNString("note"));
         transaction.setImage(resultSet.getString("image"));
@@ -221,5 +247,15 @@ public class TransactionService extends BaseService {
         transaction.setSubCategoryIcon(resultSet.getString("sub_category_icon"));
 
         return transaction;
+    }
+
+    @Override
+    protected ResultSet getByJoin(String select, String join, String... args) throws SQLException {
+        String condition = this.handleConditions(args);
+        String query = "SELECT " + select + " FROM " + getTable() + " " + join + condition + " ORDER BY transacted_at DESC";
+        statement = getStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        return resultSet;
     }
 }

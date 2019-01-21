@@ -50,7 +50,7 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
 
     @FXML
     private void showBudget(Event e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget-show.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-show.fxml"));
         fxmlLoader.setController(this);
         VBox parent = fxmlLoader.load();
 
@@ -77,7 +77,7 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
 
     @FXML
     private void loadBudgetTransactions() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report-detail.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
@@ -86,7 +86,7 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
 
     @FXML
     private void createBudget(Event e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget-create.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-create.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
 
@@ -95,7 +95,7 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
 
     @FXML
     private void editBudget(Event e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget-create.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-create.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
 
@@ -109,5 +109,10 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
             // Delete Budget
             System.out.println("Yes");
         }
+    }
+
+    @Override
+    public void loadPresenter() {
+
     }
 }

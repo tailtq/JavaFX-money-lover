@@ -1,7 +1,6 @@
 package com.moneylover.app.Wallet.View;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
-import com.moneylover.Modules.Wallet.Controllers.WalletController;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
 import com.moneylover.app.Currency.CurrencyPresenter;
@@ -11,12 +10,10 @@ import javafx.beans.property.StringProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -103,7 +100,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
     @FXML
     private void editWallet() throws SQLException, IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/wallet-edit.fxml")
+                getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-edit.fxml")
         );
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();

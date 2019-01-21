@@ -12,10 +12,10 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="
-          @../../../../assets/css/colors.css,
-          @../../../../assets/css/content.css,
-          @../../../../assets/css/pages/transaction.css,
-          @../../../../assets/css/pages/budget.css"
+          @../../../../../assets/css/colors.css,
+          @../../../../../assets/css/content.css,
+          @../../../../../assets/css/pages/transaction.css,
+          @../../../../../assets/css/pages/budget.css"
       styleClass="report--padding-30, report--background-white"
       alignment="TOP_CENTER">
     <VBox styleClass="dialog-container" alignment="TOP_CENTER">
@@ -24,7 +24,7 @@
                        fitWidth="50"
                        styleClass="transaction__content__image"
                        GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Image url="@../../../../assets/images/categories/i_debt.png"
+                <Image url="@../../../../../assets/images/categories/i_debt.png"
                        backgroundLoading="true"/>
             </ImageView>
             <Text styleClass="font--size-20">Hello</Text>
@@ -73,7 +73,7 @@
             </GridPane>
         </VBox>
 
-        <fx:include source="../buttons/normal-button.fxml" onAction="#loadBudgetTransactions">
+        <fx:include source="../../buttons/normal-button.fxml" onAction="#loadBudgetTransactions">
             <text>View Transactions</text>
         </fx:include>
     </VBox>

@@ -14,4 +14,10 @@ public class CommonConstants {
     public static final String EXPENSE = "expense";
 
     public static final String INCOME = "income";
+
+    public static final String DAY_RANGE = "DAY_RANGE";
+
+    public static final String MONTH_RANGE = "MONTH_RANGE";
+
+    public static final String YEAR_RANGE = "YEAR_RANGE";
 }
