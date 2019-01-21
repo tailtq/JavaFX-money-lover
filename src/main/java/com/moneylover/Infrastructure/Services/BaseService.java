@@ -116,7 +116,7 @@ abstract public class BaseService {
         return result;
     }
 
-    private String handleConditions(String[] conditions) {
+    protected String handleConditions(String[] conditions) {
         String condition = "";
 
         if (conditions.length > 0) {

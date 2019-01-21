@@ -10,10 +10,10 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="
-          @../../../../assets/css/colors.css,
-          @../../../../assets/css/content.css,
-          @../../../../assets/css/pages/transaction.css,
-          @../../../../assets/css/pages/report.css
+          @../../../../../assets/css/colors.css,
+          @../../../../../assets/css/content.css,
+          @../../../../../assets/css/pages/transaction.css,
+          @../../../../../assets/css/pages/report.css
         "
       styleClass="report--background-white"
       alignment="TOP_CENTER">
@@ -48,7 +48,7 @@
                            fitWidth="40"
                            styleClass="transaction__content__image"
                            GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Image url="@../../../../assets/images/categories/i_debt.png"
+                    <Image url="@../../../../../assets/images/categories/i_debt.png"
                            backgroundLoading="true"/>
                 </ImageView>
                 <GridPane styleClass="transaction__content"
@@ -68,7 +68,7 @@
                            fitWidth="40"
                            styleClass="transaction__content__image"
                            GridPane.columnIndex="0" GridPane.rowIndex="2">
-                    <Image url="@../../../../assets/images/categories/i_debt.png"
+                    <Image url="@../../../../../assets/images/categories/i_debt.png"
                            backgroundLoading="true"/>
                 </ImageView>
                 <GridPane styleClass="transaction__content"
@@ -115,7 +115,7 @@
                            fitWidth="40"
                            styleClass="transaction__content__image"
                            GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Image url="@../../../../assets/images/categories/i_debt.png"
+                    <Image url="@../../../../../assets/images/categories/i_debt.png"
                            backgroundLoading="true"/>
                 </ImageView>
                 <GridPane styleClass="transaction__content"
@@ -135,7 +135,7 @@
                            fitWidth="40"
                            styleClass="transaction__content__image"
                            GridPane.columnIndex="0" GridPane.rowIndex="2">
-                    <Image url="@../../../../assets/images/categories/i_debt.png"
+                    <Image url="@../../../../../assets/images/categories/i_debt.png"
                            backgroundLoading="true"/>
                 </ImageView>
                 <GridPane styleClass="transaction__content"
@@ -182,7 +182,7 @@
                            fitWidth="40"
                            styleClass="transaction__content__image"
                            GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Image url="@../../../../assets/images/categories/i_debt.png"
+                    <Image url="@../../../../../assets/images/categories/i_debt.png"
                            backgroundLoading="true"/>
                 </ImageView>
                 <GridPane styleClass="transaction__content"
@@ -202,7 +202,7 @@
                            fitWidth="40"
                            styleClass="transaction__content__image"
                            GridPane.columnIndex="0" GridPane.rowIndex="2">
-                    <Image url="@../../../../assets/images/categories/i_debt.png"
+                    <Image url="@../../../../../assets/images/categories/i_debt.png"
                            backgroundLoading="true"/>
                 </ImageView>
                 <GridPane styleClass="transaction__content"

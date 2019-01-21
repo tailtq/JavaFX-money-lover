@@ -9,10 +9,10 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="
-          @../../../../assets/css/colors.css,
-          @../../../../assets/css/content.css,
-          @../../../../assets/css/pages/transaction.css,
-          @../../../../assets/css/pages/report.css"
+          @../../../../../assets/css/colors.css,
+          @../../../../../assets/css/content.css,
+          @../../../../../assets/css/pages/transaction.css,
+          @../../../../../assets/css/pages/report.css"
       styleClass="report--padding-30, report--background-white" alignment="TOP_CENTER">
     <VBox styleClass="dialog-container" alignment="TOP_CENTER">
         <PieChart fx:id="pieChartDetail" legendVisible="false"/>
@@ -23,7 +23,7 @@
                                fitWidth="40"
                                styleClass="transaction__content__image"
                                GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Image url="@../../../../assets/images/categories/i_debt.png"
+                        <Image url="@../../../../../assets/images/categories/i_debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
                     <Label text="Thursday"
@@ -32,7 +32,7 @@
                     <Label text="+2,960,000.00 ₫"
                            styleClass="primary-color"
                            GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-                    <fx:include source="../buttons/normal-button.fxml"
+                    <fx:include source="../../buttons/normal-button.fxml"
                                 onAction="#loadDetail"
                                 GridPane.columnIndex="3" GridPane.rowIndex="0">
                         <text>View</text>
@@ -42,7 +42,7 @@
                                fitWidth="40"
                                styleClass="transaction__content__image"
                                GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Image url="@../../../../assets/images/categories/i_debt.png"
+                        <Image url="@../../../../../assets/images/categories/i_debt.png"
                                backgroundLoading="true"/>
                     </ImageView>
                     <Label text="Thursday"
@@ -51,7 +51,7 @@
                     <Label text="+2,960,000.00 ₫"
                            styleClass="primary-color"
                            GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                    <fx:include source="../buttons/normal-button.fxml"
+                    <fx:include source="../../buttons/normal-button.fxml"
                                 onAction="#loadDetail"
                                 GridPane.columnIndex="3" GridPane.rowIndex="1">
                         <text>View</text>

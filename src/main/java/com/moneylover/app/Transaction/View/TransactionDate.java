@@ -1,6 +1,6 @@
 package com.moneylover.app.Transaction.View;
 
-import com.moneylover.Modules.Time.Entities.Day;
+import com.moneylover.Modules.Time.Entities.CustomDate;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import javafx.beans.binding.Bindings;
@@ -18,12 +18,12 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class TransactionDate extends ListCell<Pair<Day, ObservableList<Transaction>>> {
+public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Transaction>>> {
     private VBox hBoxTransactionDate;
 
     private StringProperty handledTransactionId;
 
-    private Pair<Day, ObservableList<Transaction>> transactionDate;
+    private Pair<CustomDate, ObservableList<Transaction>> transactionDate;
 
     private ObservableList<Wallet> wallets;
 
@@ -54,18 +54,18 @@ public class TransactionDate extends ListCell<Pair<Day, ObservableList<Transacti
     private Label labelTransactionAmount;
 
     @Override
-    protected void updateItem(Pair<Day, ObservableList<Transaction>> item, boolean empty) {
+    protected void updateItem(Pair<CustomDate, ObservableList<Transaction>> item, boolean empty) {
         if (empty) {
             setGraphic(null);
             return;
         }
 
         this.transactionDate = item;
-        Day day = item.getKey();
-        labelTransactionDayOfMonth.setText(Integer.toString(day.getDayOfMonth()));
-        labelTransactionDayOfWeek.setText(day.getDayOfWeek());
-        labelTransactionMonth.setText(day.getMonth());
-        labelTransactionAmount.setText(String.format("%.1f", this.calculateAmount(item.getValue())) + " " + day.getSymbol());
+        CustomDate customDate = item.getKey();
+        labelTransactionDayOfMonth.setText(Integer.toString(customDate.getDayOfMonth()));
+        labelTransactionDayOfWeek.setText(customDate.getDayOfWeek());
+        labelTransactionMonth.setText(customDate.getMonth());
+        labelTransactionAmount.setText(String.format("%.1f", this.calculateAmount(item.getValue())) + " " + customDate.getSymbol());
         setGraphic(this.hBoxTransactionDate);
 
         if (this.listViewTransactions.getItems().size() == 0) {
@@ -73,7 +73,7 @@ public class TransactionDate extends ListCell<Pair<Day, ObservableList<Transacti
         }
     }
 
-    private void listTransactions(Pair<Day, ObservableList<Transaction>> item) {
+    private void listTransactions(Pair<CustomDate, ObservableList<Transaction>> item) {
         this.listViewTransactions.setItems(item.getValue());
         this.listViewTransactions.setCellFactory(new Callback<ListView, ListCell>() {
             @Override

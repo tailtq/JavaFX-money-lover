@@ -7,6 +7,7 @@ import com.moneylover.Modules.Type.Controllers.TypeController;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.Currency.CurrencyPresenter;
+import com.moneylover.app.Report.ReportPresenter;
 import com.moneylover.app.Transaction.TransactionPresenter;
 import com.moneylover.app.User.UserPresenter;
 import com.moneylover.app.Wallet.WalletPresenter;
@@ -41,10 +42,6 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 
     private VBox mainView;
 
-    public MainPresenter() {
-
-    }
-
     public BooleanProperty getChangeScene() {
         return changeScene;
     }
@@ -71,8 +68,6 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
             this.initView(fxmlLoader);
-            ((TransactionPresenter) this.controller).loadPresenter();
-            this.setWallets();
             CategoryPresenter.setTypes((new TypeController()).list());
             CategoryPresenter.setCategories((new CategoryController()).list());
             CategoryPresenter.setSubCategories((new SubCategoryController()).list());
@@ -81,11 +76,10 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     @FXML
-    private void pressReport(Event e) throws IOException, SQLException, ClassNotFoundException, NotFoundException {
+    private void pressReport(Event e) throws IOException, SQLException, ClassNotFoundException {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report/report.fxml"));
             this.initView(fxmlLoader);
-            this.setWallets();
         }
     }
 
@@ -99,8 +93,6 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallets.fxml"));
             this.initView(fxmlLoader);
-            this.setWallets();
-            ((WalletPresenter) this.controller).loadPresenter();
             CurrencyPresenter.setCurrencies(
                     (new com.moneylover.Modules.Currency.Controllers.CurrencyController()).list()
             );
@@ -112,28 +104,32 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/user/user.fxml"));
             this.initView(fxmlLoader);
-            this.setWallets();
         }
     }
 
-    private void initView(FXMLLoader viewLoader) throws IOException {
+    private void initView(FXMLLoader viewLoader) throws IOException, SQLException, ClassNotFoundException {
         // TODO: set wallets
         this.changeViewLoader(viewLoader);
         this.setChangeScene(true);
+        this.controller.loadPresenter();
+        this.setWallets();
         this.controller.setChangeWallet(this.changeWallet);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
-            this.changeViewLoader(fxmlLoader);
-            ((TransactionPresenter) this.controller).loadPresenter();
+//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
+//            this.changeViewLoader(fxmlLoader);
+//            this.controller.loadPresenter();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report/report.fxml"));
+            this.initView(fxmlLoader);
+            this.changeScene.set(false);
 
-            CategoryPresenter.setTypes((new TypeController()).list());
-            CategoryPresenter.setCategories((new CategoryController()).list());
-            CategoryPresenter.setSubCategories((new SubCategoryController()).list());
-            CategoryPresenter.combineCategories();
+//            CategoryPresenter.setTypes((new TypeController()).list());
+//            CategoryPresenter.setCategories((new CategoryController()).list());
+//            CategoryPresenter.setSubCategories((new SubCategoryController()).list());
+//            CategoryPresenter.combineCategories();
         } catch (IOException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -142,5 +138,6 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     private void changeViewLoader(FXMLLoader viewLoader) throws IOException {
         this.mainView = viewLoader.load();
         this.controller = viewLoader.getController();
+        this.changeScene.set(true);
     }
 }

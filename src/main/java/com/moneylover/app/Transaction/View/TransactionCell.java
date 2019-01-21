@@ -2,7 +2,6 @@ package com.moneylover.app.Transaction.View;
 
 import com.jfoenix.controls.JFXPopup;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
-import com.moneylover.Modules.Category.Controllers.CategoryController;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
@@ -28,7 +27,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class TransactionCell extends ListCell<Transaction> implements DialogInterface {
     private HBox transactionCell;
@@ -139,7 +137,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     @FXML
     private void edit() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction-edit.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-edit.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
         /* TODO: Load old data */

@@ -14,12 +14,14 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class UserPresenter extends PagePresenter implements LoaderInterface, Initializable {
+public class UserPresenter extends PagePresenter implements LoaderInterface {
     private com.moneylover.Modules.User.Controllers.UserController userController;
 
     private static User user;
 
-    public UserPresenter() {}
+    public UserPresenter() throws SQLException, ClassNotFoundException {
+        this.userController = new com.moneylover.Modules.User.Controllers.UserController();
+    }
 
     public static User getUser() {
         return user;
@@ -45,7 +47,7 @@ public class UserPresenter extends PagePresenter implements LoaderInterface, Ini
     @FXML
     private PasswordField textFieldPasswordConfirmation;
 
-    private void loadUser() {
+    public void loadPresenter() {
         User user = UserPresenter.getUser();
         this.textFieldName.setText(user.getName());
         this.textFieldEmail.setText(user.getEmail());
@@ -82,16 +84,6 @@ public class UserPresenter extends PagePresenter implements LoaderInterface, Ini
         } catch (SQLException | NotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
-        }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            this.userController = new com.moneylover.Modules.User.Controllers.UserController();
-            this.loadUser();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

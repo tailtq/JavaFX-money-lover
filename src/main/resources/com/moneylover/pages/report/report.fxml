@@ -10,6 +10,7 @@
 <?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.moneylover.app.Report.ReportPresenter"
       stylesheets="@../../../../assets/css/content.css"
       styleClass="root__content" HBox.hgrow="ALWAYS">
     <HBox stylesheets="@../../../../assets/css/components/header.css, @../../../../assets/css/pages/report.css"

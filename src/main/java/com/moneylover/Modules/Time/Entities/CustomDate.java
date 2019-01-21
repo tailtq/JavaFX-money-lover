@@ -1,6 +1,6 @@
 package com.moneylover.Modules.Time.Entities;
 
-public class Day {
+public class CustomDate {
     private int dayOfMonth;
 
     private String dayOfWeek;
@@ -13,11 +13,11 @@ public class Day {
 
     private String symbol;
 
-    public Day() {
+    public CustomDate() {
 
     }
 
-    public Day(int monthNumber, int year) {
+    public CustomDate(int monthNumber, int year) {
         this.monthNumber = monthNumber;
         this.year = year;
     }

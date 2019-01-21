@@ -39,7 +39,7 @@ public class Main extends Application {
                 } else {
                     this.loadMainScene();
                 }
-            } catch (IOException | SQLException | ClassNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
@@ -48,7 +48,7 @@ public class Main extends Application {
         this.primaryStage.show();
     }
 
-    private void loadMainScene() throws IOException, SQLException, ClassNotFoundException {
+    private void loadMainScene() throws IOException {
         FXMLLoader sidebarLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/sidebar.fxml"));
         Parent sidebar = sidebarLoader.load();
 
@@ -62,7 +62,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void changeMainView(MainPresenter mainPresenter) throws SQLException, IOException, ClassNotFoundException {
+    private void changeMainView(MainPresenter mainPresenter) {
         mainPresenter.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
                 ObservableList<Node> nodes = this.layout.getChildren();
@@ -75,7 +75,6 @@ public class Main extends Application {
                 mainPresenter.setChangeScene(false);
             }
         });
-        mainPresenter.setWallets();
         this.layout.getChildren().add(mainPresenter.getMainView());
     }
 
