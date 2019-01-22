@@ -87,7 +87,7 @@
                         </VBox.margin>
                     </fx:include>
 
-                    <ListView styleClass="transactions__times" fx:id="transactionDays"/>
+                    <ListView styleClass="transactions__times" fx:id="listViewDayTransactions"/>
                 </VBox>
             </VBox>
         </VBox>

@@ -1,3 +1,7 @@
+.month-report-container {
+    -fx-max-width: 500px !important;
+}
+
 .report--padding-30 {
     -fx-padding: 30px;
 }
@@ -35,5 +39,5 @@
 }
 
 .report__content > VBox, .report__content > HBox {
-    -fx-max-width: 380px;
+    /*-fx-max-width: 380px;*/
 }

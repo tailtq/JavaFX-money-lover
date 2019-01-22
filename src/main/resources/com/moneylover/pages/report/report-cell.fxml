@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      alignment="CENTER">
+    <Label styleClass="black-color" fx:id="labelDateTime">
+        <text>Friday 2019/01/04</text>
+    </Label>
+    <Pane HBox.hgrow="ALWAYS"></Pane>
+    <VBox alignment="CENTER_RIGHT">
+        <Label styleClass="success-color" fx:id="labelIncome">
+            <text>$ 0</text>
+        </Label>
+        <Label styleClass="danger-color" fx:id="labelOutcome">
+            <text>-$ 500,000.00</text>
+        </Label>
+        <Label styleClass="black-color" fx:id="labelAmount">
+            <text>-$ 500,000.00</text>
+        </Label>
+    </VBox>
+</HBox>

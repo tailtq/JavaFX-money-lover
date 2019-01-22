@@ -188,14 +188,11 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         transaction.setWalletId(walletId);
         transaction.setTypeId(this.selectedType.get());
         transaction.setCategoryId(categoryId);
+        transaction.setSubCategoryId(subCategoryId);
         transaction.setAmount(amount);
         transaction.setNote(this.textFieldNote.getText());
         transaction.setTransactedAt(Date.valueOf(transactedAt.toString()));
         transaction.setIsReported((byte) (isReported ? 1 : 0));
-
-        if (subCategoryId != 0) {
-            transaction.setSubCategoryId(subCategoryId);
-        }
 
         try {
             int id = this.transaction.getId();

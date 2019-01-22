@@ -1,27 +1,31 @@
 package com.moneylover.app.Report;
 
 import com.moneylover.Infrastructure.Constants.CommonConstants;
+import com.moneylover.Modules.Category.Entities.Category;
 import com.moneylover.Modules.Time.Entities.CustomDate;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.PagePresenter;
+import com.moneylover.app.Report.View.ReportCell;
 import com.moneylover.app.Transaction.TransactionPresenter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.chart.*;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import javafx.util.Pair;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ReportPresenter extends PagePresenter {
     private TransactionController transactionController;
@@ -30,7 +34,13 @@ public class ReportPresenter extends PagePresenter {
 
     private LocalDate endDate;
 
-    private ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
+    private ArrayList<Transaction> transactions;
+
+    private ObservableList<Pair<CustomDate, ObservableList<Transaction>>> monthTransactions = FXCollections.observableArrayList();
+
+    private ObservableList<Pair<Category, ObservableList<Transaction>>> inflowTransactions = FXCollections.observableArrayList();
+
+    private ObservableList<Pair<Category, ObservableList<Transaction>>> outflowTransactions = FXCollections.observableArrayList();
 
     public ReportPresenter() throws SQLException, ClassNotFoundException {
         this.startDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
@@ -41,37 +51,45 @@ public class ReportPresenter extends PagePresenter {
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
-        this.getTransactionsByDayRange(this.wallets.get(0), this.startDate, this.endDate);
-        this.loadBarChartData(this.transactions, startDate, endDate);
-//        this.loadPieChartData(this.expenseChart, values);
-//        this.loadPieChartData(this.incomeChart, values);
+        Wallet wallet = this.wallets.get(0);
+        this.transactions = this.loadTransactions(wallet.getId());
+        this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
+        this._loadPieCharts();
     }
 
-    public void getTransactionsByDayRange(
-            Wallet wallet,
+    private ArrayList<Transaction> loadTransactions(int walletId) throws SQLException {
+        return this.transactionController.listByDateRange(walletId, startDate, endDate);
+    }
+
+    private void _loadBarChart(
+            String moneySymbol,
             LocalDate startDate,
             LocalDate endDate
-    ) throws SQLException {
-        ArrayList<Transaction> transactions = this.transactionController.listByDateRange(wallet.getId(), startDate, endDate);
-
-        if (startDate.getMonthValue() == endDate.getMonthValue()
-                && startDate.getYear() == endDate.getYear()) {
+    ) {
+        if (startDate.getMonthValue() == endDate.getMonthValue() && startDate.getYear() == endDate.getYear()) {
             TransactionPresenter.sortTransactionsByDate(
-                    this.transactions,
-                    transactions,
-                    wallet.getMoneySymbol()
+                    this.monthTransactions,
+                    (ArrayList) this.transactions.clone(),
+                    moneySymbol
+            );
+        } else {
+            ReportPresenter._sortTransactionsByMonth(
+                    this.monthTransactions,
+                    (ArrayList) this.transactions.clone(),
+                    moneySymbol
             );
         }
 
-        ReportPresenter.sortTransactionsByMonth(this.transactions, transactions, wallet.getMoneySymbol());
+        this._loadBarChartData(this.monthTransactions, startDate, endDate);
     }
 
-    private static void sortTransactionsByMonth(
+    private static void _sortTransactionsByMonth(
             ObservableList<Pair<CustomDate, ObservableList<Transaction>>> sortedTransactions,
             ArrayList<Transaction> transactions,
             String moneySymbol
     ) {
-        for (Transaction transaction: transactions) {
+        for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
+            Transaction transaction = it.next();
             boolean hasMonth = false;
             LocalDate localDate = LocalDate.parse(transaction.getTransactedAt().toString());
             int month = localDate.getMonthValue();
@@ -79,22 +97,70 @@ public class ReportPresenter extends PagePresenter {
             for (Pair<CustomDate, ObservableList<Transaction>> pair: sortedTransactions) {
                 if (pair.getKey().getMonthNumber() == month) {
                     pair.getValue().add(transaction);
+                    it.remove();
                     hasMonth = true;
+                    break;
                 }
             }
 
             if (!hasMonth) {
                 TransactionPresenter.addNewDay(sortedTransactions, transaction, localDate, moneySymbol);
+                it.remove();
             }
         }
     }
 
+    private void _loadPieCharts() {
+        ReportPresenter._sortTransactionByCategories(this.inflowTransactions, this.outflowTransactions, this.transactions);
+        this._loadPieChartData(this.incomeChart, this.inflowTransactions);
+        this._loadPieChartData(this.expenseChart, this.outflowTransactions);
+
+    }
+
+    private static void _sortTransactionByCategories(
+            ObservableList<Pair<Category, ObservableList<Transaction>>> inflowTransactions,
+            ObservableList<Pair<Category, ObservableList<Transaction>>> outflowTransactions,
+            ArrayList<Transaction> transactions
+    ) {
+        for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
+            Transaction transaction = it.next();
+            String moneyType = transaction.getCategoryMoneyType();
+            boolean hasCategory = false;
+
+            if (moneyType.equals(CommonConstants.INCOME) || moneyType.equals(CommonConstants.EXPENSE)) {
+                boolean isEqualIncome = moneyType.equals(CommonConstants.INCOME);
+
+                for (Pair<Category, ObservableList<Transaction>> flowTransaction: (isEqualIncome ? inflowTransactions : outflowTransactions)) {
+                    if (transaction.getCategoryId() == flowTransaction.getKey().getId()) {
+                        flowTransaction.getValue().add(transaction);
+                        hasCategory = true;
+                        it.remove();
+                        break;
+                    }
+                }
+
+                if (!hasCategory) {
+                    ReportPresenter.addNewCategory((isEqualIncome ? inflowTransactions : outflowTransactions), transaction);
+                }
+            }
+        }
+    }
+
+    public static void addNewCategory(
+            ObservableList<Pair<Category, ObservableList<Transaction>>> transactions,
+            Transaction newTransaction
+    ) {
+        Category newCategory = new Category();
+        newCategory.setId(newTransaction.getCategoryId());
+        newCategory.setName(newTransaction.getCategoryName());
+        newCategory.setIcon(newTransaction.getCategoryIcon());
+        newCategory.setMoneyType(newTransaction.getCategoryMoneyType());
+        transactions.add(new Pair<>(newCategory, FXCollections.observableArrayList(newTransaction)));
+    }
+
     /*========================== Draw ==========================*/
     @FXML
-    private BarChart barChart;
-
-    @FXML
-    private BarChart barChartDetail;
+    private BarChart dateRangeChart;
 
     @FXML
     private PieChart expenseChart;
@@ -103,7 +169,7 @@ public class ReportPresenter extends PagePresenter {
     private PieChart incomeChart;
 
     @FXML
-    private PieChart pieChartDetail;
+    private ListView listViewMonthTransactions;
 
     @FXML
     private Text title;
@@ -112,7 +178,7 @@ public class ReportPresenter extends PagePresenter {
         // TODO: Calculate data
     }
 
-    public void loadBarChartData(
+    private void _loadBarChartData(
             ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions,
             LocalDate startDate,
             LocalDate endDate
@@ -122,8 +188,6 @@ public class ReportPresenter extends PagePresenter {
         XYChart.Series outflowSeries = new XYChart.Series();
         inflowSeries.setName("Inflow");
         outflowSeries.setName("Outflow");
-//        ObservableList inflowList = inflowSeries.getData();
-//        ObservableList outflowList = outflowSeries.getData();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Pair<CustomDate, ObservableList<Transaction>> transaction = transactions.get(i);
@@ -146,7 +210,6 @@ public class ReportPresenter extends PagePresenter {
 
             for (Transaction transactionItem: transaction.getValue()) {
                 float amount = transactionItem.getAmount();
-                System.out.println(amount);
 
                 if (amount > 0) {
                     inflow += amount;
@@ -159,7 +222,7 @@ public class ReportPresenter extends PagePresenter {
             outflowSeries.getData().add(new XYChart.Data(title, outflow));
         }
 
-        this.barChart.getData().addAll(inflowSeries, outflowSeries);
+        this.dateRangeChart.getData().addAll(inflowSeries, outflowSeries);
     }
 
     private String _getDateRange(LocalDate startDate, LocalDate endDate) {
@@ -172,31 +235,75 @@ public class ReportPresenter extends PagePresenter {
         }
     }
 
-    public void loadPieChartData(PieChart pieChart, ArrayList<Pair<String, Integer>> values) {
-        ObservableList data = pieChart.getData();
+    private void _loadPieChartData(
+            PieChart pieChart,
+            ObservableList<Pair<Category, ObservableList<Transaction>>> transactions
+    ) {
+        for (Pair<Category, ObservableList<Transaction>> transaction: transactions) {
+            float value = 0;
 
-        for (Pair<String, Integer> value: values) {
-            PieChart.Data category = new PieChart.Data(value.getKey(), value.getValue());
-            data.add(category);
+            for (Transaction transactionItem: transaction.getValue()) {
+                value += transactionItem.getAmount();
+            }
+
+            pieChart.getData().add(new PieChart.Data(transaction.getKey().getName(), Math.abs(value)));
         }
     }
 
     @FXML
-    public void loadMonths() throws IOException {
+    private void loadMonthTransactions() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/components/dialogs/report/report-months.fxml")
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        XYChart.Series clonalData = this.cloneBarChartData(this.barChart);
-        this.barChartDetail.getData().add(clonalData);
-        this.barChartDetail.setTitle("Report");
+        Wallet wallet = this.wallets.get(0);
+        this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
+        this._listMonthTransactions();
+        this.dateRangeChart.setTitle("Report");
+        this.createScreen(parent, "Report", 500, 700);
+    }
 
-        this.createScreen(parent, "Report", 400, 500);
+    private void _listMonthTransactions() {
+        this.listViewMonthTransactions.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml")
+            );
+            fxmlLoader.setController(this);
+            try {
+                Parent parent = fxmlLoader.load();
+                this.createScreen(parent, "Report", 500, 700);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        this.listViewMonthTransactions.setItems(this.monthTransactions);
+        this.listViewMonthTransactions.setCellFactory(new Callback<ListView, ListCell>() {
+            @Override
+            public ListCell call(ListView param) {
+                try {
+                    ReportCell reportCell = new ReportCell();
+
+                    return reportCell;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        });
     }
 
     @FXML
+    private void loadDetail() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml"));
+        fxmlLoader.setController(this);
+        Parent parent = fxmlLoader.load();
+
+        this.createScreen(parent, "Report Detail", 400, 500);
+    }
+
+    /*@FXML
     public void loadCategories(Event e) throws IOException {
         Node button = (Node) e.getSource();
         Node chart = button.getParent().getChildrenUnmodifiable().get(0);
@@ -215,36 +322,14 @@ public class ReportPresenter extends PagePresenter {
         this.pieChartDetail.setTitle("Category");
 
         this.createScreen(parent, "Report", 400, 500);
-    }
+    }*/
 
-    @FXML
-    public void loadDetail() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml"));
-        fxmlLoader.setController(this);
-        Parent parent = fxmlLoader.load();
-
-        this.createScreen(parent, "Report Detail", 400, 500);
-    }
-
-    public XYChart.Series cloneBarChartData(BarChart chart) {
-        ObservableList<XYChart.Data> oldData = ((XYChart.Series) chart.getData().get(0)).getData();
-        XYChart.Series newSeries = new XYChart.Series();
-        ObservableList<XYChart.Data> data = newSeries.getData();
-
-        for (int i = 0; i < oldData.size(); i++) {
-            XYChart.Data value = oldData.get(i);
-            data.add(new XYChart.Data(value.getXValue(), value.getYValue()));
-        }
-
-        return newSeries;
-    }
-
-    public void addPieChartData(PieChart chart, ObservableList data) {
+    /*public void addPieChartData(PieChart chart, ObservableList data) {
         for (PieChart.Data value: chart.getData()) {
             PieChart.Data category = new PieChart.Data(value.getName(), value.getPieValue());
             data.add(category);
         }
-    }
+    }*/
 
     public void loadDetailData(ArrayList values) throws IOException {
 

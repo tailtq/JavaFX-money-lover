@@ -5,9 +5,9 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
-
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.text.Text?>
+
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.moneylover.app.Report.ReportPresenter"
@@ -33,7 +33,7 @@
           alignment="CENTER" styleClass="container">
         <VBox styleClass="container__content, report__content" alignment="TOP_CENTER">
             <VBox alignment="TOP_CENTER">
-                <BarChart fx:id="barChart" legendVisible="false">
+                <BarChart fx:id="dateRangeChart" title="Net Income" legendVisible="false">
                     <xAxis>
                         <CategoryAxis side="BOTTOM"/>
                     </xAxis>
@@ -41,22 +41,19 @@
                         <NumberAxis side="LEFT"/>
                     </yAxis>
                 </BarChart>
-                <fx:include source="../../components/buttons/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonths">
+                <fx:include source="../../components/buttons/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonthTransactions">
                     <text>View</text>
                 </fx:include>
             </VBox>
+            <GridPane>
+
+            </GridPane>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                 <VBox alignment="CENTER">
-                    <PieChart fx:id="expenseChart" legendVisible="false" />
-                    <fx:include source="../../components/buttons/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
-                        <text>View</text>
-                    </fx:include>
+                    <PieChart fx:id="expenseChart" title="Inflow" legendVisible="false"/>
                 </VBox>
                 <VBox alignment="CENTER">
-                    <PieChart fx:id="incomeChart" legendVisible="false"/>
-                    <fx:include source="../../components/buttons/normal-button.fxml" styleClass="report__view-button" onAction="#loadCategories">
-                        <text>View</text>
-                    </fx:include>
+                    <PieChart fx:id="incomeChart" title="Outflow" legendVisible="false"/>
                 </VBox>
             </HBox>
         </VBox>
