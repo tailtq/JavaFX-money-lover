@@ -1,6 +1,8 @@
 package com.moneylover.app.Transaction;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
+import com.moneylover.Modules.Category.Entities.Category;
+import com.moneylover.Modules.SubCategory.Entities.SubCategory;
 import com.moneylover.Modules.Time.Entities.CustomDate;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
@@ -28,6 +30,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class TransactionPresenter extends PagePresenter implements UseCategoryInterface, Initializable {
@@ -81,7 +84,8 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
             ArrayList<Transaction> transactions,
             String moneySymbol
     ) {
-        for (Transaction transaction: transactions) {
+        for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
+            Transaction transaction = it.next();
             boolean hasDay = false;
             LocalDate localDate = LocalDate.parse(transaction.getTransactedAt().toString());
             int day = localDate.getDayOfMonth();
@@ -89,12 +93,15 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
             for (Pair<CustomDate, ObservableList<Transaction>> pair: sortedTransactions) {
                 if (pair.getKey().getDayOfMonth() == day) {
                     pair.getValue().add(transaction);
+                    it.remove();
                     hasDay = true;
+                    break;
                 }
             }
 
             if (!hasDay) {
                 TransactionPresenter.addNewDay(sortedTransactions, transaction, localDate, moneySymbol);
+                it.remove();
             }
         }
     }
@@ -110,6 +117,7 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
         newCustomDate.setDayOfWeek(newLocalDate.getDayOfWeek().toString());
         newCustomDate.setMonth(newLocalDate.getMonth().toString());
         newCustomDate.setMonthNumber(newLocalDate.getMonthValue());
+        newCustomDate.setYear(newLocalDate.getYear());
         newCustomDate.setSymbol(moneySymbol);
         transactions.add(new Pair<>(newCustomDate, FXCollections.observableArrayList(newTransaction)));
     }
@@ -169,7 +177,7 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
     private Button leftTimeRange, middleTimeRange, rightTimeRange, selectCategory;
 
     @FXML
-    private ListView transactionDays;
+    private ListView listViewDayTransactions;
 
     @FXML
     private MenuButton selectWallet;
@@ -201,9 +209,8 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
 
     private void setListViewTransactions() {
         this.handleTransactionId();
-
-        this.transactionDays.setItems(this.transactions);
-        this.transactionDays.setCellFactory(new Callback<ListView, ListCell>() {
+        this.listViewDayTransactions.setItems(this.transactions);
+        this.listViewDayTransactions.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {
@@ -214,9 +221,7 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
                 }
             }
         });
-//        this.transactionDays.setMouseTransparent(true);
-//        this.transactionDays.set
-        this.transactionDays.setFocusTraversable(false);
+        this.listViewDayTransactions.setFocusTraversable(false);
     }
 
     @FXML
@@ -262,7 +267,6 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
         year = this.date.getYear();
         this.getTransactionsByMonth(this.wallets.get(0), month, year, '=');
         String displayedMonth = (month >= 10) ? Integer.toString(month) : "0" + month;
-
         int currentMonth = this.currentDate.getMonthValue();
         int prevMonth = (currentMonth == 1) ? 12 : currentMonth - 1;
         int prevMonth2 = (prevMonth == 1) ? 12 : prevMonth - 1;
@@ -308,7 +312,6 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-create.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-
         this.loadWallets();
         this.walletId.set(0);
         this.selectedType.set(0);
@@ -380,14 +383,11 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
         transaction.setWalletId(walletId);
         transaction.setTypeId(this.selectedType.get());
         transaction.setCategoryId(categoryId);
+        transaction.setSubCategoryId(subCategoryId);
         transaction.setAmount(amount);
         transaction.setNote(this.textFieldNote.getText());
         transaction.setTransactedAt(Date.valueOf(transactedAt.toString()));
         transaction.setIsReported((byte) (isReported ? 1 : 0));
-
-        if (subCategoryId != 0) {
-            transaction.setSubCategoryId(subCategoryId);
-        }
 
         try {
             transaction = this.transactionController.create(transaction);

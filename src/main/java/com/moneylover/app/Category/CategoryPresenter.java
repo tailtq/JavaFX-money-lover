@@ -85,6 +85,7 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                 if (combinedCategory.getKey().getTypeId() == type.getId()) {
                     combineType.add(combinedCategory);
                     it.remove();
+                    break;
                 }
             }
 
@@ -164,7 +165,7 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                     buttonSubCategory.setUserData(subCategory.getId());
                     buttonSubCategory.setOnAction(actionEvent -> {
                         this.selectedType.set(subCategory.getTypeId());
-                        this.selectedCategory.set(subCategory.getId());
+                        this.selectedCategory.set(subCategory.getCategoryId());
                         this.selectedSubCategory.set(subCategory.getId());
                         this.closeScene(actionEvent);
                     });
