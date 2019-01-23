@@ -1,12 +1,9 @@
 package com.moneylover.app.Transaction;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
-import com.moneylover.Modules.Category.Entities.Category;
-import com.moneylover.Modules.SubCategory.Entities.SubCategory;
 import com.moneylover.Modules.Time.Entities.CustomDate;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
-import com.moneylover.Infrastructure.Contracts.UseCategoryInterface;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.Transaction.View.TransactionDate;
@@ -33,7 +30,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
-public class TransactionPresenter extends PagePresenter implements UseCategoryInterface, Initializable {
+public class TransactionPresenter extends PagePresenter {
     private com.moneylover.Modules.Transaction.Controllers.TransactionController transactionController;
 
     private ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
@@ -84,6 +81,8 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
             ArrayList<Transaction> transactions,
             String moneySymbol
     ) {
+        sortedTransactions.clear();
+
         for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
             Transaction transaction = it.next();
             boolean hasDay = false;
@@ -371,7 +370,7 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
             return;
         }
         if (categoryId == 0) {
-            this.showErrorDialog("Category is not selected");
+            this.showErrorDialog("Budget is not selected");
             return;
         }
         if (amount <= 0) {
@@ -398,10 +397,5 @@ public class TransactionPresenter extends PagePresenter implements UseCategoryIn
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 }

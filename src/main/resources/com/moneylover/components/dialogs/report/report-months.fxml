@@ -31,7 +31,7 @@
                 <!--<GridPane styleClass="transaction__content, report__transactions&#45;&#45;no-border"-->
                           <!--GridPane.columnIndex="0" GridPane.rowIndex="0">-->
                     <!--<Label text="December"-->
-                           <!--styleClass="transaction__content__type, text-bold, category"-->
+                           <!--styleClass="transaction__content__type, text-bold, budget"-->
                            <!--GridPane.columnIndex="0" GridPane.rowIndex="0"/>-->
                     <!--<Label text="2018"-->
                            <!--styleClass="transaction__content__note, gray-color"-->
@@ -49,7 +49,7 @@
                 <!--<GridPane styleClass="transaction__content"-->
                           <!--GridPane.columnIndex="0" GridPane.rowIndex="1">-->
                     <!--<Label text="December"-->
-                           <!--styleClass="transaction__content__type, text-bold, category"-->
+                           <!--styleClass="transaction__content__type, text-bold, budget"-->
                            <!--GridPane.columnIndex="0" GridPane.rowIndex="0"/>-->
                     <!--<Label text="2018"-->
                            <!--styleClass="transaction__content__note, gray-color"-->

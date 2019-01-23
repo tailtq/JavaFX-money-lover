@@ -30,11 +30,11 @@ public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Tr
     public TransactionDate(StringProperty handledTransactionId, ObservableList<Wallet> wallets) throws IOException {
         this.handledTransactionId = handledTransactionId;
         this.wallets = wallets;
-        FXMLLoader transactionDateLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/pages/transaction/transaction-date.fxml")
-        );
-        transactionDateLoader.setController(this);
-        this.hBoxTransactionDate = transactionDateLoader.load();
+        this.loadViewElement();
+    }
+
+    public TransactionDate() throws IOException {
+        this.loadViewElement();
     }
 
     /*========================== Draw ==========================*/
@@ -52,6 +52,8 @@ public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Tr
 
     @FXML
     private Label labelTransactionAmount;
+
+    boolean disableOptions;
 
     @Override
     protected void updateItem(Pair<CustomDate, ObservableList<Transaction>> item, boolean empty) {
@@ -73,6 +75,18 @@ public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Tr
         }
     }
 
+    private void loadViewElement() throws IOException {
+        FXMLLoader transactionDateLoader = new FXMLLoader(
+                getClass().getResource("/com/moneylover/pages/transaction/transaction-date.fxml")
+        );
+        transactionDateLoader.setController(this);
+        this.hBoxTransactionDate = transactionDateLoader.load();
+    }
+
+    public void setDisableOptions(boolean isDisable) {
+        this.disableOptions = isDisable;
+    }
+
     private void listTransactions(Pair<CustomDate, ObservableList<Transaction>> item) {
         this.listViewTransactions.setItems(item.getValue());
         this.listViewTransactions.setCellFactory(new Callback<ListView, ListCell>() {
@@ -81,6 +95,7 @@ public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Tr
                 try {
                     TransactionCell transactionCell = new TransactionCell(handledTransactionId);
                     transactionCell.setWallets(wallets);
+                    transactionCell.setDisableOptions(disableOptions);
 
                     return transactionCell;
                 } catch (IOException | SQLException | ClassNotFoundException e) {

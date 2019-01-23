@@ -5,72 +5,65 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.util.logging.Logger;
+
 public class SO extends Application {
-    static class XCell extends ListCell<String> {
-        HBox hbox = new HBox();
-        Label label = new Label("(empty)");
-        Pane pane = new Pane();
-        Button button = new Button("(>)");
-        String lastItem;
+    private NumberAxis yAxis;
+    private CategoryAxis xAxis;
+    private BarChart<String, Number> barChart;
 
-        public XCell() {
-            super();
-            hbox.getChildren().addAll(label, pane, button);
-            HBox.setHgrow(pane, Priority.ALWAYS);
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
+    private Parent createContent() {
+        xAxis = new CategoryAxis();
+        CategoryAxis xAxis1 = new CategoryAxis();
+        yAxis = new NumberAxis();
+        NumberAxis yAxis1 = new NumberAxis();
+        barChart = new BarChart<>(xAxis, yAxis);
 
-                }
-            });
-        }
+        Button initData = new Button("init");
+        initData.setOnAction(e -> {
+            xAxis.setLabel("Numer indeksu");
+            yAxis.setLabel("Ilo punktw");
+            XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+            series1.getData().add(new XYChart.Data<String, Number>("Tom", 10));
+            series1.getData().add(new XYChart.Data<String, Number>("Andrew", 7));
+            series1.getData().add(new XYChart.Data<String, Number>("Patrick", 5));
 
-        @Override
-        protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            setText(null);  // No text in label of super class
-            if (empty) {
-                lastItem = null;
-                setGraphic(null);
-            } else {
-                lastItem = item;
-                label.setText(item!=null ? item : "<null>");
-                setGraphic(hbox);
-            }
-        }
+            // hack-around:
+            xAxis.setCategories(FXCollections.observableArrayList("Tom", "Andrew", "Patrick"));
+            barChart.getData().addAll(series1);
+
+            initData.setDisable(true);
+
+        });
+        BorderPane pane = new BorderPane(barChart);
+        pane.setBottom(initData);
+        return pane;
+
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        StackPane pane = new StackPane();
-        Scene scene = new Scene(pane, 300, 150);
-        primaryStage.setScene(scene);
-        ObservableList<String> list = FXCollections.observableArrayList(
-                "Item 1", "Item 2", "Item 3", "Item 4");
-        ListView<String> lv = new ListView<>(list);
-        lv.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-            @Override
-            public ListCell<String> call(ListView<String> param) {
-                return new XCell();
-            }
-        });
-        pane.getChildren().add(lv);
-        primaryStage.show();
+    public void start(Stage stage) throws Exception {
+        stage.setScene(new Scene(createContent()));
+        stage.setTitle("G");
+        stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -21,6 +22,13 @@
         </Label>
         <Label styleClass="black-color" fx:id="labelAmount">
             <text>-$ 500,000.00</text>
+        </Label>
+    </VBox>
+    <VBox alignment="CENTER" styleClass="report__cell__icon">
+        <Label>
+            <graphic>
+                <FontAwesomeIconView glyphName="CHEVRON_RIGHT" size="14px" glyphStyle="-fx-fill: #636363"/>
+            </graphic>
         </Label>
     </VBox>
 </HBox>

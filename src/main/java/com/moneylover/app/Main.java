@@ -1,7 +1,6 @@
 package com.moneylover.app;
 
 import com.moneylover.app.User.AuthenticationPresenter;
-import com.moneylover.app.User.UserPresenter;
 import javafx.scene.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
@@ -10,7 +9,6 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class Main extends Application {
     private Stage primaryStage;

@@ -65,6 +65,7 @@ public class ReportCell extends ListCell<Pair<CustomDate, ObservableList<Transac
         String dateString = date.getYear() + "-" + month + "-" + day;
         String amountString = (amount > 0) ? "+" + amount : Float.toString(amount);
         LocalDate localDate = LocalDate.parse(dateString);
+
         labelDateTime.setText(localDate.format(DateTimeFormatter.ofPattern("EEEE Y/MM/dd")));
         labelIncome.setText("+" + income);
         labelOutcome.setText(Float.toString(outcome));

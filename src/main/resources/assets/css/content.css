@@ -155,3 +155,11 @@
 .transaction__create-form__select.header__wallet {
     -fx-padding: 0 0 0 30;
 }
+
+/* Chart */
+/*.default-color0.chart-bar {*/
+    /*-fx-stroke: blue*/
+/*}*/
+/*.default-color0.chart-series-bar { -fx-stroke: blue; }*/
+/*.default-color1.chart-series-bar { -fx-stroke: yellow; }*/
+/*.default-color2.chart-series-bar { -fx-stroke: brown; }*/

@@ -1,7 +1,15 @@
 package com.moneylover.app.Budget;
 
-import com.moneylover.Infrastructure.Contracts.UseCategoryInterface;
+import com.moneylover.Infrastructure.Helpers.DateHelper;
+import com.moneylover.Modules.Budget.Controllers.BudgetController;
+import com.moneylover.Modules.Budget.Entities.Budget;
+import com.moneylover.Modules.Time.Entities.CustomDateRange;
+import com.moneylover.Modules.Wallet.Entities.Wallet;
+import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.PagePresenter;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -15,9 +23,48 @@ import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class BudgetPresenter extends PagePresenter implements UseCategoryInterface {
+public class BudgetPresenter extends PagePresenter {
+    private CategoryPresenter categoryPresenter;
+
+    private BudgetController budgetController;
+
+    private ObservableList<Budget> onGoingBudgets = FXCollections.observableArrayList();
+
+    private ObservableList<Budget> finishingBudgets = FXCollections.observableArrayList();
+
+    public BudgetPresenter() throws SQLException, ClassNotFoundException {
+        this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
+        this.budgetController = new BudgetController();
+    }
+
+    private static void _sortFinishingBudgets(
+            ObservableList<Budget> onGoingBudgets,
+            ObservableList<Budget> finishedBudgets,
+            ArrayList<Budget> budgets
+    ) {
+        onGoingBudgets.clear();
+        finishedBudgets.clear();
+        LocalDate now = LocalDate.now();
+
+        for (Budget budget: budgets) {
+            LocalDate endDate = LocalDate.parse(budget.getStartedAt().toString());
+
+            if (DateHelper.isLaterThan(now, endDate)) {
+                onGoingBudgets.add(budget);
+            } else {
+                finishedBudgets.add(budget);
+            }
+        }
+    }
+
+    /*========================== Draw ==========================*/
+    @FXML
+    private ListView listViewBudgets;
+
     @FXML
     private AreaChart areaChartDetail;
 
@@ -30,12 +77,18 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
     @FXML
     private VBox finishedTab;
 
-    public VBox loadView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget/budget.fxml"));
-        fxmlLoader.setController(this);
-        VBox vBox = fxmlLoader.load();
+    private IntegerProperty selectedType = new SimpleIntegerProperty(0);
 
-        return vBox;
+    private IntegerProperty selectedCategory = new SimpleIntegerProperty(0);
+
+    private IntegerProperty selectedSubCategory = new SimpleIntegerProperty(0);
+
+    @Override
+    public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
+        super.setWallets(wallets);
+        Wallet wallet = wallets.get(0);
+        ArrayList<Budget> budgets = this.budgetController.list(wallet.getId());
+        BudgetPresenter._sortFinishingBudgets(onGoingBudgets, finishingBudgets, budgets);
     }
 
     @FXML
@@ -44,17 +97,19 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
     }
 
     @FXML
-    private void chooseCategory(Event e) throws IOException {
-        this.showCategoryDialog(e);
+    private void chooseCategory() throws IOException {
+        this.categoryPresenter.showCategoryDialog();
     }
 
     @FXML
-    private void showBudget(Event e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-show.fxml"));
+    private void showBudget() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getResource("/com/moneylover/components/dialogs/budget/budget-show.fxml")
+        );
         fxmlLoader.setController(this);
         VBox parent = fxmlLoader.load();
-
         ArrayList<Pair<String, Double>> values = new ArrayList<>();
+
         for (int i = 1; i < 5; i++) {
             values.add(new Pair<>(Integer.toString(i), (double) i * 100));
         }
@@ -85,7 +140,7 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
     }
 
     @FXML
-    private void createBudget(Event e) throws IOException {
+    private void createBudget() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-create.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
@@ -94,7 +149,7 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
     }
 
     @FXML
-    private void editBudget(Event e) throws IOException {
+    private void editBudget() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-create.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
@@ -103,7 +158,7 @@ public class BudgetPresenter extends PagePresenter implements UseCategoryInterfa
     }
 
     @FXML
-    private void deleteBudget(Event e) {
+    private void deleteBudget() {
         ButtonBar.ButtonData buttonData = this.showDeleteDialog();
         if (buttonData == ButtonBar.ButtonData.YES) {
             // Delete Budget
