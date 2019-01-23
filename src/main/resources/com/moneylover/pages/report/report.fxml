@@ -22,8 +22,15 @@
             <center>
                 <HBox alignment="CENTER_RIGHT">
                     <Text styleClass="font--size-10">Range Date</Text>
-                    <DatePicker promptText="Start Date" styleClass="transaction__create-form__select, report__date-range"/>
-                    <DatePicker promptText="End Date" styleClass="transaction__create-form__select, report__date-range"/>
+                    <DatePicker promptText="Start Date" fx:id="datePickerStartDate" onMouseReleased="#changeDayRange"
+                                styleClass="transaction__create-form__select, report__date-range"/>
+                    <DatePicker promptText="End Date" fx:id="datePickerEndDate" onMouseReleased="#changeDayRange"
+                                styleClass="transaction__create-form__select, report__date-range"/>
+                    <fx:include source="../../components/buttons/normal-button.fxml"
+                                onAction="#changeDayRange"
+                                styleClass="report__view-button">
+                        <text>View</text>
+                    </fx:include>
                 </HBox>
             </center>
         </BorderPane>
@@ -41,20 +48,16 @@
                         <NumberAxis side="LEFT"/>
                     </yAxis>
                 </BarChart>
-                <fx:include source="../../components/buttons/normal-button.fxml" styleClass="report__view-button" onAction="#loadMonthTransactions">
+                <fx:include source="../../components/buttons/normal-button.fxml"
+                            styleClass="report__view-button" onAction="#loadMonthTransactions">
                     <text>View</text>
                 </fx:include>
             </VBox>
-            <GridPane>
-
-            </GridPane>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                <VBox alignment="CENTER">
-                    <PieChart fx:id="expenseChart" title="Inflow" legendVisible="false"/>
-                </VBox>
-                <VBox alignment="CENTER">
-                    <PieChart fx:id="incomeChart" title="Outflow" legendVisible="false"/>
-                </VBox>
+                <PieChart fx:id="incomeChart" title="Inflow"/>
+            </HBox>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <PieChart fx:id="expenseChart" title="Outflow"/>
             </HBox>
         </VBox>
     </VBox>

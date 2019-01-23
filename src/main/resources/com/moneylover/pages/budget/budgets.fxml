@@ -18,6 +18,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../../../../assets/css/content.css"
+      fx:controller="com.moneylover.app.Budget.BudgetPresenter"
       styleClass="root__content" HBox.hgrow="ALWAYS">
     <HBox stylesheets="@../../../../assets/css/components/header.css"
           styleClass="header">
@@ -90,11 +91,6 @@
                                         <Image url="@../../../../assets/images/categories/i_debt.png"
                                                backgroundLoading="true"/>
                                     </ImageView>
-                                    <Button styleClass="button--bg-radius-50, success-bg-color" onAction="#showBudget">
-                                        <graphic>
-                                            <FontAwesomeIconView glyphName="EYE" size="12px" glyphStyle="-fx-fill: white" />
-                                        </graphic>
-                                    </Button>
                                 </VBox>
                                 <GridPane styleClass="budget__detail" GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER">
                                     <Label text="01/01/2019 - 31/01/2019"
@@ -108,14 +104,9 @@
                                     </VBox>
                                     <VBox styleClass="budget__options" alignment="CENTER"
                                           GridPane.columnIndex="2" GridPane.rowIndex="0">
-                                        <Button styleClass="button--bg-radius-50, warning-bg-color" onAction="#editBudget">
+                                        <Button fx:id="buttonOptions" styleClass="bg--linear-succeed-color">
                                             <graphic>
-                                                <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
-                                            </graphic>
-                                        </Button>
-                                        <Button styleClass="button--bg-radius-50, danger-bg-color" onAction="#deleteBudget">
-                                            <graphic>
-                                                <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+                                                <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white" />
                                             </graphic>
                                         </Button>
                                     </VBox>

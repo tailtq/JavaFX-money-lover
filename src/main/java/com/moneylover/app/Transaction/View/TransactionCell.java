@@ -69,6 +69,9 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     @FXML
     private Label labelAmount;
 
+    @FXML
+    private Button buttonOptions;
+
     private IntegerProperty walletId = new SimpleIntegerProperty(0);
 
     @FXML
@@ -113,6 +116,12 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         this.labelTransactionNote.setText(item.getNote());
         this.labelAmount.setText(Float.toString(item.getAmount()));
         setGraphic(this.transactionCell);
+    }
+
+    void setDisableOptions(boolean disableOptions) {
+        if (disableOptions) {
+            this.buttonOptions.setDisable(true);
+        }
     }
 
     @FXML
@@ -176,7 +185,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
             return;
         }
         if (categoryId == 0) {
-            this.showErrorDialog("Category is not selected");
+            this.showErrorDialog("Budget is not selected");
             return;
         }
         if (amount <= 0) {

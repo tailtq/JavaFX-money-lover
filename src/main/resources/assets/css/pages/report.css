@@ -41,3 +41,7 @@
 .report__content > VBox, .report__content > HBox {
     /*-fx-max-width: 380px;*/
 }
+
+.report__cell__icon {
+    -fx-padding: 0 5 0 12;
+}

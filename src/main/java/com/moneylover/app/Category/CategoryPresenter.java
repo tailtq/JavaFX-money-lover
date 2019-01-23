@@ -110,7 +110,7 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
         Parent parent = fxmlLoader.load();
         this.loadTreeViewCategories();
 
-        this.createScreen(parent, "Choose Category", 330, 500);
+        this.createScreen(parent, "Choose Budget", 330, 500);
     }
 
     private void loadTreeViewCategories() throws IOException {

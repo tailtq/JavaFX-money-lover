@@ -28,7 +28,7 @@
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <Text>Category</Text>
         <Button alignment="TOP_LEFT"
-                styleClass="transaction__create-form__select, select-category, select-category--stylesheet"
+                styleClass="transaction__create-form__select, select-budget, select-budget--stylesheet"
                 fx:id="selectCategory"
                 onAction="#chooseCategory"/>
     </VBox>

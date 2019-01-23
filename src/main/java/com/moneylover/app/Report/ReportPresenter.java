@@ -1,6 +1,7 @@
 package com.moneylover.app.Report;
 
 import com.moneylover.Infrastructure.Constants.CommonConstants;
+import com.moneylover.Infrastructure.Helpers.DateHelper;
 import com.moneylover.Modules.Category.Entities.Category;
 import com.moneylover.Modules.Time.Entities.CustomDate;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
@@ -9,12 +10,16 @@ import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Report.View.ReportCell;
 import com.moneylover.app.Transaction.TransactionPresenter;
+import com.moneylover.app.Transaction.View.TransactionDate;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.chart.*;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
@@ -66,18 +71,12 @@ public class ReportPresenter extends PagePresenter {
             LocalDate startDate,
             LocalDate endDate
     ) {
-        if (startDate.getMonthValue() == endDate.getMonthValue() && startDate.getYear() == endDate.getYear()) {
-            TransactionPresenter.sortTransactionsByDate(
-                    this.monthTransactions,
-                    (ArrayList) this.transactions.clone(),
-                    moneySymbol
-            );
+        ArrayList transactions = (ArrayList) this.transactions.clone();
+
+        if (DateHelper.isSameMonth(startDate, endDate)) {
+            TransactionPresenter.sortTransactionsByDate(this.monthTransactions, transactions, moneySymbol);
         } else {
-            ReportPresenter._sortTransactionsByMonth(
-                    this.monthTransactions,
-                    (ArrayList) this.transactions.clone(),
-                    moneySymbol
-            );
+            ReportPresenter._sortTransactionsByMonth(this.monthTransactions, transactions, moneySymbol);
         }
 
         this._loadBarChartData(this.monthTransactions, startDate, endDate);
@@ -88,6 +87,9 @@ public class ReportPresenter extends PagePresenter {
             ArrayList<Transaction> transactions,
             String moneySymbol
     ) {
+        sortedTransactions.clear();
+        System.out.println(transactions.size());
+
         for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
             Transaction transaction = it.next();
             boolean hasMonth = false;
@@ -172,6 +174,15 @@ public class ReportPresenter extends PagePresenter {
     private ListView listViewMonthTransactions;
 
     @FXML
+    private ListView listViewMonthTransactionsDetail;
+
+    @FXML
+    private DatePicker datePickerStartDate;
+
+    @FXML
+    private DatePicker datePickerEndDate;
+
+    @FXML
     private Text title;
 
     public void loadPresenter() {
@@ -183,8 +194,11 @@ public class ReportPresenter extends PagePresenter {
             LocalDate startDate,
             LocalDate endDate
     ) {
+        this.dateRangeChart.getData().clear();
+        ObservableList<String> titles = FXCollections.observableArrayList();
+        CategoryAxis categoryAxis = (CategoryAxis) this.dateRangeChart.getXAxis();
         String dateRangeType = this._getDateRange(startDate, endDate);
-        XYChart.Series inflowSeries = new XYChart.Series();
+        XYChart.Series inflowSeries = new XYChart.Series<>();
         XYChart.Series outflowSeries = new XYChart.Series();
         inflowSeries.setName("Inflow");
         outflowSeries.setName("Outflow");
@@ -218,17 +232,19 @@ public class ReportPresenter extends PagePresenter {
                 }
             }
 
-            inflowSeries.getData().add(new XYChart.Data(title, inflow));
-            outflowSeries.getData().add(new XYChart.Data(title, outflow));
+            titles.add(title);
+            inflowSeries.getData().add(new XYChart.Data<>(title, inflow));
+            outflowSeries.getData().add(new XYChart.Data<>(title, outflow));
         }
 
+        categoryAxis.setCategories(titles);
         this.dateRangeChart.getData().addAll(inflowSeries, outflowSeries);
     }
 
     private String _getDateRange(LocalDate startDate, LocalDate endDate) {
-        if (startDate.getMonthValue() == endDate.getMonthValue() && startDate.getYear() == startDate.getYear()) {
+        if (DateHelper.isSameMonth(startDate, endDate)) {
             return CommonConstants.DAY_RANGE;
-        } else if (startDate.getYear() == endDate.getYear()) {
+        } else if (DateHelper.isSameYear(startDate, endDate)) {
             return CommonConstants.MONTH_RANGE;
         } else {
             return CommonConstants.YEAR_RANGE;
@@ -239,6 +255,8 @@ public class ReportPresenter extends PagePresenter {
             PieChart pieChart,
             ObservableList<Pair<Category, ObservableList<Transaction>>> transactions
     ) {
+        pieChart.getData().clear();
+
         for (Pair<Category, ObservableList<Transaction>> transaction: transactions) {
             float value = 0;
 
@@ -266,26 +284,33 @@ public class ReportPresenter extends PagePresenter {
     }
 
     private void _listMonthTransactions() {
-        this.listViewMonthTransactions.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            FXMLLoader fxmlLoader = new FXMLLoader(
-                    getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml")
-            );
-            fxmlLoader.setController(this);
-            try {
-                Parent parent = fxmlLoader.load();
-                this.createScreen(parent, "Report", 500, 700);
-            } catch (IOException e) {
-                e.printStackTrace();
+        this.listViewMonthTransactions.getSelectionModel().selectedItemProperty().addListener(
+            new ChangeListener<Pair<CustomDate, ObservableList<Transaction>>>() {
+                @Override
+                public void changed(
+                        ObservableValue<? extends Pair<CustomDate, ObservableList<Transaction>>> observable,
+                        Pair<CustomDate, ObservableList<Transaction>> oldValue,
+                        Pair<CustomDate, ObservableList<Transaction>> newValue
+                ) {
+                    try {
+                        ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
+                        ArrayList<Transaction> monthTransactions = new ArrayList<>(newValue.getValue());
+                        String moneySymbol = wallets.get(0).getMoneySymbol();
+                        TransactionPresenter.sortTransactionsByDate(transactions, monthTransactions, moneySymbol);
+
+                        _loadMonthTransactionsDetail(transactions);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        });
+        );
         this.listViewMonthTransactions.setItems(this.monthTransactions);
         this.listViewMonthTransactions.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {
-                    ReportCell reportCell = new ReportCell();
-
-                    return reportCell;
+                    return new ReportCell();
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
@@ -295,43 +320,51 @@ public class ReportPresenter extends PagePresenter {
     }
 
     @FXML
-    private void loadDetail() throws IOException {
+    private void _loadMonthTransactionsDetail(
+            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions
+    ) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
+        this._listMonthTransactionsDetail(transactions);
 
         this.createScreen(parent, "Report Detail", 400, 500);
     }
 
-    /*@FXML
-    public void loadCategories(Event e) throws IOException {
-        Node button = (Node) e.getSource();
-        Node chart = button.getParent().getChildrenUnmodifiable().get(0);
+    private void _listMonthTransactionsDetail(
+            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions
+    ) {
+        this.listViewMonthTransactionsDetail.setItems(transactions);
+        this.listViewMonthTransactionsDetail.setCellFactory(new Callback<ListView, ListCell>() {
+            @Override
+            public ListCell call(ListView param) {
+                try {
+                    TransactionDate transactionDate =  new TransactionDate();
+                    transactionDate.setDisableOptions(true);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/report/report-categories.fxml")
-        );
-        fxmlLoader.setController(this);
-        Parent parent = fxmlLoader.load();
+                    return transactionDate;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        });
+    }
 
-        if (chart == this.expenseChart) {
-            this.addPieChartData(this.expenseChart, this.pieChartDetail.getData());
-        } else {
-            this.addPieChartData(this.incomeChart, this.pieChartDetail.getData());
+    @FXML
+    private void changeDayRange() throws SQLException {
+        LocalDate startDate = this.datePickerStartDate.getValue();
+        LocalDate endDate = this.datePickerEndDate.getValue();
+
+        if (startDate != null && endDate != null
+                && (!DateHelper.isSameDay(this.startDate, startDate) || !DateHelper.isSameDay(this.endDate, endDate))) {
+            this.startDate = startDate;
+            this.endDate = endDate;
+
+            Wallet wallet = this.wallets.get(0);
+            this.transactions = this.loadTransactions(wallet.getId());
+            this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
+            this._loadPieCharts();
         }
-        this.pieChartDetail.setTitle("Category");
-
-        this.createScreen(parent, "Report", 400, 500);
-    }*/
-
-    /*public void addPieChartData(PieChart chart, ObservableList data) {
-        for (PieChart.Data value: chart.getData()) {
-            PieChart.Data category = new PieChart.Data(value.getName(), value.getPieValue());
-            data.add(category);
-        }
-    }*/
-
-    public void loadDetailData(ArrayList values) throws IOException {
-
     }
 }

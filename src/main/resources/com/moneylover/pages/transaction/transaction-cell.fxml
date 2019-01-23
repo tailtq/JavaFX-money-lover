@@ -17,7 +17,7 @@
                styleClass="transaction__content__image"/>
     <VBox styleClass="transaction__content">
         <Label text="Thursday" fx:id="labelTransactionCategoryName"
-               styleClass="transaction__content__type, text-bold, category"/>
+               styleClass="transaction__content__type, text-bold, budget"/>
         <Label text="December 2018" fx:id="labelTransactionNote"
                styleClass="transaction__content__note, gray-color"/>
     </VBox>
@@ -25,7 +25,7 @@
     <HBox alignment="CENTER_RIGHT" styleClass="transaction__amount">
         <Label fx:id="labelAmount"
                styleClass="success-color"/>
-        <Button onAction="#showPopup" styleClass="bg--linear-succeed-color">
+        <Button fx:id="buttonOptions" onAction="#showPopup" styleClass="bg--linear-succeed-color">
             <graphic>
                 <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white" />
             </graphic>
