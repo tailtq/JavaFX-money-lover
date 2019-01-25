@@ -27,7 +27,7 @@
                                backgroundLoading="true"/>
                     </ImageView>
                     <Label text="Thursday"
-                           styleClass="transaction__content__type, text-bold, budget"
+                           styleClass="transaction__content__type, text-bold, category"
                            GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                     <Label text="+2,960,000.00 ₫"
                            styleClass="primary-color"
@@ -46,7 +46,7 @@
                                backgroundLoading="true"/>
                     </ImageView>
                     <Label text="Thursday"
-                           styleClass="transaction__content__type, text-bold, budget"
+                           styleClass="transaction__content__type, text-bold, category"
                            GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                     <Label text="+2,960,000.00 ₫"
                            styleClass="primary-color"

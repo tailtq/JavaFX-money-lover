@@ -69,6 +69,12 @@
     -fx-effect: dropshadow(three-pass-box, #000000, 1, 0, 0, 0.5);
 }
 
+.tab-button-group--border {
+    -fx-background-color: #fff;
+    -fx-border-color: rgba(0,0,0,.24);
+    -fx-border-width: 0 0 1 0;
+}
+
 .button--bg-radius-50 {
     -fx-background-radius: 50%;
 }

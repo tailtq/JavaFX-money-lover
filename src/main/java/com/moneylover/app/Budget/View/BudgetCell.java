@@ -1,24 +1,28 @@
 package com.moneylover.app.Budget.View;
 
 import com.moneylover.Modules.Budget.Entities.Budget;
-import com.moneylover.Modules.Time.Entities.CustomDateRange;
-import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
-import javafx.util.Pair;
+import javafx.scene.layout.VBox;
+
+import java.io.IOException;
 
 public class BudgetCell extends ListCell<Budget> {
+    private VBox budgetCell;
 
-
-    public BudgetCell() {
-
+    public BudgetCell() throws IOException {
+        FXMLLoader budgetCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget/budget-cell.fxml"));
+        budgetCellLoader.setController(this);
+        this.budgetCell = budgetCellLoader.load();
     }
 
     @Override
     protected void updateItem(Budget budget, boolean empty) {
         if (empty) {
             setGraphic(null);
-        } else {
-//            setGraphic();
+            return;
         }
+
+        setGraphic(this.budgetCell);
     }
 }

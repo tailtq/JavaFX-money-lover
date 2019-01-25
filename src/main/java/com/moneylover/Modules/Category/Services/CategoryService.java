@@ -24,6 +24,12 @@ public class CategoryService extends BaseService {
         return categories;
     }
 
+    public ArrayList<Category> list(int typeId) throws SQLException {
+        ArrayList<Category> categories = this._list(typeId);
+
+        return categories;
+    }
+
     public Category getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
 
@@ -80,18 +86,31 @@ public class CategoryService extends BaseService {
         return categories;
     }
 
+    private ArrayList<Category> _list(int typeId) throws SQLException {
+        ArrayList<Category> categories = new ArrayList<>();
+        ResultSet resultSet = this.get("type_id = " + typeId);
+
+        while (resultSet.next()) {
+            categories.add(this.toObject(resultSet));
+        }
+
+        return categories;
+    }
+
     private int _create(Category category) throws SQLException {
         String statementString = "INSERT INTO categories(type_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, category.getTypeId());
         statement.setString(2, category.getMoneyType());
         statement.setString(3, category.getName());
         statement.setString(4, category.getIcon());
         statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return id;
     }
 
     private boolean _create(ArrayList<Category> categories) throws SQLException {

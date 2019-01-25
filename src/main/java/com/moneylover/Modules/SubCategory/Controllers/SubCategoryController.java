@@ -20,6 +20,12 @@ public class SubCategoryController {
         return subCategories;
     }
 
+    public ArrayList<SubCategory> list(int typeId) throws SQLException {
+        ArrayList<SubCategory> subCategories = this.service.list(typeId);
+
+        return subCategories;
+    }
+
     public SubCategory getDetail(int id) throws SQLException, NotFoundException {
         SubCategory subCategory = this.service.getDetail(id);
 

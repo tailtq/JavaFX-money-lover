@@ -10,7 +10,7 @@
       stylesheets="
         @../../../../assets/css/content.css,
         @../../../../assets/css/pages/transaction.css,
-        @../../../../assets/css/components/dialogs/choose-budget.css,
+        @../../../../assets/css/components/dialogs/choose-category.css,
         @../../../../assets/css/icons.css
       ">
     <HBox styleClass="tab-button-group" alignment="TOP_CENTER" fx:id="buttonGroupTabs"/>

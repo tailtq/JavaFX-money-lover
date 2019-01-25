@@ -102,6 +102,7 @@ public class TimeService extends BaseService {
         statement.setInt(1, time.getMonth());
         statement.setInt(2, time.getYear());
         statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
 

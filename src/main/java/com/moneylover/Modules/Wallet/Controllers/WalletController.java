@@ -21,8 +21,8 @@ public class WalletController {
         return wallets;
     }
 
-    public ArrayList<Wallet> listByUser(int id) throws SQLException {
-        ArrayList<Wallet> wallets = this.service.list(id);
+    public ArrayList<Wallet> list(int userId) throws SQLException {
+        ArrayList<Wallet> wallets = this.service.list(userId);
 
         return wallets;
     }

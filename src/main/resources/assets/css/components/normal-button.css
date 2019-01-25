@@ -33,7 +33,7 @@
     -fx-background-color: transparent;
     -fx-font-size: 14px;
     -fx-border-width: 0 0 3 0;
-    -fx-border-color: inherit;
+    -fx-border-color: transparent;
 }
 
 .tags__button.active {

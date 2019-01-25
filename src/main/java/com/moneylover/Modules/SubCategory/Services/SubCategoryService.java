@@ -24,6 +24,12 @@ public class SubCategoryService extends BaseService {
         return subCategories;
     }
 
+    public ArrayList<SubCategory> list(int typeId) throws SQLException {
+        ArrayList<SubCategory> subCategories = this._list(typeId);
+
+        return subCategories;
+    }
+
     public SubCategory getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
 
@@ -67,6 +73,17 @@ public class SubCategoryService extends BaseService {
         return subCategories;
     }
 
+    private ArrayList<SubCategory> _list(int typeId) throws SQLException {
+        ArrayList<SubCategory> subCategories = new ArrayList<>();
+        ResultSet resultSet = this.get("type_id = " + typeId);
+
+        while (resultSet.next()) {
+            subCategories.add(this.toObject(resultSet));
+        }
+
+        return subCategories;
+    }
+
     private int _create(SubCategory subCategory) throws SQLException {
         String statementString = "INSERT INTO sub_categories(type_id, category_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
@@ -77,6 +94,7 @@ public class SubCategoryService extends BaseService {
         statement.setString(4, subCategory.getName());
         statement.setString(5, subCategory.getIcon());
         statement.setDate(6, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
 

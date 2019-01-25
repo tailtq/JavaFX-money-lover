@@ -7,6 +7,8 @@
 <GridPane xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"
           stylesheets="
+            @../../../../../assets/css/components/header.css,
+            @../../../../../assets/css/icons.css,
             @../../../../../assets/css/content.css,
             @../../../../../assets/css/components/dialogs/transaction-create.css
           "
@@ -14,40 +16,37 @@
 
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
         <Text>Wallet</Text>
-        <MenuButton text="Wallet1" styleClass="transaction__create-form__select">
-            <items>
-                <MenuItem text="Select Wallet" disable="true"/>
-                <MenuItem text="Wallet1" styleClass="header__wallet"/>
-                <MenuItem text="Wallet2" styleClass="header__wallet"/>
-            </items>
-        </MenuButton>
+        <MenuButton fx:id="selectWallet" styleClass="transaction__create-form__select"/>
     </VBox>
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
         <Text>Category</Text>
-        <Button text="Wallet1" styleClass="transaction__create-form__select" onAction="#chooseCategory"/>
+        <Button alignment="TOP_LEFT"
+                styleClass="transaction__create-form__select, select-category, select-category--stylesheet"
+                fx:id="selectCategory"
+                onAction="#chooseCategory"/>
     </VBox>
 
     <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
-        <Text>Initial Balance</Text>
-        <TextField fx:id="amount" styleClass="transaction__create-form__select"/>
+        <Text>Amount</Text>
+        <TextField fx:id="textFieldBudgetAmount" styleClass="transaction__create-form__select"/>
     </VBox>
 
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
         <Text>Start Date</Text>
-        <DatePicker fx:id="startedAt" styleClass="transaction__create-form__select"/>
+        <DatePicker fx:id="datePickerStartedAt" styleClass="transaction__create-form__select"/>
     </VBox>
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
         <Text>End Date</Text>
-        <DatePicker fx:id="endedAt" styleClass="transaction__create-form__select"/>
+        <DatePicker fx:id="datePickerEndedAt" styleClass="transaction__create-form__select"/>
     </VBox>
 
-    <HBox GridPane.columnIndex="2" GridPane.rowIndex="2" alignment="BASELINE_RIGHT" styleClass="button-group">
-        <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button, cancel-button">
+    <HBox GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="button-group" alignment="BOTTOM_RIGHT">
+        <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button, cancel-button" onAction="#closeScene">
             <text>Cancel</text>
         </fx:include>
-        <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button">
+        <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button" onAction="#storeBudget">
             <text>Done</text>
         </fx:include>
     </HBox>
