@@ -30,11 +30,19 @@ public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Tr
     public TransactionDate(StringProperty handledTransactionId, ObservableList<Wallet> wallets) throws IOException {
         this.handledTransactionId = handledTransactionId;
         this.wallets = wallets;
-        this.loadViewElement();
+        this.loadCell();
     }
 
     public TransactionDate() throws IOException {
-        this.loadViewElement();
+        this.loadCell();
+    }
+
+    private void loadCell() throws IOException {
+        FXMLLoader transactionDateLoader = new FXMLLoader(
+                getClass().getResource("/com/moneylover/pages/transaction/transaction-date.fxml")
+        );
+        transactionDateLoader.setController(this);
+        this.hBoxTransactionDate = transactionDateLoader.load();
     }
 
     /*========================== Draw ==========================*/
@@ -73,14 +81,6 @@ public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Tr
         if (this.listViewTransactions.getItems().size() == 0) {
             this.listTransactions(item);
         }
-    }
-
-    private void loadViewElement() throws IOException {
-        FXMLLoader transactionDateLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/pages/transaction/transaction-date.fxml")
-        );
-        transactionDateLoader.setController(this);
-        this.hBoxTransactionDate = transactionDateLoader.load();
     }
 
     public void setDisableOptions(boolean isDisable) {
