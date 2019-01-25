@@ -107,7 +107,7 @@ public class UserService extends BaseService {
         return id;
     }
 
-    private int _update(User user, int id) throws SQLException {
+    private boolean _update(User user, int id) throws SQLException {
         String passwordStatement = "";
         int i = 3;
         if (!user.getPassword().equals("")) {
@@ -126,8 +126,10 @@ public class UserService extends BaseService {
         statement.setString(2, user.getPhone());
         statement.setDate(i++, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
         statement.setDouble(i, id);
+        statement.executeUpdate();
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return true;
     }
 
     @Override

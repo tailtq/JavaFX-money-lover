@@ -132,7 +132,10 @@ public class BudgetPresenter extends PagePresenter {
             @Override
             public ListCell call(ListView param) {
                 try {
-                    return new BudgetCell(handledBudgetId);
+                    BudgetCell budgetCell = new BudgetCell(handledBudgetId);
+                    budgetCell.setWallets(wallets);
+
+                    return budgetCell;
                 } catch (IOException | SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
                     return null;
@@ -166,11 +169,11 @@ public class BudgetPresenter extends PagePresenter {
         }
 
         if (index >= 0) {
-            budgets.remove(index);
-
             if (type.contains("UPDATE")) {
                 Budget budget = this.budgetController.getDetail(id);
-                this.addBudget(budget);
+                this.setBudget(budget, index);
+            } else {
+                budgets.remove(index);
             }
         }
     }
@@ -233,6 +236,16 @@ public class BudgetPresenter extends PagePresenter {
         }
     }
 
+    private void setBudget(Budget budget, int index) {
+        LocalDate endedAt = LocalDate.parse(budget.getEndedAt().toString());
+
+        if (DateHelper.isLaterThan(endedAt, this.currentDate)) {
+            this.finishingBudgets.set(index, budget);
+        } else {
+            this.onGoingBudgets.set(index, budget);
+        }
+    }
+
     @FXML
     private void createBudget() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-create.fxml"));
@@ -267,7 +280,7 @@ public class BudgetPresenter extends PagePresenter {
             return;
         }
         if (amount <= 0) {
-            this.showErrorDialog("Wallet is not selected");
+            this.showErrorDialog("Amount is not valid");
             return;
         }
         if (DateHelper.isLaterThan(endedAt, startedAt)) {
@@ -281,14 +294,7 @@ public class BudgetPresenter extends PagePresenter {
         budget.setSpentAmount(0);
         budget.setStartedAt(Date.valueOf(startedAt.toString()));
         budget.setEndedAt(Date.valueOf(endedAt.toString()));
-
-        if (subCategoryId != 0) {
-            budget.setBudgetableId(subCategoryId);
-            budget.setBudgetableType(CommonConstants.APP_SUB_CATEGORY);
-        } else {
-            budget.setBudgetableId(categoryId);
-            budget.setBudgetableType(CommonConstants.APP_CATEGORY);
-        }
+        BudgetPresenter.addCategory(budget, categoryId, subCategoryId);
 
         try {
             budget = this.budgetController.create(budget);
@@ -296,6 +302,16 @@ public class BudgetPresenter extends PagePresenter {
             this.closeScene(event);
         } catch (SQLException | NotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void addCategory(Budget budget, int categoryId, int subCategoryId) {
+        if (subCategoryId != 0) {
+            budget.setBudgetableId(subCategoryId);
+            budget.setBudgetableType(CommonConstants.APP_SUB_CATEGORY);
+        } else {
+            budget.setBudgetableId(categoryId);
+            budget.setBudgetableType(CommonConstants.APP_CATEGORY);
         }
     }
 
