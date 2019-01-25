@@ -1,6 +1,5 @@
-.budget__tab {
-    -fx-padding: 0;
-    -fx-spacing: 0;
+.budget__content {
+    -fx-padding: 10px 0;
 }
 
 .budget__tab .transactions {
@@ -9,7 +8,7 @@
 }
 
 .budget__tab .budget__date-range {
-    -fx-padding: 10 10 3;
+    -fx-padding: 8 5;
     -fx-background-color: rgb(244, 244, 244);
 }
 

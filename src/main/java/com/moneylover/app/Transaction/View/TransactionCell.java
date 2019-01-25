@@ -135,10 +135,6 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         popup.show(button, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, 30, 10);
     }
 
-    private void loadWallets() {
-        TransactionPresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
-    }
-
     @FXML
     private void chooseCategory() throws IOException {
         this.categoryPresenter.showCategoryDialog();
@@ -156,12 +152,13 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     private void loadTransactionData() {
         this.walletId.set(this.transaction.getWalletId());
-        this.loadWallets();
         this.textFieldNote.setText(this.transaction.getNote());
         this.textFieldTransactionAmount.setText(Float.toString(this.transaction.getAmount()));
         /* TODO: reload update after transaction cell is edit again */
+        this.walletId.set(this.transaction.getWalletId());
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
+        TransactionPresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
         this.selectedType.set(this.transaction.getTypeId());
@@ -185,7 +182,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
             return;
         }
         if (categoryId == 0) {
-            this.showErrorDialog("Budget is not selected");
+            this.showErrorDialog("Category is not selected");
             return;
         }
         if (amount <= 0) {

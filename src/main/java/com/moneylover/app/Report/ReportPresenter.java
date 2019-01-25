@@ -88,7 +88,6 @@ public class ReportPresenter extends PagePresenter {
             String moneySymbol
     ) {
         sortedTransactions.clear();
-        System.out.println(transactions.size());
 
         for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
             Transaction transaction = it.next();

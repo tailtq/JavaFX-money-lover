@@ -20,6 +20,12 @@ public class CategoryController {
         return categories;
     }
 
+    public ArrayList<Category> list(int typeId) throws SQLException {
+        ArrayList<Category> categories = this.service.list(typeId);
+
+        return categories;
+    }
+
     public Category getDetail(int id) throws SQLException, NotFoundException {
         Category category = this.service.getDetail(id);
 

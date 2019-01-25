@@ -4,6 +4,8 @@ import com.github.javafaker.Faker;
 import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Helpers.UpdatableBcrypt;
+import com.moneylover.Modules.Budget.Controllers.BudgetController;
+import com.moneylover.Modules.Budget.Entities.Budget;
 import com.moneylover.Modules.Category.Controllers.CategoryController;
 import com.moneylover.Modules.Category.Entities.Category;
 import com.moneylover.Modules.Currency.Controllers.CurrencyController;
@@ -25,7 +27,9 @@ import javafx.util.Pair;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class FakeData {
     private static FakeData fakeData;
@@ -48,6 +52,8 @@ public class FakeData {
 
     private TransactionController transactionController;
 
+    private BudgetController budgetController;
+
     public FakeData() throws SQLException, ClassNotFoundException {
         this.faker = new Faker();
         this.currencyController = new CurrencyController();
@@ -58,6 +64,7 @@ public class FakeData {
         this.categoryController = new CategoryController();
         this.subCategoryController = new SubCategoryController();
         this.transactionController = new TransactionController();
+        this.budgetController = new BudgetController();
     }
 
     public static void main(String args[]) throws SQLException, ClassNotFoundException, NotFoundException {
@@ -70,7 +77,8 @@ public class FakeData {
 //            fakeData.createTypes();
 //            fakeData.createCategories();
 //            fakeData.createSubCategories();
-            fakeData.createTransactions();
+//            fakeData.createTransactions();
+            fakeData.createBudgets();
         } catch (Exception e) {
             throw e;
         }
@@ -391,7 +399,7 @@ public class FakeData {
 
     private void createTransactions() throws SQLException, NotFoundException {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        ArrayList<Wallet> wallets = this.walletController.listByUser(1004);
+        ArrayList<Wallet> wallets = this.walletController.list(1004);
         ArrayList<Time> times = this.timeController.list();
         ArrayList<Type> types = this.typeController.list();
         ArrayList<Category> categories = this.categoryController.list();
@@ -420,5 +428,37 @@ public class FakeData {
         }
 
         this.transactionController.create(transactions);
+    }
+
+    private void createBudgets() throws SQLException, NotFoundException {
+        ArrayList<Budget> budgets = new ArrayList<>();
+        ArrayList<Wallet> wallets = this.walletController.list(1004);
+        ArrayList<Category> categories = this.categoryController.list(2);
+        ArrayList<SubCategory> subCategories = this.subCategoryController.list(2);
+        int walletsQuantity = wallets.size();
+        int categoriesQuantity = categories.size();
+        int subCategoriesQuantity = subCategories.size();
+
+        for (int i = 0; i < 20; i++) {
+            Budget budget = new Budget();
+            budget.setWalletId(wallets.get((int)(Math.random() * (walletsQuantity - 1))).getId());
+
+            if (i % 2 == 0) {
+                budget.setBudgetableId(categories.get((int)(Math.random() * (categoriesQuantity - 1))).getId());
+                budget.setBudgetableType(CommonConstants.APP_CATEGORY);
+            } else {
+                budget.setBudgetableId(subCategories.get((int)(Math.random() * (subCategoriesQuantity - 1))).getId());
+                budget.setBudgetableType(CommonConstants.APP_SUB_CATEGORY);
+            }
+            int j = i + 1;
+            budget.setStartedAt(Date.valueOf("2018-12-" + ((j > 9) ? j : "0" + j)));
+            budget.setEndedAt(Date.valueOf("2019-01-" + ((j > 9) ? j : "0" + j)));
+            float amount = (float) this.faker.number().randomDouble(1, 5000, 10000);
+            budget.setAmount(amount);
+            budget.setSpentAmount(amount - 3000);
+            budgets.add(budget);
+        }
+
+        this.budgetController.create(budgets);
     }
 }

@@ -9,15 +9,14 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../../../../assets/css/components/buttons/optional-buttons.css">
+      xmlns:fx="http://javafx.com/fxml">
     <ImageView fitHeight="40"
                fitWidth="40"
                fx:id="imageTransactionCategory"
                styleClass="transaction__content__image"/>
     <VBox styleClass="transaction__content">
         <Label text="Thursday" fx:id="labelTransactionCategoryName"
-               styleClass="transaction__content__type, text-bold, budget"/>
+               styleClass="transaction__content__type, text-bold, category"/>
         <Label text="December 2018" fx:id="labelTransactionNote"
                styleClass="transaction__content__note, gray-color"/>
     </VBox>

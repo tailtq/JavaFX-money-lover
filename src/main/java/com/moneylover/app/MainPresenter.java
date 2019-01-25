@@ -52,7 +52,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     private void setWallets() throws IOException, SQLException, ClassNotFoundException {
         if (this.wallets.isEmpty()) {
             com.moneylover.Modules.Wallet.Controllers.WalletController walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
-            this.wallets.addAll(walletController.listByUser(UserPresenter.getUser().getId()));
+            this.wallets.addAll(walletController.list(UserPresenter.getUser().getId()));
         }
         this.controller.setWallets(this.wallets);
         this.changeWallet.addListener((observableValue, oldValue, newValue) -> {});
@@ -124,10 +124,10 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
             this.initView(fxmlLoader);
             this.changeScene.set(false);
 
-//            CategoryPresenter.setTypes((new TypeController()).list());
-//            CategoryPresenter.setCategories((new BudgetController()).list());
-//            CategoryPresenter.setSubCategories((new SubCategoryController()).list());
-//            CategoryPresenter.combineCategories();
+            CategoryPresenter.setTypes((new TypeController()).list());
+            CategoryPresenter.setCategories((new CategoryController()).list());
+            CategoryPresenter.setSubCategories((new SubCategoryController()).list());
+            CategoryPresenter.combineCategories();
         } catch (IOException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

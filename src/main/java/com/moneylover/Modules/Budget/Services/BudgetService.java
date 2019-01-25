@@ -82,8 +82,7 @@ public class BudgetService extends BaseService {
 
     private int _create(Budget budget) throws SQLException {
         String statementString = "INSERT INTO budgets(wallet_id, budgetable_id, budgetable_type, started_at, ended_at, amount, spent_amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         LocalDate currentDate = LocalDate.now();
         statement.setInt(1, budget.getWalletId());
         statement.setInt(2, budget.getBudgetableId());
@@ -93,13 +92,16 @@ public class BudgetService extends BaseService {
         statement.setFloat(6, budget.getAmount());
         statement.setFloat(7, budget.getSpentAmount());
         statement.setDate(8, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.executeUpdate();
+        int id = this.getIdAfterCreate(statement.getGeneratedKeys());
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return id;
     }
 
     private boolean _create(ArrayList<Budget> budgets) throws SQLException {
-        String statementString = "INSERT INTO budgets(type_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        String statementString = "INSERT INTO budgets(wallet_id, budgetable_id, budgetable_type, started_at, ended_at, amount, spent_amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement statement = this.getPreparedStatement(statementString);
         int i = 0;
 
         for (Budget budget : budgets) {
@@ -119,6 +121,8 @@ public class BudgetService extends BaseService {
             }
         }
 
+        this.closePreparedStatement();
+
         return true;
     }
 
@@ -135,6 +139,16 @@ public class BudgetService extends BaseService {
     @Override
     protected Budget toObject(ResultSet resultSet) throws SQLException {
         Budget budget = new Budget();
+        budget.setId(resultSet.getInt("id"));
+        budget.setWalletId(resultSet.getInt("wallet_id"));
+        budget.setBudgetableId(resultSet.getInt("budgetable_id"));
+        budget.setBudgetableType(resultSet.getString("budgetable_type"));
+        budget.setStartedAt(resultSet.getDate("started_at"));
+        budget.setEndedAt(resultSet.getDate("ended_at"));
+        budget.setAmount(resultSet.getFloat("amount"));
+        budget.setSpentAmount(resultSet.getFloat("spent_amount"));
+        budget.setCreatedAt(resultSet.getDate("created_at"));
+        budget.setUpdatedAt(resultSet.getDate("updated_at"));
 
         return budget;
     }

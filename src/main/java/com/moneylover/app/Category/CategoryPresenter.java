@@ -1,5 +1,6 @@
 package com.moneylover.app.Category;
 
+import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Modules.Category.Entities.Category;
 import com.moneylover.Modules.SubCategory.Entities.SubCategory;
 import com.moneylover.Modules.Type.Entities.Type;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class CategoryPresenter extends BaseViewPresenter implements DialogInterface {
+    private boolean onlyExpenseCategories = false;
+
     private IntegerProperty selectedType;
 
     private IntegerProperty selectedCategory;
@@ -42,6 +45,15 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
         this.selectedSubCategory = selectedSubCategory;
     }
 
+    public CategoryPresenter(IntegerProperty selectedCategory, IntegerProperty selectedSubCategory) {
+        this.selectedCategory = selectedCategory;
+        this.selectedSubCategory = selectedSubCategory;
+    }
+
+    public void setOnlyExpenseCategories(boolean onlyExpenseCategories) {
+        this.onlyExpenseCategories = onlyExpenseCategories;
+    }
+
     public static void setTypes(ArrayList<Type> types) {
         CategoryPresenter.types = types;
     }
@@ -53,7 +65,6 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
     public static void setSubCategories(ArrayList<SubCategory> subCategories) {
         CategoryPresenter.subCategories = subCategories;
     }
-
 
     public static void combineCategories() {
         CategoryPresenter.combinedTypes = new ArrayList<>();
@@ -85,7 +96,6 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                 if (combinedCategory.getKey().getTypeId() == type.getId()) {
                     combineType.add(combinedCategory);
                     it.remove();
-                    break;
                 }
             }
 
@@ -137,6 +147,15 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
 
             for (Pair<Category, ArrayList<SubCategory>> category: categories) {
                 Category categoryDetail = category.getKey();
+                String moneyType = categoryDetail.getMoneyType();
+
+                if (this.onlyExpenseCategories
+                        && !moneyType.equals(CommonConstants.EXPENSE)
+                        && !moneyType.equals(CommonConstants.LOAN)
+                        && !moneyType.equals(CommonConstants.LOAN_REPAYMENT)) {
+                    continue;
+                }
+
                 VBox vBoxCategory = new VBox();
                 VBox vBoxSubCategories = new VBox();
                 FXMLLoader categoryLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/buttons/normal-button.fxml"));
@@ -146,7 +165,10 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                 buttonCategory.setAlignment(Pos.TOP_LEFT);
                 buttonCategory.setUserData(categoryDetail.getId());
                 buttonCategory.setOnAction(actionEvent -> {
-                    this.selectedType.set(categoryDetail.getTypeId());
+                    if (this.selectedType != null) {
+                        this.selectedType.set(categoryDetail.getTypeId());
+                    }
+
                     this.selectedCategory.set(categoryDetail.getId());
                     this.selectedSubCategory.set(0);
                     this.closeScene(actionEvent);
@@ -164,7 +186,10 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                     buttonSubCategory.setAlignment(Pos.TOP_LEFT);
                     buttonSubCategory.setUserData(subCategory.getId());
                     buttonSubCategory.setOnAction(actionEvent -> {
-                        this.selectedType.set(subCategory.getTypeId());
+                        if (this.selectedType != null) {
+                            this.selectedType.set(subCategory.getTypeId());
+                        }
+
                         this.selectedCategory.set(subCategory.getCategoryId());
                         this.selectedSubCategory.set(subCategory.getId());
                         this.closeScene(actionEvent);

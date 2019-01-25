@@ -21,14 +21,12 @@ import javafx.util.Callback;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.ResourceBundle;
 
 public class TransactionPresenter extends PagePresenter {
     private com.moneylover.Modules.Transaction.Controllers.TransactionController transactionController;
@@ -311,20 +309,16 @@ public class TransactionPresenter extends PagePresenter {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-create.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-        this.loadWallets();
         this.walletId.set(0);
         this.selectedType.set(0);
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
+        TransactionPresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
         this.datePickerTransactedAt.setValue(LocalDate.now());
 
         this.createScreen(parent, "Add Transaction", 500, 230);
-    }
-
-    private void loadWallets() {
-        TransactionPresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
     }
 
     public static void loadStaticWallets(MenuButton selectWallet, IntegerProperty walletId, ObservableList<Wallet> wallets) {
@@ -370,7 +364,7 @@ public class TransactionPresenter extends PagePresenter {
             return;
         }
         if (categoryId == 0) {
-            this.showErrorDialog("Budget is not selected");
+            this.showErrorDialog("Category is not selected");
             return;
         }
         if (amount <= 0) {

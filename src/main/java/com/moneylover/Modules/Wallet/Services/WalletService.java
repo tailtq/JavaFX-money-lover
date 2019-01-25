@@ -27,12 +27,12 @@ public class WalletService extends BaseService {
     }
 
     /**
-     * @param id
+     * @param userId
      * @return
      * @throws SQLException
      */
-    public ArrayList<Wallet> list(int id) throws SQLException {
-        ArrayList<Wallet> wallets = this._list(id);
+    public ArrayList<Wallet> list(int userId) throws SQLException {
+        ArrayList<Wallet> wallets = this._list(userId);
 
         return wallets;
     }

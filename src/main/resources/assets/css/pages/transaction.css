@@ -64,5 +64,5 @@
 }
 
 .transaction__amount {
-    -fx-spacing: 5;
+    -fx-spacing: 12;
 }

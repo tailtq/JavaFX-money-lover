@@ -20,4 +20,8 @@ public class CommonConstants {
     public static final String MONTH_RANGE = "MONTH_RANGE";
 
     public static final String YEAR_RANGE = "YEAR_RANGE";
+
+    public static final String APP_CATEGORY = "APP/CATEGORY";
+
+    public static final String APP_SUB_CATEGORY = "APP/SUB-CATEGORY";
 }

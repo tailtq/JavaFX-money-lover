@@ -19,6 +19,7 @@ public class DateHelper {
             return true;
         }
 
+        // TODO: Equal
         if (DateHelper.isSameYear(date, comparedDate)
                 && DateHelper.isSameMonth(date, comparedDate)
                 && date.getDayOfMonth() >= comparedDate.getDayOfMonth()) {
