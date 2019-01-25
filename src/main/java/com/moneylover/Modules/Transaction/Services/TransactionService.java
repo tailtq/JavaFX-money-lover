@@ -219,6 +219,7 @@ public class TransactionService extends BaseService {
         statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
         statement.setInt(13, id);
         statement.executeUpdate();
+        this.closePreparedStatement();
 
         return true;
     }

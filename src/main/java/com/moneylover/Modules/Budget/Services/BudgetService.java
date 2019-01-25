@@ -82,15 +82,8 @@ public class BudgetService extends BaseService {
 
     private int _create(Budget budget) throws SQLException {
         String statementString = "INSERT INTO budgets(wallet_id, budgetable_id, budgetable_type, started_at, ended_at, amount, spent_amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement = this.handleCreateProcess(budget, statementString);
         LocalDate currentDate = LocalDate.now();
-        statement.setInt(1, budget.getWalletId());
-        statement.setInt(2, budget.getBudgetableId());
-        statement.setString(3, budget.getBudgetableType());
-        statement.setDate(4, Date.valueOf(budget.getStartedAt().toString()));
-        statement.setDate(5, Date.valueOf(budget.getEndedAt().toString()));
-        statement.setFloat(6, budget.getAmount());
-        statement.setFloat(7, budget.getSpentAmount());
         statement.setDate(8, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
@@ -126,14 +119,29 @@ public class BudgetService extends BaseService {
         return true;
     }
 
-    private int _update(Budget budget, int id) throws SQLException {
-        String statementString = "UPDATE budgets SET created_at = ? WHERE id = ?";
-        PreparedStatement statement = this.getPreparedStatement(statementString);
-        // Continue
-//        state.setInt(2, id)
-//        statement.setDouble(1, budget.getAmount());
+    private boolean _update(Budget budget, int id) throws SQLException {
+        String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, budgetable_id = ?, budgetable_type = ?, started_at = ?, ended_at = ?, amount = ?, spent_amount = ?, updated_at = ? WHERE id = ?";
+        PreparedStatement statement = this.handleCreateProcess(budget, statementString);
+        LocalDate currentDate = LocalDate.now();
+        statement.setDate(8, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setInt(9, id);
+        statement.executeUpdate();
+        this.closePreparedStatement();
 
-        return statement.executeUpdate();
+        return true;
+    }
+
+    private PreparedStatement handleCreateProcess(Budget budget, String statementString) throws SQLException {
+        PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
+        statement.setInt(1, budget.getWalletId());
+        statement.setInt(2, budget.getBudgetableId());
+        statement.setString(3, budget.getBudgetableType());
+        statement.setDate(4, Date.valueOf(budget.getStartedAt().toString()));
+        statement.setDate(5, Date.valueOf(budget.getEndedAt().toString()));
+        statement.setFloat(6, budget.getAmount());
+        statement.setFloat(7, budget.getSpentAmount());
+
+        return statement;
     }
 
     @Override

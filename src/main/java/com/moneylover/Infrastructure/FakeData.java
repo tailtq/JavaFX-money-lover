@@ -439,7 +439,7 @@ public class FakeData {
         int categoriesQuantity = categories.size();
         int subCategoriesQuantity = subCategories.size();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 30; i++) {
             Budget budget = new Budget();
             budget.setWalletId(wallets.get((int)(Math.random() * (walletsQuantity - 1))).getId());
 
