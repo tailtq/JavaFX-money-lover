@@ -47,7 +47,7 @@
                         <Label text="Left +$ 2,500.00"/>
                     </VBox>
 
-                    <Button styleClass="bg--linear-succeed-color">
+                    <Button styleClass="bg--linear-succeed-color" onAction="#showPopup">
                         <graphic>
                             <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white"/>
                         </graphic>

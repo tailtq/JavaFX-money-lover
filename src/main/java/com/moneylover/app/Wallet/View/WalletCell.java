@@ -31,7 +31,10 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         this.currencyPresenter = new CurrencyPresenter(this.selectedCurrencyId);
         this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
         this.handledWalletId = handledWalletId;
+        this.loadCell();
+    }
 
+    private void loadCell() throws IOException {
         FXMLLoader walletCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallet-cell.fxml"));
         walletCellLoader.setController(this);
         this.walletCell = walletCellLoader.load();

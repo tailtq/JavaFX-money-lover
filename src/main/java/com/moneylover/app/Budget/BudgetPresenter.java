@@ -9,10 +9,11 @@ import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Budget.View.BudgetCell;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.PagePresenter;
-import com.moneylover.app.SO;
 import com.moneylover.app.Transaction.TransactionPresenter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -30,7 +31,6 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -44,6 +44,8 @@ public class BudgetPresenter extends PagePresenter {
     private ObservableList<Budget> finishingBudgets = FXCollections.observableArrayList();
 
     private LocalDate currentDate;
+
+    private StringProperty handledBudgetId = new SimpleStringProperty();
 
     public BudgetPresenter() throws SQLException, ClassNotFoundException {
         this.budgetController = new BudgetController();
@@ -62,12 +64,12 @@ public class BudgetPresenter extends PagePresenter {
         LocalDate now = LocalDate.now();
 
         for (Budget budget: budgets) {
-            LocalDate endDate = LocalDate.parse(budget.getStartedAt().toString());
+            LocalDate endDate = LocalDate.parse(budget.getEndedAt().toString());
 
-            if (DateHelper.isLaterThan(now, endDate)) {
-                onGoingBudgets.add(budget);
-            } else {
+            if (DateHelper.isLaterThan(endDate, now)) {
                 finishedBudgets.add(budget);
+            } else {
+                onGoingBudgets.add(budget);
             }
         }
     }
@@ -123,18 +125,54 @@ public class BudgetPresenter extends PagePresenter {
     }
 
     private void listBudgets(ListView listView, ObservableList<Budget> budgets) {
+        this.handleBudgetId();
+
         listView.setItems(budgets);
         listView.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {
-                    return new BudgetCell();
-                } catch (IOException e) {
+                    return new BudgetCell(handledBudgetId);
+                } catch (IOException | SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
                     return null;
                 }
             }
         });
+    }
+
+    private void handleBudgetId() {
+        this.handledBudgetId.addListener((observableValue, oldValue, newValue) -> {
+            try {
+                this.handleBudgetIdDetail(this.onGoingBudgets, newValue);
+                this.handleBudgetIdDetail(this.finishingBudgets, newValue);
+            } catch (NotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void handleBudgetIdDetail(ObservableList<Budget> budgets, String type) throws NotFoundException, SQLException {
+        int id = Integer.parseInt(type.substring(7));
+        int i = 0;
+        int index = -1;
+
+        for (Budget budget: budgets) {
+            if (budget.getId() == id) {
+                index = i;
+                break;
+            }
+            i++;
+        }
+
+        if (index >= 0) {
+            budgets.remove(index);
+
+            if (type.contains("UPDATE")) {
+                Budget budget = this.budgetController.getDetail(id);
+                this.addBudget(budget);
+            }
+        }
     }
 
     @FXML
@@ -183,6 +221,16 @@ public class BudgetPresenter extends PagePresenter {
         Parent parent = fxmlLoader.load();
 
         this.createScreen(parent, "Budget Detail", 400, 500);
+    }
+
+    private void addBudget(Budget budget) {
+        LocalDate endedAt = LocalDate.parse(budget.getEndedAt().toString());
+
+        if (DateHelper.isLaterThan(endedAt, this.currentDate)) {
+            this.finishingBudgets.add(0, budget);
+        } else {
+            this.onGoingBudgets.add(0, budget);
+        }
     }
 
     @FXML
@@ -244,34 +292,10 @@ public class BudgetPresenter extends PagePresenter {
 
         try {
             budget = this.budgetController.create(budget);
-            endedAt = LocalDate.parse(budget.getEndedAt().toString());
-
-            if (DateHelper.isLaterThan(endedAt, this.currentDate)) {
-                this.finishingBudgets.add(0, budget);
-            } else {
-                this.onGoingBudgets.add(0, budget);
-            }
-
+            this.addBudget(budget);
             this.closeScene(event);
         } catch (SQLException | NotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void editBudget() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-create.fxml"));
-        fxmlLoader.setController(this);
-        GridPane parent = fxmlLoader.load();
-
-        this.createScreen(parent, "Edit Budget", 500, 170);
-    }
-
-    @FXML
-    private void deleteBudget() {
-        ButtonBar.ButtonData buttonData = this.showDeleteDialog();
-        if (buttonData == ButtonBar.ButtonData.YES) {
-            // Delete Budget
         }
     }
 

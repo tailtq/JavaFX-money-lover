@@ -45,6 +45,10 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         this.handledTransactionId = handledTransactionId;
         this.transactionController = new TransactionController();
         this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
+        this.loadCell();
+    }
+
+    private void loadCell() throws IOException {
         FXMLLoader transactionCellLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/pages/transaction/transaction-cell.fxml")
         );
