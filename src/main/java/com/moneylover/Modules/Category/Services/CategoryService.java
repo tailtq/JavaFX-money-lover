@@ -6,6 +6,7 @@ import com.moneylover.Modules.Category.Entities.Category;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 
@@ -100,12 +101,11 @@ public class CategoryService extends BaseService {
     private int _create(Category category) throws SQLException {
         String statementString = "INSERT INTO categories(type_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
-        LocalDate currentDate = LocalDate.now();
         statement.setInt(1, category.getTypeId());
         statement.setString(2, category.getMoneyType());
         statement.setString(3, category.getName());
         statement.setString(4, category.getIcon());
-        statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(5, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -119,12 +119,11 @@ public class CategoryService extends BaseService {
         int i = 0;
 
         for (Category category : categories) {
-            LocalDate currentDate = LocalDate.now();
             statement.setInt(1, category.getTypeId());
             statement.setString(2, category.getMoneyType());
             statement.setString(3, category.getName());
             statement.setString(4, category.getIcon());
-            statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            statement.setTimestamp(5, this.getCurrentTime());
             statement.addBatch();
             i++;
             if (i % 1000 == 0 || i == categories.size()) {
@@ -153,8 +152,8 @@ public class CategoryService extends BaseService {
         category.setMoneyType(resultSet.getString("money_type"));
         category.setName(resultSet.getString("name"));
         category.setIcon(resultSet.getString("icon"));
-        category.setCreatedAt(resultSet.getDate("created_at"));
-        category.setUpdatedAt(resultSet.getDate("updated_at"));
+        category.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
+        category.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
 
         return category;
     }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="
+          @../../../../../assets/css/colors.css,
+          @../../../../../assets/css/content.css,
+          @../../../../../assets/css/pages/transaction.css,
+          @../../../../../assets/css/pages/report.css
+        "
+      styleClass="report--background-white"
+      alignment="TOP_CENTER">
+    <VBox styleClass="dialog-container" alignment="TOP_CENTER">
+        <Text text="Transactions" styleClass="report__title">
+            <VBox.margin>
+                <Insets>
+                    <top>15</top>
+                </Insets>
+            </VBox.margin>
+        </Text>
+        <ListView fx:id="listViewTransactions"/>
+    </VBox>
+</VBox>

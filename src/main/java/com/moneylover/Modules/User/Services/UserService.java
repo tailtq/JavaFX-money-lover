@@ -95,11 +95,10 @@ public class UserService extends BaseService {
     private int _create(User user) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(name, email, password, created_at) VALUES (?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
-        LocalDate currentDate = LocalDate.now();
         statement.setNString(1, user.getName());
         statement.setString(2, user.getEmail());
         statement.setString(3, UpdatableBcrypt.hash(user.getPassword()));
-        statement.setDate(4, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(4, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -110,6 +109,7 @@ public class UserService extends BaseService {
     private boolean _update(User user, int id) throws SQLException {
         String passwordStatement = "";
         int i = 3;
+
         if (!user.getPassword().equals("")) {
             passwordStatement = "password = ?,";
         }
@@ -121,10 +121,9 @@ public class UserService extends BaseService {
             statement.setString(i++, UpdatableBcrypt.hash(user.getPassword()));
         }
 
-        LocalDate currentDate = LocalDate.now();
         statement.setNString(1, user.getName());
         statement.setString(2, user.getPhone());
-        statement.setDate(i++, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(i++, this.getCurrentTime());
         statement.setDouble(i, id);
         statement.executeUpdate();
         this.closePreparedStatement();
@@ -141,8 +140,8 @@ public class UserService extends BaseService {
         user.setPassword(resultSet.getString("password"));
         user.setPhone(resultSet.getString("phone"));
         user.setBirthday(resultSet.getDate("birthday"));
-        user.setCreatedAt(resultSet.getDate("created_at"));
-        user.setUpdatedAt(resultSet.getDate("updated_at"));
+        user.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
+        user.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
 
         return user;
     }

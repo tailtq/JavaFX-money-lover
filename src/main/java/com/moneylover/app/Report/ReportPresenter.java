@@ -23,6 +23,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Pair;
 import java.io.IOException;
@@ -279,7 +280,7 @@ public class ReportPresenter extends PagePresenter {
         this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
         this._listMonthTransactions();
         this.dateRangeChart.setTitle("Report");
-        this.createScreen(parent, "Report", 500, 700);
+        Stage stage = this.createScreen(parent, "Report", 500, 700);
     }
 
     private void _listMonthTransactions() {
@@ -325,16 +326,17 @@ public class ReportPresenter extends PagePresenter {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-        this._listMonthTransactionsDetail(transactions);
+        ReportPresenter.listTransactions(this.listViewMonthTransactionsDetail, transactions);
 
         this.createScreen(parent, "Report Detail", 400, 500);
     }
 
-    private void _listMonthTransactionsDetail(
+    public static void listTransactions(
+            ListView listView,
             ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions
     ) {
-        this.listViewMonthTransactionsDetail.setItems(transactions);
-        this.listViewMonthTransactionsDetail.setCellFactory(new Callback<ListView, ListCell>() {
+        listView.setItems(transactions);
+        listView.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {

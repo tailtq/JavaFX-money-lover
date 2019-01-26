@@ -73,7 +73,7 @@ public interface DialogInterface {
         popup.show(parent, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, 30, 10);
     }
 
-    default void createScreen(Parent parent, String title, int v, int v1) {
+    default Stage createScreen(Parent parent, String title, int v, int v1) {
         Stage stage = new Stage();
         stage.setScene(new Scene(parent, v, v1));
         stage.setMinWidth(v);
@@ -81,6 +81,8 @@ public interface DialogInterface {
         stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
+
+        return stage;
     }
 
     @FXML

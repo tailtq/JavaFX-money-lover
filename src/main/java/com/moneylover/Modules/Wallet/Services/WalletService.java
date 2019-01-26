@@ -135,12 +135,11 @@ public class WalletService extends BaseService {
     private int _create(Wallet wallet) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(currency_id, name, inflow, outflow, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
-        LocalDate currentDate = LocalDate.now();
         statement.setInt(1, wallet.getCurrencyId());
         statement.setString(2, wallet.getName());
         statement.setFloat(3, wallet.getInflow());
         statement.setFloat(4, wallet.getOutflow());
-        statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(5, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -169,12 +168,11 @@ public class WalletService extends BaseService {
     private boolean _update(Wallet wallet, int id) throws SQLException {
         String statementString = "UPDATE " + getTable() + " SET currency_id = ?, name = ?, inflow = ?, outflow = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        LocalDate currentDate = LocalDate.now();
         statement.setInt(1, wallet.getCurrencyId());
         statement.setNString(2, wallet.getName());
         statement.setFloat(3, wallet.getInflow());
         statement.setFloat(4, wallet.getOutflow());
-        statement.setDate(5, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(5, this.getCurrentTime());
         statement.setInt(6, id);
         statement.executeUpdate();
         this.closePreparedStatement();
@@ -194,10 +192,9 @@ public class WalletService extends BaseService {
         }
 
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        LocalDate currentDate = LocalDate.now();
         statement.setFloat(1, inflow);
         statement.setFloat(2, outflow);
-        statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(3, this.getCurrentTime());
         statement.setInt(4, id);
         statement.executeUpdate();
         statement.executeUpdate();
@@ -214,8 +211,8 @@ public class WalletService extends BaseService {
         wallet.setName(resultSet.getNString("name"));
         wallet.setInflow(resultSet.getFloat("inflow"));
         wallet.setOutflow(resultSet.getFloat("outflow"));
-        wallet.setCreatedAt(resultSet.getDate("created_at"));
-        wallet.setUpdatedAt(resultSet.getDate("updated_at"));
+        wallet.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
+        wallet.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
         wallet.setMoneySymbol(resultSet.getNString("money_symbol"));
 
         return wallet;

@@ -3,6 +3,7 @@ package com.moneylover.Modules.Transaction.Services;
 import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
+import com.moneylover.Modules.Budget.Entities.Budget;
 import com.moneylover.Modules.Category.Entities.Category;
 import com.moneylover.Modules.Category.Services.CategoryService;
 import com.moneylover.Modules.Time.Entities.Time;
@@ -45,14 +46,19 @@ public class TransactionService extends BaseService {
         return transactions;
     }
 
+    public ArrayList<Transaction> listByBudget(Budget budget) throws SQLException {
+        ArrayList<Transaction> transactions = this._list(budget);
+
+        return transactions;
+    }
+
     public Transaction getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this.getByJoin(
                 "transactions.*, " +
                         "categories.name as category_name, categories.icon as category_icon, categories.money_type as category_money_type, " +
                         "sub_categories.name as sub_category_name, sub_categories.icon as sub_category_icon",
-                "INNER JOIN times ON transactions.time_id = times.id " +
-                        "INNER JOIN categories ON transactions.category_id = categories.id " +
-                        "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
+                "INNER JOIN categories ON transactions.category_id = categories.id " +
+                     "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
                 "transactions.id = " + id
         );
 
@@ -100,16 +106,15 @@ public class TransactionService extends BaseService {
     }
 
     /*====================================================================================*/
-    private ArrayList<Transaction> _list(int walledId, int month, int year, char operator) throws SQLException {
+    private ArrayList<Transaction> _list(int walletId, int month, int year, char operator) throws SQLException {
         ArrayList<Transaction> transactions = new ArrayList<>();
         ResultSet resultSet = this.getByJoin(
                 "transactions.*, " +
                         "categories.name as category_name, categories.icon as category_icon, categories.money_type as category_money_type, " +
                         "sub_categories.name as sub_category_name, sub_categories.icon as sub_category_icon",
-                "INNER JOIN times ON transactions.time_id = times.id " +
-                        "INNER JOIN categories ON transactions.category_id = categories.id " +
-                        "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
-                "wallet_id = " + walledId,
+                "INNER JOIN categories ON transactions.category_id = categories.id " +
+                     "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
+                "wallet_id = " + walletId,
                 "month " + operator + " " + month,
                 "year " + operator + " " + year
         );
@@ -121,17 +126,44 @@ public class TransactionService extends BaseService {
         return transactions;
     }
 
-    private ArrayList<Transaction> _list(int walledId, LocalDate startDate, LocalDate endDate) throws SQLException {
+    private ArrayList<Transaction> _list(int walletId, LocalDate startDate, LocalDate endDate) throws SQLException {
         ArrayList<Transaction> transactions = new ArrayList<>();
         ResultSet resultSet = this.getByJoin(
                 "transactions.*, " +
                         "categories.name as category_name, categories.icon as category_icon, categories.money_type as category_money_type, " +
                         "sub_categories.name as sub_category_name, sub_categories.icon as sub_category_icon",
-                "INNER JOIN times ON transactions.time_id = times.id " +
-                        "INNER JOIN categories ON transactions.category_id = categories.id " +
-                        "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
-                "wallet_id = " + walledId,
+                "INNER JOIN categories ON transactions.category_id = categories.id " +
+                     "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
+                "wallet_id = " + walletId,
                 "transacted_at >= CAST('" + startDate.toString() + "' AS DATE) AND transacted_at <= CAST('" + endDate.toString() + "' AS DATE)"
+        );
+
+        while (resultSet.next()) {
+            transactions.add(this.toObject(resultSet));
+        }
+
+        return transactions;
+    }
+
+    private ArrayList<Transaction> _list(Budget budget) throws SQLException {
+        String categoryCondition;
+
+        if (budget.getBudgetableType().equals(CommonConstants.APP_SUB_CATEGORY)) {
+            categoryCondition = "transactions.sub_category_id = " + budget.getBudgetableId();
+        } else {
+            categoryCondition = "transactions.category_id = " + budget.getBudgetableId();
+        }
+
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        ResultSet resultSet = this.getByJoin(
+                "transactions.*, " +
+                        "categories.name as category_name, categories.icon as category_icon, categories.money_type as category_money_type, " +
+                        "sub_categories.name as sub_category_name, sub_categories.icon as sub_category_icon",
+                "INNER JOIN categories ON transactions.category_id = categories.id " +
+                     "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
+                "wallet_id = " + budget.getWalletId(),
+                categoryCondition,
+                "transacted_at >= CAST('" + budget.getStartedAt().toString() + "' AS DATE) AND transacted_at <= CAST('" + budget.getEndedAt().toString() + "' AS DATE)"
         );
 
         while (resultSet.next()) {
@@ -144,8 +176,7 @@ public class TransactionService extends BaseService {
     private int _create(Transaction transaction, String moneyType) throws SQLException {
         String statementString = "INSERT INTO " + getTable() + "(wallet_id, time_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_reported, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
-        LocalDate currentDate = LocalDate.now();
-        statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(12, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -189,7 +220,6 @@ public class TransactionService extends BaseService {
         int i = 0;
 
         for (Transaction transaction: transactions) {
-            LocalDate currentDate = LocalDate.now();
             statement.setInt(1, transaction.getWalletId());
             statement.setInt(2, transaction.getTimeId());
             statement.setInt(3, transaction.getTypeId());
@@ -201,7 +231,7 @@ public class TransactionService extends BaseService {
             statement.setNString(9, transaction.getNote());
             statement.setString(10, transaction.getImage());
             statement.setByte(11, transaction.getIsReported());
-            statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            statement.setTimestamp(12, this.getCurrentTime());
             statement.addBatch();
             i++;
             if (i % 1000 == 0 || i == transactions.size()) {
@@ -215,8 +245,7 @@ public class TransactionService extends BaseService {
     private boolean _update(Transaction transaction, int id, String moneyType) throws SQLException {
         String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, time_id = ?, type_id = ?, category_id = ?, sub_category_id = ?, transacted_at = ?, amount = ?, location = ?, note = ?, image = ?, is_reported = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
-        LocalDate currentDate = LocalDate.now();
-        statement.setDate(12, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(12, this.getCurrentTime());
         statement.setInt(13, id);
         statement.executeUpdate();
         this.closePreparedStatement();
@@ -239,8 +268,8 @@ public class TransactionService extends BaseService {
         transaction.setNote(resultSet.getNString("note"));
         transaction.setImage(resultSet.getString("image"));
         transaction.setIsReported(resultSet.getByte("is_reported"));
-        transaction.setCreatedAt(resultSet.getDate("created_at"));
-        transaction.setUpdatedAt(resultSet.getDate("updated_at"));
+        transaction.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
+        transaction.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
         transaction.setCategoryName(resultSet.getString("category_name"));
         transaction.setCategoryIcon(resultSet.getString("category_icon"));
         transaction.setCategoryMoneyType(resultSet.getString("category_money_type"));
