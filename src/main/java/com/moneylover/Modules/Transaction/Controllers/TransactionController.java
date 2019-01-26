@@ -1,6 +1,7 @@
 package com.moneylover.Modules.Transaction.Controllers;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
+import com.moneylover.Modules.Budget.Entities.Budget;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Transaction.Services.TransactionService;
 
@@ -23,6 +24,12 @@ public class TransactionController {
 
     public ArrayList<Transaction> listByDateRange(int walletId, LocalDate startDate, LocalDate endDate) throws SQLException {
         ArrayList<Transaction> transactions = this.service.listByDateRange(walletId, startDate, endDate);
+
+        return transactions;
+    }
+
+    public ArrayList<Transaction> listByBudget(Budget budget) throws SQLException {
+        ArrayList<Transaction> transactions = this.service.listByBudget(budget);
 
         return transactions;
     }

@@ -87,13 +87,12 @@ public class SubCategoryService extends BaseService {
     private int _create(SubCategory subCategory) throws SQLException {
         String statementString = "INSERT INTO sub_categories(type_id, category_id, money_type, name, icon, created_at) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
-        LocalDate currentDate = LocalDate.now();
         statement.setInt(1, subCategory.getTypeId());
         statement.setInt(2, subCategory.getCategoryId());
         statement.setString(3, subCategory.getMoneyType());
         statement.setString(4, subCategory.getName());
         statement.setString(5, subCategory.getIcon());
-        statement.setDate(6, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(6, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -107,13 +106,12 @@ public class SubCategoryService extends BaseService {
         int i = 0;
 
         for (SubCategory subCategory : subCategories) {
-            LocalDate currentDate = LocalDate.now();
             statement.setInt(1, subCategory.getTypeId());
             statement.setInt(2, subCategory.getCategoryId());
             statement.setString(3, subCategory.getMoneyType());
             statement.setString(4, subCategory.getName());
             statement.setString(5, subCategory.getIcon());
-            statement.setDate(6, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            statement.setTimestamp(6, this.getCurrentTime());
             statement.addBatch();
             i++;
             if (i % 1000 == 0 || i == subCategories.size()) {
@@ -143,8 +141,8 @@ public class SubCategoryService extends BaseService {
         subCategory.setMoneyType(resultSet.getString("money_type"));
         subCategory.setName(resultSet.getString("name"));
         subCategory.setIcon(resultSet.getString("icon"));
-        subCategory.setCreatedAt(resultSet.getDate("created_at"));
-        subCategory.setUpdatedAt(resultSet.getDate("updated_at"));
+        subCategory.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
+        subCategory.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
 
         return subCategory;
     }

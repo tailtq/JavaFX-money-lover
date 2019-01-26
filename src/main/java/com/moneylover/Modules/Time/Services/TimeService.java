@@ -98,10 +98,9 @@ public class TimeService extends BaseService {
     private int _create(Time time) throws SQLException {
         String statementString = "INSERT INTO times(month, year, created_at) VALUES (?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
-        LocalDate currentDate = LocalDate.now();
         statement.setInt(1, time.getMonth());
         statement.setInt(2, time.getYear());
-        statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(3, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -115,10 +114,9 @@ public class TimeService extends BaseService {
         int i = 0;
 
         for (Time time: times) {
-            LocalDate currentDate = LocalDate.now();
             statement.setInt(1, time.getMonth());
             statement.setInt(2, time.getYear());
-            statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            statement.setTimestamp(3, this.getCurrentTime());
             statement.addBatch();
             i++;
             if (i % 1000 == 0 || i == times.size()) {
@@ -145,8 +143,8 @@ public class TimeService extends BaseService {
         time.setId(resultSet.getInt("id"));
         time.setMonth(resultSet.getInt("month"));
         time.setYear(resultSet.getInt("year"));
-        time.setCreatedAt(resultSet.getDate("created_at"));
-        time.setUpdatedAt(resultSet.getDate("updated_at"));
+        time.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
+        time.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
 
         return time;
     }

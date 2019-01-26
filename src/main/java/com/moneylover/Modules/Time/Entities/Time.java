@@ -2,6 +2,7 @@ package com.moneylover.Modules.Time.Entities;
 
 import com.moneylover.Infrastructure.Models.BaseModel;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Time extends BaseModel {
@@ -16,7 +17,7 @@ public class Time extends BaseModel {
         this.year = year;
     }
 
-    public Time(int id, int month, int year, Date createdAt) {
+    public Time(int id, int month, int year, LocalDateTime createdAt) {
         this.id = id;
         this.month = month;
         this.year = year;

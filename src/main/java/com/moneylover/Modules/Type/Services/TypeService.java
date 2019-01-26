@@ -70,10 +70,9 @@ public class TypeService extends BaseService {
     private int _create(Type type) throws SQLException {
         String statementString = "INSERT INTO types(money_type, name, created_at) VALUES (?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
-        LocalDate currentDate = LocalDate.now();
         statement.setString(1, type.getMoneyType());
         statement.setString(2, type.getName());
-        statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(3, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -87,10 +86,9 @@ public class TypeService extends BaseService {
         int i = 0;
 
         for (Type type : types) {
-            LocalDate currentDate = LocalDate.now();
             statement.setString(1, type.getMoneyType());
             statement.setString(2, type.getName());
-            statement.setDate(3, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            statement.setTimestamp(3, this.getCurrentTime());
             statement.addBatch();
             i++;
             if (i % 1000 == 0 || i == types.size()) {
@@ -117,8 +115,8 @@ public class TypeService extends BaseService {
         type.setId(resultSet.getInt("id"));
         type.setMoneyType(resultSet.getString("money_type"));
         type.setName(resultSet.getString("name"));
-        type.setCreatedAt(resultSet.getDate("created_at"));
-        type.setUpdatedAt(resultSet.getDate("updated_at"));
+        type.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
+        type.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
 
         return type;
     }

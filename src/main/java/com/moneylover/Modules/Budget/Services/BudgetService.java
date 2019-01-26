@@ -6,9 +6,9 @@ import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Budget.Entities.Budget;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 public class BudgetService extends BaseService {
     public BudgetService() throws SQLException, ClassNotFoundException {
@@ -34,7 +34,7 @@ public class BudgetService extends BaseService {
                         "LEFT JOIN sub_categories ON sub_categories.id = " +
                         "CASE WHEN budgets.budgetable_type = '" + CommonConstants.APP_SUB_CATEGORY + "' " +
                         "THEN budgets.budgetable_id ELSE null END",
-                "id = " + id
+                "budgets.id = " + id
         );
 
         if (!resultSet.next()) {
@@ -102,8 +102,7 @@ public class BudgetService extends BaseService {
     private int _create(Budget budget) throws SQLException {
         String statementString = "INSERT INTO budgets(wallet_id, budgetable_id, budgetable_type, started_at, ended_at, amount, spent_amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = this.handleCreateProcess(budget, statementString);
-        LocalDate currentDate = LocalDate.now();
-        statement.setDate(8, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        statement.setTimestamp(8, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -117,7 +116,7 @@ public class BudgetService extends BaseService {
         int i = 0;
 
         for (Budget budget : budgets) {
-            LocalDate currentDate = LocalDate.now();
+            LocalDateTime currentDate = LocalDateTime.now().plusSeconds(i);
             statement.setInt(1, budget.getWalletId());
             statement.setInt(2, budget.getBudgetableId());
             statement.setString(3, budget.getBudgetableType());
@@ -125,7 +124,7 @@ public class BudgetService extends BaseService {
             statement.setDate(5, Date.valueOf(budget.getEndedAt().toString()));
             statement.setFloat(6, budget.getAmount());
             statement.setFloat(7, budget.getSpentAmount());
-            statement.setDate(8, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+            statement.setTimestamp(8, Timestamp.valueOf(currentDate));
             statement.addBatch();
             i++;
             if (i % 1000 == 0 || i == budgets.size()) {
@@ -139,11 +138,10 @@ public class BudgetService extends BaseService {
     }
 
     private boolean _update(Budget budget, int id) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, budgetable_id = ?, budgetable_type = ?, started_at = ?, ended_at = ?, amount = ?, spent_amount = ?, updated_at = ? WHERE id = ?";
+        String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, budgetable_id = ?, budgetable_type = ?, started_at = ?, ended_at = ?, amount = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.handleCreateProcess(budget, statementString);
-        LocalDate currentDate = LocalDate.now();
-        statement.setDate(8, new Date(currentDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
-        statement.setInt(9, id);
+        statement.setTimestamp(7, this.getCurrentTime());
+        statement.setInt(8, id);
         statement.executeUpdate();
         this.closePreparedStatement();
 
@@ -158,7 +156,10 @@ public class BudgetService extends BaseService {
         statement.setDate(4, Date.valueOf(budget.getStartedAt().toString()));
         statement.setDate(5, Date.valueOf(budget.getEndedAt().toString()));
         statement.setFloat(6, budget.getAmount());
-        statement.setFloat(7, budget.getSpentAmount());
+
+        if (statementString.contains("INSERT")) {
+            statement.setFloat(7, budget.getSpentAmount());
+        }
 
         return statement;
     }
@@ -174,8 +175,8 @@ public class BudgetService extends BaseService {
         budget.setEndedAt(resultSet.getDate("ended_at"));
         budget.setAmount(resultSet.getFloat("amount"));
         budget.setSpentAmount(resultSet.getFloat("spent_amount"));
-        budget.setCreatedAt(resultSet.getDate("created_at"));
-        budget.setUpdatedAt(resultSet.getDate("updated_at"));
+        budget.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
+        budget.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
 
         if (budget.getBudgetableType().equals(CommonConstants.APP_SUB_CATEGORY)) {
             budget.setCategoryIcon(resultSet.getString("sub_category_icon"));

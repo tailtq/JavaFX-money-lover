@@ -36,6 +36,10 @@
     -fx-pref-height: 40;
 }
 
+.transaction__content {
+    -fx-spacing: 0;
+}
+
 .transaction__content__type.subcategory,
 .transaction__time__mmyyyy {
     -fx-text-fill: rgba(0,0,0,.54);

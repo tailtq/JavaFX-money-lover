@@ -42,24 +42,22 @@
             <GridPane styleClass="transaction__statistic, budget__statistic">
                 <VBox styleClass="transaction__time"
                       GridPane.columnIndex="0" GridPane.rowIndex="0">
-                    <Label text="Left" styleClass="font--size-12, gray-color"/>
-                    <Label text="+$ 2,500.00" styleClass="font--size-13"/>
+                    <Label text="Left" styleClass="font--size-12, gray-color" fx:id="labelBudgetDetailStatus"/>
+                    <Label text="+$ 2,500.00" styleClass="font--size-13" fx:id="labelBudgetDetailRemainingAmount"/>
                 </VBox>
                 <VBox styleClass="transaction__time"
                       GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <Label text="Spent" styleClass="font--size-12, gray-color"/>
-                    <Label text="+$ 500.00" styleClass="font--size-13"/>
+                    <Label text="+$ 500.00" styleClass="font--size-13" fx:id="labelBudgetDetailSpentAmount"/>
                 </VBox>
 
-                <VBox styleClass="transaction__time"
-                      GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <VBox styleClass="transaction__time" GridPane.columnIndex="0" GridPane.rowIndex="1">
                     <Label text="Recommended daily spending" styleClass="font--size-12, gray-color"/>
-                    <Label text="+$ 96.15" styleClass="font--size-13"/>
+                    <Label text="+$ 96.15" styleClass="font--size-13" fx:id="labelBudgetDetailRecommendedDailyAmount"/>
                 </VBox>
-                <VBox styleClass="transaction__time"
-                      GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <VBox styleClass="transaction__time" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <Label text="Actual daily spending" styleClass="font--size-12, gray-color"/>
-                    <Label text="+$ 100.00" styleClass="font--size-13"/>
+                    <Label text="+$ 100.00" styleClass="font--size-13" fx:id="labelBudgetDetailActualDailyAmount"/>
                 </VBox>
 
                 <columnConstraints>

@@ -1,6 +1,7 @@
 package com.moneylover.Infrastructure.Services;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 abstract public class BaseService {
     protected Connection connection;
@@ -142,5 +143,13 @@ abstract public class BaseService {
         }
 
         return condition;
+    }
+
+    protected Timestamp getCurrentTime() {
+        return Timestamp.valueOf(LocalDateTime.now());
+    }
+
+    protected LocalDateTime getUpdatedAt(Timestamp timestamp) {
+        return timestamp == null ? null : timestamp.toLocalDateTime();
     }
 }

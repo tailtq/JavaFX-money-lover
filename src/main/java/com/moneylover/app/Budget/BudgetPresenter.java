@@ -19,19 +19,15 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class BudgetPresenter extends PagePresenter {
@@ -76,9 +72,6 @@ public class BudgetPresenter extends PagePresenter {
 
     /*========================== Draw ==========================*/
     @FXML
-    private ListView listViewBudgets;
-
-    @FXML
     private TabPane budgetsTabPane;
 
     @FXML
@@ -117,13 +110,12 @@ public class BudgetPresenter extends PagePresenter {
     private void loadBudgets(int walletId) throws SQLException {
         ArrayList<Budget> budgets = this.budgetController.list(walletId);
         BudgetPresenter._sortFinishingBudgets(this.onGoingBudgets, this.finishingBudgets, budgets);
+        this.handleBudgetId();
         this.listBudgets(this.listViewOngoingTab, this.onGoingBudgets);
         this.listBudgets(this.listViewFinishingTab, this.finishingBudgets);
     }
 
     private void listBudgets(ListView listView, ObservableList<Budget> budgets) {
-        this.handleBudgetId();
-
         listView.setItems(budgets);
         listView.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
@@ -143,6 +135,9 @@ public class BudgetPresenter extends PagePresenter {
 
     private void handleBudgetId() {
         this.handledBudgetId.addListener((observableValue, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
             try {
                 this.handleBudgetIdDetail(this.onGoingBudgets, newValue);
                 this.handleBudgetIdDetail(this.finishingBudgets, newValue);
@@ -166,11 +161,11 @@ public class BudgetPresenter extends PagePresenter {
         }
 
         if (index >= 0) {
+            budgets.remove(index);
+
             if (type.contains("UPDATE")) {
                 Budget budget = this.budgetController.getDetail(id);
-                this.setBudget(budget, index);
-            } else {
-                budgets.remove(index);
+                this._setBudget(budget);
             }
         }
     }
@@ -185,7 +180,7 @@ public class BudgetPresenter extends PagePresenter {
         this.categoryPresenter.showCategoryDialog();
     }
 
-    private void addBudget(Budget budget) {
+    private void _addNewBudget(Budget budget) {
         LocalDate endedAt = LocalDate.parse(budget.getEndedAt().toString());
 
         if (DateHelper.isLaterThan(endedAt, this.currentDate)) {
@@ -195,14 +190,30 @@ public class BudgetPresenter extends PagePresenter {
         }
     }
 
-    private void setBudget(Budget budget, int index) {
+    private void _setBudget(Budget budget) {
         LocalDate endedAt = LocalDate.parse(budget.getEndedAt().toString());
 
         if (DateHelper.isLaterThan(endedAt, this.currentDate)) {
-            this.finishingBudgets.set(index, budget);
+            this._addBudget(this.finishingBudgets, budget);
         } else {
-            this.onGoingBudgets.set(index, budget);
+            this._addBudget(this.onGoingBudgets, budget);
         }
+    }
+
+    private void _addBudget(ObservableList<Budget> budgets, Budget newBudget) {
+        int i = 0;
+        LocalDateTime newBudgetDate = newBudget.getCreatedAt();
+
+        for (Budget budget: budgets) {
+            if (i < budgets.size() && (newBudgetDate.isAfter(budget.getCreatedAt())
+                    || newBudgetDate.isEqual(budget.getCreatedAt()))) {
+                break;
+            }
+
+            i++;
+        }
+
+        budgets.add(i, newBudget);
     }
 
     @FXML
@@ -257,7 +268,7 @@ public class BudgetPresenter extends PagePresenter {
 
         try {
             budget = this.budgetController.create(budget);
-            this.addBudget(budget);
+            this._addNewBudget(budget);
             this.closeScene(event);
         } catch (SQLException | NotFoundException e) {
             e.printStackTrace();
