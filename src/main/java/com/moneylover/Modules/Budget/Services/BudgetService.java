@@ -1,5 +1,6 @@
 package com.moneylover.Modules.Budget.Services;
 
+import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Budget.Entities.Budget;
@@ -25,7 +26,16 @@ public class BudgetService extends BaseService {
     }
 
     public Budget getDetail(int id) throws SQLException, NotFoundException {
-        ResultSet resultSet = this._getById(id);
+        ResultSet resultSet = this._getDetailByJoin(
+                "budgets.*, categories.icon as category_icon, sub_categories.icon as sub_category_icon",
+                "LEFT JOIN categories ON categories.id = " +
+                        "CASE WHEN budgets.budgetable_type = '" + CommonConstants.APP_CATEGORY + "' " +
+                        "THEN budgets.budgetable_id ELSE null END " +
+                        "LEFT JOIN sub_categories ON sub_categories.id = " +
+                        "CASE WHEN budgets.budgetable_type = '" + CommonConstants.APP_SUB_CATEGORY + "' " +
+                        "THEN budgets.budgetable_id ELSE null END",
+                "id = " + id
+        );
 
         if (!resultSet.next()) {
             throw new NotFoundException();
@@ -71,7 +81,16 @@ public class BudgetService extends BaseService {
     /*====================================================================================*/
     private ArrayList<Budget> _list(int walletId) throws SQLException {
         ArrayList<Budget> budgets = new ArrayList<>();
-        ResultSet resultSet = this.get("wallet_id = " + walletId);
+        ResultSet resultSet = this.getByJoin(
+                "budgets.*, categories.icon as category_icon, sub_categories.icon as sub_category_icon",
+                "LEFT JOIN categories ON categories.id = " +
+                        "CASE WHEN budgets.budgetable_type = '" + CommonConstants.APP_CATEGORY + "' " +
+                        "THEN budgets.budgetable_id ELSE null END " +
+                     "LEFT JOIN sub_categories ON sub_categories.id = " +
+                        "CASE WHEN budgets.budgetable_type = '" + CommonConstants.APP_SUB_CATEGORY + "' " +
+                        "THEN budgets.budgetable_id ELSE null END",
+                "wallet_id = " + walletId
+        );
 
         while (resultSet.next()) {
             budgets.add(this.toObject(resultSet));
@@ -157,6 +176,12 @@ public class BudgetService extends BaseService {
         budget.setSpentAmount(resultSet.getFloat("spent_amount"));
         budget.setCreatedAt(resultSet.getDate("created_at"));
         budget.setUpdatedAt(resultSet.getDate("updated_at"));
+
+        if (budget.getBudgetableType().equals(CommonConstants.APP_SUB_CATEGORY)) {
+            budget.setCategoryIcon(resultSet.getString("sub_category_icon"));
+        } else {
+            budget.setCategoryIcon(resultSet.getString("category_icon"));
+        }
 
         return budget;
     }

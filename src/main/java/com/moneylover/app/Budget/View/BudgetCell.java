@@ -19,16 +19,25 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     private BudgetController budgetController;
@@ -42,6 +51,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     private StringProperty handledBudgetId;
 
     private ObservableList<Wallet> wallets;
+
+    private LocalDate currentDate = LocalDate.now();
 
     public BudgetCell(StringProperty handledBudgetId) throws IOException, SQLException, ClassNotFoundException {
         this.handledBudgetId = handledBudgetId;
@@ -62,6 +73,18 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
 
     /*========================== Draw ==========================*/
     @FXML
+    private Label labelBudgetTime, labelBudgetRemainingTime, labelBudgetAmount, labelBudgetRemainingAmount;
+
+    @FXML
+    private ProgressBar progressBarRemainingAmount;
+
+    @FXML
+    private ImageView imageBudgetCategory;
+
+    @FXML
+    private AreaChart areaChartDetail;
+
+    @FXML
     private Button selectCategory;
 
     @FXML
@@ -71,10 +94,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     private TextField textFieldBudgetAmount;
 
     @FXML
-    private DatePicker datePickerStartedAt;
-
-    @FXML
-    private DatePicker datePickerEndedAt;
+    private DatePicker datePickerStartedAt, datePickerEndedAt;
 
     private IntegerProperty walletId = new SimpleIntegerProperty(0);
 
@@ -92,18 +112,65 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
         }
 
         this.budget = item;
+        String moneySymbol = this.wallets.get(0).getMoneySymbol();
+        LocalDate startedAt = LocalDate.parse(item.getStartedAt().toString()),
+                endedAt = LocalDate.parse(item.getEndedAt().toString());
+        long daysLeft = Math.abs(ChronoUnit.DAYS.between(this.currentDate, endedAt));
+        String startedAtText = startedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+        String endedAtText = endedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+        float remainingAmount = budget.getAmount() - budget.getSpentAmount();
+        String imageUrl = "/assets/images/categories/" + item.getCategoryIcon() + ".png";
+
+        this.labelBudgetTime.setText(startedAtText + " - " + endedAtText);
+        this.labelBudgetRemainingTime.setText(daysLeft + (daysLeft > 1 ? " days" : " day") + " left");
+        this.progressBarRemainingAmount.setProgress(budget.getSpentAmount() / budget.getAmount());
+        this.labelBudgetAmount.setText("+" + budget.getAmount() + moneySymbol);
+        this.labelBudgetRemainingAmount.setText((remainingAmount > 0 ? "Left +" : "") + remainingAmount + moneySymbol);
+        this.imageBudgetCategory.setImage(new Image(imageUrl));
         setGraphic(this.budgetCell);
     }
 
     @FXML
     private void showPopup(Event e) throws IOException {
-        Node button = (Node) e.getSource();
-        FXMLLoader optionalButtonsLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/optional-buttons.fxml"));
-        optionalButtonsLoader.setController(this);
-        HBox container = optionalButtonsLoader.load();
+        this.addViewPopup((Node) e.getSource());
+    }
 
-        JFXPopup popup = new JFXPopup(container);
-        popup.show(button, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, 30, 10);
+    @FXML
+    private void show() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getResource("/com/moneylover/components/dialogs/budget/budget-show.fxml")
+        );
+        fxmlLoader.setController(this);
+        VBox parent = fxmlLoader.load();
+        ArrayList<Pair<String, Double>> values = new ArrayList<>();
+
+        for (int i = 1; i < 5; i++) {
+            values.add(new Pair<>(Integer.toString(i), (double) i * 100));
+        }
+
+        this.showAreaChart(values);
+        this.createScreen(parent, "Budget Detail", 400, 500);
+    }
+
+    @FXML
+    private void showAreaChart(ArrayList<Pair<String, Double>> values) {
+        XYChart.Series series = new XYChart.Series();
+        ObservableList data = series.getData();
+
+        for (Pair<String, Double> value: values) {
+            data.add(new XYChart.Data(value.getKey(), value.getValue()));
+        }
+
+        this.areaChartDetail.getData().add(series);
+    }
+
+    @FXML
+    private void loadBudgetTransactions() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml"));
+        fxmlLoader.setController(this);
+        Parent parent = fxmlLoader.load();
+
+        this.createScreen(parent, "Budget Detail", 400, 500);
     }
 
     @FXML

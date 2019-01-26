@@ -88,6 +88,15 @@ abstract public class BaseService {
         return resultSet;
     }
 
+    protected ResultSet _getDetailByJoin(String select, String join, String... args) throws SQLException {
+        String condition = this.handleConditions(args);
+        String query = "SELECT TOP 1 " + select + " FROM " + getTable() + " " + join + condition + " ORDER BY created_at DESC";
+        statement = getStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        return resultSet;
+    }
+
     protected ResultSet _getDetailBy(String... args) throws SQLException {
         String condition = this.handleConditions(args);
         String query = "SELECT TOP 1 * FROM " + getTable() + condition;

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      stylesheets="
+          @../../../../assets/css/colors.css,
+          @../../../../assets/css/content.css,
+          @../../../../assets/css/components/buttons/optional-buttons.css
+      " styleClass="optional-buttons">
+    <Button styleClass="button--bg-radius-0, success-bg-color" onAction="#show">
+        <graphic>
+            <FontAwesomeIconView glyphName="EYE" size="12px" glyphStyle="-fx-fill: white" />
+        </graphic>
+    </Button>
+    <Button styleClass="button--bg-radius-0, warning-bg-color" onAction="#edit">
+        <graphic>
+            <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
+        </graphic>
+    </Button>
+    <Button styleClass="button--bg-radius-0, danger-bg-color" onAction="#delete">
+        <graphic>
+            <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
+        </graphic>
+    </Button>
+</HBox>

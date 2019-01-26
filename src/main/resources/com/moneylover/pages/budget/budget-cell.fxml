@@ -12,49 +12,41 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml">
-    <HBox styleClass="transactions, budget__date-range">
-        <VBox styleClass="transaction__time, font--size-11, gray-color">
-            <Label text="01/01/2019 - 31/01/2019"/>
-            <Label text="26 days left"/>
-        </VBox>
-        <Pane HBox.hgrow="ALWAYS"></Pane>
-        <VBox styleClass="transaction__time, font--size-11, gray-color"
-              alignment="TOP_RIGHT">
-            <Label text="+$ 3,000.00" styleClass="text-bold"/>
-            <Label text="Left +$ 2,500.00"/>
-        </VBox>
-    </HBox>
     <HBox styleClass="budget__content">
         <ImageView fitHeight="40"
                    fitWidth="40"
-                   styleClass="transaction__content__image">
+                   styleClass="transaction__content__image"
+                   fx:id="imageBudgetCategory">
             <Image url="@../../../../assets/images/categories/i_debt.png"
                    backgroundLoading="true"/>
         </ImageView>
-        <VBox HBox.hgrow="ALWAYS">
+        <VBox HBox.hgrow="ALWAYS"
+              styleClass="transaction__content-container"
+              alignment="CENTER">
             <HBox>
                 <VBox styleClass="transaction__content">
-                    <Label text="Thursday" fx:id="labelTransactionCategoryName"
+                    <Label text="Thursday" fx:id="labelBudgetCategoryName"
                            styleClass="transaction__content__type, text-bold, category"/>
-                    <Label text="December 2018" fx:id="labelTransactionNote"
-                           styleClass="transaction__content__note, gray-color"/>
+                    <Label text="01/01/2019 - 31/01/2019" fx:id="labelBudgetTime"
+                           styleClass="gray-color, font--size-12"/>
                 </VBox>
                 <Pane HBox.hgrow="ALWAYS"></Pane>
                 <HBox alignment="CENTER_RIGHT" styleClass="transaction__amount">
-                    <VBox styleClass="budget__amount, font--size-11, gray-color"
+                    <VBox styleClass="budget__amount, gray-color"
                           alignment="CENTER_RIGHT">
-                        <Label text="+$ 3,000.00" styleClass="text-bold"/>
-                        <Label text="Left +$ 2,500.00"/>
+                        <Label styleClass="text-bold, font--size-13" fx:id="labelBudgetAmount"/>
+                        <Label styleClass="font--size-12" fx:id="labelBudgetRemainingAmount"/>
                     </VBox>
-
                     <Button styleClass="bg--linear-succeed-color" onAction="#showPopup">
                         <graphic>
-                            <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white"/>
+                            <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px"
+                                                 glyphStyle="-fx-fill: white"/>
                         </graphic>
                     </Button>
                 </HBox>
             </HBox>
-            <ProgressBar progress=".2"/>
+            <ProgressBar fx:id="progressBarRemainingAmount"/>
+            <Label text="26 days left" styleClass="font--size-12" fx:id="labelBudgetRemainingTime"/>
         </VBox>
     </HBox>
 </VBox>

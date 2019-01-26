@@ -49,6 +49,10 @@
     -fx-text-fill: #6f6f6f;
 }
 
+.transaction__content-container {
+    -fx-spacing: 5;
+}
+
 .transaction__content, .transaction__time {
     -fx-spacing: 7;
     -fx-padding: 0 5px;
