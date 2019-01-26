@@ -79,9 +79,6 @@ public class BudgetPresenter extends PagePresenter {
     private ListView listViewBudgets;
 
     @FXML
-    private AreaChart areaChartDetail;
-
-    @FXML
     private TabPane budgetsTabPane;
 
     @FXML
@@ -186,44 +183,6 @@ public class BudgetPresenter extends PagePresenter {
     @FXML
     private void chooseCategory() throws IOException {
         this.categoryPresenter.showCategoryDialog();
-    }
-
-    @FXML
-    private void showBudget() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/budget/budget-show.fxml")
-        );
-        fxmlLoader.setController(this);
-        VBox parent = fxmlLoader.load();
-        ArrayList<Pair<String, Double>> values = new ArrayList<>();
-
-        for (int i = 1; i < 5; i++) {
-            values.add(new Pair<>(Integer.toString(i), (double) i * 100));
-        }
-
-        this.showAreaChart(values);
-        this.createScreen(parent, "Budget Detail", 400, 500);
-    }
-
-    @FXML
-    private void showAreaChart(ArrayList<Pair<String, Double>> values) {
-        XYChart.Series series = new XYChart.Series();
-        ObservableList data = series.getData();
-
-        for (Pair<String, Double> value: values) {
-            data.add(new XYChart.Data(value.getKey(), value.getValue()));
-        }
-
-        this.areaChartDetail.getData().add(series);
-    }
-
-    @FXML
-    private void loadBudgetTransactions() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml"));
-        fxmlLoader.setController(this);
-        Parent parent = fxmlLoader.load();
-
-        this.createScreen(parent, "Budget Detail", 400, 500);
     }
 
     private void addBudget(Budget budget) {

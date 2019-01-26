@@ -1,7 +1,9 @@
 package com.moneylover.Infrastructure.Contracts;
 
+import com.jfoenix.controls.JFXPopup;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,9 +11,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public interface DialogInterface {
@@ -49,6 +53,24 @@ public interface DialogInterface {
         alert.getButtonTypes().setAll(cancelButton);
 
         alert.showAndWait();
+    }
+
+    default void addEditPopup(Node parent) throws IOException {
+        FXMLLoader optionalButtonsLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/optional-buttons/normal-edit.fxml"));
+        optionalButtonsLoader.setController(this);
+        HBox container = optionalButtonsLoader.load();
+
+        JFXPopup popup = new JFXPopup(container);
+        popup.show(parent, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, 30, 10);
+    }
+
+    default void addViewPopup(Node parent) throws IOException {
+        FXMLLoader optionalButtonsLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/optional-buttons/normal-view.fxml"));
+        optionalButtonsLoader.setController(this);
+        HBox container = optionalButtonsLoader.load();
+
+        JFXPopup popup = new JFXPopup(container);
+        popup.show(parent, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, 30, 10);
     }
 
     default void createScreen(Parent parent, String title, int v, int v1) {

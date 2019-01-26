@@ -17,16 +17,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class TransactionCell extends ListCell<Transaction> implements DialogInterface {
     private HBox transactionCell;
@@ -130,13 +134,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     @FXML
     private void showPopup(Event e) throws IOException {
-        Node button = (Node) e.getSource();
-        FXMLLoader optionalButtonsLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/optional-buttons.fxml"));
-        optionalButtonsLoader.setController(this);
-        HBox container = optionalButtonsLoader.load();
-
-        JFXPopup popup = new JFXPopup(container);
-        popup.show(button, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, 30, 10);
+        this.addEditPopup((Node) e.getSource());
     }
 
     @FXML

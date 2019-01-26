@@ -1,5 +1,6 @@
 .budget__content {
     -fx-padding: 10px 0;
+    -fx-spacing: 5;
 }
 
 .budget__tab .transactions {
@@ -32,7 +33,7 @@
 .progress-bar .bar {
     -fx-padding: 1px;
     -fx-background-insets: 0;
-    -fx-background-color: #2db84c;
+    -fx-background-color: linear-gradient(to left, #2db84c, #4af597);;
 }
 
 .progress-bar:indeterminate > .bar {

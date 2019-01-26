@@ -19,6 +19,8 @@ public class Budget extends BaseModel {
 
     private float spentAmount;
 
+    private String categoryIcon;
+
     public static String getTable() {
         return "budgets";
     }
@@ -77,5 +79,13 @@ public class Budget extends BaseModel {
 
     public void setSpentAmount(float spentAmount) {
         this.spentAmount = spentAmount;
+    }
+
+    public String getCategoryIcon() {
+        return categoryIcon;
+    }
+
+    public void setCategoryIcon(String categoryIcon) {
+        this.categoryIcon = categoryIcon;
     }
 }
