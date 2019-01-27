@@ -13,14 +13,10 @@ import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Budget.BudgetPresenter;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.Report.ReportPresenter;
-import com.moneylover.app.Report.View.ReportCell;
 import com.moneylover.app.Transaction.TransactionPresenter;
-import com.moneylover.app.Transaction.View.TransactionDate;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -36,7 +32,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -45,7 +40,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 
 public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     private BudgetController budgetController;
@@ -62,7 +56,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
 
     private ObservableList<Wallet> wallets;
 
-    private ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions;
+    private ObservableList<Transaction> transactions;
 
     private LocalDate currentDate = LocalDate.now();
 
@@ -196,9 +190,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     private void _loadAreaChart() throws SQLException {
         this.transactions = FXCollections.observableArrayList();
         Wallet wallet = this.wallets.get(0);
-        ArrayList<Transaction> transactions = this.transactionController.listByBudget(this.budget);
-        TransactionPresenter.sortTransactionsByDate(this.transactions, transactions, wallet.getMoneySymbol());
-        this._loadAreaChartData(this.transactions, this.budget);
+        transactions.addAll(this.transactionController.listByBudget(this.budget));
+//        this._loadAreaChartData(this.transactions, this.budget);
     }
 
     private void _loadAreaChartData( ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions, Budget budget) {
@@ -238,7 +231,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        ReportPresenter.listTransactions(this.listViewTransactions, this.transactions);
+//        ReportPresenter.listTransactions(this.listViewTransactions, this.transactions);
         this.createScreen(parent, "Budget Detail", 400, 500);
     }
 
