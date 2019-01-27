@@ -12,8 +12,8 @@ import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Budget.BudgetPresenter;
 import com.moneylover.app.Category.CategoryPresenter;
+import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Report.ReportPresenter;
-import com.moneylover.app.Transaction.TransactionPresenter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -131,8 +131,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
 
         this.budget = item;
         String moneySymbol = this.wallets.get(0).getMoneySymbol();
-        LocalDate startedAt = LocalDate.parse(item.getStartedAt().toString()),
-                endedAt = LocalDate.parse(item.getEndedAt().toString());
+        LocalDate startedAt = item.getStartedAt(),
+                endedAt = item.getEndedAt();
         long daysLeft = Math.abs(ChronoUnit.DAYS.between(this.currentDate, endedAt));
         String startedAtText = startedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
         String endedAtText = endedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
@@ -167,14 +167,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     }
 
     private void _loadBudgetData() {
-        long totalDays = Math.abs(ChronoUnit.DAYS.between(
-                LocalDate.parse(this.budget.getStartedAt().toString()),
-                LocalDate.parse(this.budget.getEndedAt().toString())
-        ));
-        long passingDays = Math.abs(ChronoUnit.DAYS.between(
-                LocalDate.parse(this.budget.getStartedAt().toString()),
-                this.currentDate
-        ));
+        long totalDays = Math.abs(ChronoUnit.DAYS.between(this.budget.getStartedAt(), this.budget.getEndedAt()));
+        long passingDays = Math.abs(ChronoUnit.DAYS.between(this.budget.getStartedAt(), this.currentDate));
 
         if (this._isOverspent(budget)) {
             this.labelBudgetDetailStatus.setText("Overspent");
@@ -204,10 +198,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
             String title;
             float amount = 0;
 
-            if (DateHelper.isSameYear(
-                    LocalDate.parse(budget.getStartedAt().toString()),
-                    LocalDate.parse(budget.getStartedAt().toString())
-            )) {
+            if (DateHelper.isSameYear(budget.getStartedAt(), budget.getStartedAt())) {
                 title = Integer.toString(customDate.getDayOfMonth()) + "/" + Integer.toString(customDate.getMonthNumber());
             } else {
                 title = Integer.toString(customDate.getDayOfMonth()) + "/" + Integer.toString(customDate.getMonthNumber()) + "/" + Integer.toString(customDate.getYear());
@@ -230,8 +221,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-
-//        ReportPresenter.listTransactions(this.listViewTransactions, this.transactions);
+        ReportPresenter.listTransactions(this.listViewTransactions, this.transactions);
         this.createScreen(parent, "Budget Detail", 400, 500);
     }
 
@@ -253,12 +243,12 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
         this.walletId.set(this.budget.getWalletId());
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
-        TransactionPresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
+        PagePresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
         this.textFieldBudgetAmount.setText(Float.toString(this.budget.getAmount()));
-        this.datePickerStartedAt.setValue(LocalDate.parse(this.budget.getStartedAt().toString()));
-        this.datePickerEndedAt.setValue(LocalDate.parse(this.budget.getEndedAt().toString()));
+        this.datePickerStartedAt.setValue(this.budget.getStartedAt());
+        this.datePickerEndedAt.setValue(this.budget.getEndedAt());
 
         if (this.budget.getBudgetableType().equals(CommonConstants.APP_SUB_CATEGORY)) {
             this.selectedSubCategory.set(this.budget.getBudgetableId());
@@ -297,8 +287,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
         Budget budget = new Budget();
         budget.setWalletId(walletId);
         budget.setAmount(amount);
-        budget.setStartedAt(Date.valueOf(startedAt.toString()));
-        budget.setEndedAt(Date.valueOf(endedAt.toString()));
+        budget.setStartedAt(startedAt);
+        budget.setEndedAt(endedAt);
         BudgetPresenter.addCategory(budget, categoryId, subCategoryId);
 
         try {

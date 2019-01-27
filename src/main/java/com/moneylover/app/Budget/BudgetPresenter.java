@@ -60,7 +60,7 @@ public class BudgetPresenter extends PagePresenter {
         LocalDate now = LocalDate.now();
 
         for (Budget budget: budgets) {
-            LocalDate endDate = LocalDate.parse(budget.getEndedAt().toString());
+            LocalDate endDate = budget.getEndedAt();
 
             if (DateHelper.isLaterThan(endDate, now)) {
                 finishedBudgets.add(budget);
@@ -181,7 +181,7 @@ public class BudgetPresenter extends PagePresenter {
     }
 
     private void _addNewBudget(Budget budget) {
-        LocalDate endedAt = LocalDate.parse(budget.getEndedAt().toString());
+        LocalDate endedAt = budget.getEndedAt();
 
         if (DateHelper.isLaterThan(endedAt, this.currentDate)) {
             this.finishingBudgets.add(0, budget);
@@ -191,7 +191,7 @@ public class BudgetPresenter extends PagePresenter {
     }
 
     private void _setBudget(Budget budget) {
-        LocalDate endedAt = LocalDate.parse(budget.getEndedAt().toString());
+        LocalDate endedAt = budget.getEndedAt();
 
         if (DateHelper.isLaterThan(endedAt, this.currentDate)) {
             this._addBudget(this.finishingBudgets, budget);
@@ -224,7 +224,7 @@ public class BudgetPresenter extends PagePresenter {
         this.walletId.set(0);
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
-        TransactionPresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
+        PagePresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
 
@@ -262,8 +262,8 @@ public class BudgetPresenter extends PagePresenter {
         budget.setWalletId(walletId);
         budget.setAmount(amount);
         budget.setSpentAmount(0);
-        budget.setStartedAt(Date.valueOf(startedAt.toString()));
-        budget.setEndedAt(Date.valueOf(endedAt.toString()));
+        budget.setStartedAt(startedAt);
+        budget.setEndedAt(endedAt);
         BudgetPresenter.addCategory(budget, categoryId, subCategoryId);
 
         try {

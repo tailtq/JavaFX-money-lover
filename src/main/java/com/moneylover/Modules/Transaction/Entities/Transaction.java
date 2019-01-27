@@ -2,7 +2,7 @@ package com.moneylover.Modules.Transaction.Entities;
 
 import com.moneylover.Infrastructure.Models.BaseModel;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Transaction extends BaseModel {
     private int walletId;
@@ -15,7 +15,7 @@ public class Transaction extends BaseModel {
 
     private int subCategoryId;
 
-    private Date transactedAt;
+    private LocalDate transactedAt;
 
     private float amount;
 
@@ -81,11 +81,11 @@ public class Transaction extends BaseModel {
         this.subCategoryId = subCategoryId;
     }
 
-    public Date getTransactedAt() {
+    public LocalDate getTransactedAt() {
         return transactedAt;
     }
 
-    public void setTransactedAt(Date transactedAt) {
+    public void setTransactedAt(LocalDate transactedAt) {
         this.transactedAt = transactedAt;
     }
 

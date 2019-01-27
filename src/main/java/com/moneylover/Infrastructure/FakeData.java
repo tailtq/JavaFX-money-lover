@@ -420,7 +420,7 @@ public class FakeData {
             transaction.setCategoryId(categories.get((int)(Math.random() * (categoriesQuantity - 1))).getId());
             transaction.setSubCategoryId(subCategories.get((int)(Math.random() * (subCategoriesQuantity - 1))).getId());
             int day = (int)(Math.random() * 25) + 1;
-            transaction.setTransactedAt(Date.valueOf(time.getYear() + "-" + time.getMonth() + "-" + day));
+            transaction.setTransactedAt(LocalDate.parse(time.getYear() + "-" + time.getMonth() + "-" + day));
             transaction.setAmount((float) this.faker.number().randomDouble(1, 1000, 10000000));
             transaction.setNote("This is note!");
             transaction.setIsReported((byte) (Math.random()));
@@ -452,8 +452,8 @@ public class FakeData {
                 budget.setBudgetableType(CommonConstants.APP_SUB_CATEGORY);
             }
             int j = i + 1;
-            budget.setStartedAt(Date.valueOf("2018-12-" + ((j > 9) ? j : "0" + j)));
-            budget.setEndedAt(Date.valueOf("2019-01-" + ((j > 9) ? j : "0" + j)));
+            budget.setStartedAt(LocalDate.parse("2018-12-" + ((j > 9) ? j : "0" + j)));
+            budget.setEndedAt(LocalDate.parse("2019-01-" + ((j > 9) ? j : "0" + j)));
             float amount = (float) this.faker.number().randomDouble(1, 5000, 10000);
             budget.setAmount(amount);
             budget.setSpentAmount(amount - 3000);
