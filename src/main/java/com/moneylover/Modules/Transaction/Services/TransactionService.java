@@ -115,8 +115,8 @@ public class TransactionService extends BaseService {
                 "INNER JOIN categories ON transactions.category_id = categories.id " +
                      "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
                 "wallet_id = " + walletId,
-                "month " + operator + " " + month,
-                "year " + operator + " " + year
+                "month(transacted_at)  " + operator + " " + month,
+                "year(transacted_at) " + operator + " " + year
         );
 
         while (resultSet.next()) {

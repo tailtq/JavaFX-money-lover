@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.Pair;
@@ -79,7 +80,7 @@ public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Tr
         setGraphic(this.hBoxTransactionDate);
 
         if (this.listViewTransactions.getItems().size() == 0) {
-            this.listTransactions(item);
+            this.listTransactions(item.getValue());
         }
     }
 
@@ -87,8 +88,8 @@ public class TransactionDate extends ListCell<Pair<CustomDate, ObservableList<Tr
         this.disableOptions = isDisable;
     }
 
-    private void listTransactions(Pair<CustomDate, ObservableList<Transaction>> item) {
-        this.listViewTransactions.setItems(item.getValue());
+    private void listTransactions(ObservableList<Transaction> transactions) {
+        this.listViewTransactions.setItems(transactions);
         this.listViewTransactions.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {

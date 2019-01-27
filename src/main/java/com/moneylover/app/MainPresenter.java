@@ -120,7 +120,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 //            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
 //            this.changeViewLoader(fxmlLoader);
 //            this.controller.loadPresenter();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget/budgets.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
             this.initView(fxmlLoader);
             this.changeScene.set(false);
 

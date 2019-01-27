@@ -13,7 +13,6 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -59,7 +58,7 @@ public class TransactionPresenter extends PagePresenter {
         int transactionDayOfMonth = newLocalDate.getDayOfMonth();
         boolean hasDay = false;
 
-        for (Pair<CustomDate, ObservableList<Transaction>> transaction: transactions) {
+        for (Pair<CustomDate, ObservableList<Transaction>> transaction: this.transactions) {
             int day = transaction.getKey().getDayOfMonth();
 
             if (transactionDayOfMonth == day) {
@@ -71,6 +70,8 @@ public class TransactionPresenter extends PagePresenter {
 
         if (!hasDay) {
             TransactionPresenter.addNewDay(this.transactions, newTransaction, newLocalDate, moneySymbol);
+            TransactionPresenter.sortTransactions(this.transactions);
+            TransactionPresenter.reservedSortTransactions(this.transactions);
         }
     }
 
@@ -135,36 +136,32 @@ public class TransactionPresenter extends PagePresenter {
             }
 
             int id = Integer.parseInt(newValue.substring(7));
-            int i = 0;
 
-            for (Pair<CustomDate, ObservableList<Transaction>> transactionDate: this.transactions) {
-                int j = 0;
-                for (Transaction transaction: transactionDate.getValue()) {
+            for (Iterator<Pair<CustomDate, ObservableList<Transaction>>> it = transactions.iterator(); it.hasNext();) {
+                int i = 0;
+                Pair<CustomDate, ObservableList<Transaction>> transactionDate = it.next();
+                ObservableList<Transaction> transactions = transactionDate.getValue();
+
+                for (Transaction transaction: transactions) {
                     if (transaction.getId() == id) {
-                        if (newValue.contains("DELETE-")) {
-                            ObservableList<Transaction> transactions = transactionDate.getValue();
-                            transactions.remove(j);
+                        transactions.remove(i);
 
-                            if (transactions.size() == 0) {
-                                this.transactions.remove(i);
-                            }
-                        } else {
-                            try {
-                                Transaction updatedTransaction = this.transactionController.getDetail(id);
-                                transactionDate.getValue().set(j, updatedTransaction);
-                            } catch (SQLException | NotFoundException e) {
-                                e.printStackTrace();
-                            }
+                        if (transactions.size() == 0) {
+                            it.remove();
                         }
-
-                        this.loadHeaderWallets();
-                        return;
+                        break;
                     }
-
-                    j++;
+                    i++;
                 }
+            }
 
-                i++;
+            if (newValue.contains("UPDATE")) {
+                try {
+                    Transaction updatedTransaction = this.transactionController.getDetail(id);
+                    this.addTransaction(updatedTransaction, this.wallets.get(0).getMoneySymbol());
+                } catch (SQLException | NotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
