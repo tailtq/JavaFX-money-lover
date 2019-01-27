@@ -35,7 +35,6 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -65,10 +64,10 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
         this.budgetController = new BudgetController();
         this.transactionController = new TransactionController();
         this.categoryPresenter = new CategoryPresenter(this.selectedCategory, this.selectedSubCategory);
-        this.loadCell();
+        this._loadCell();
     }
 
-    private void loadCell() throws IOException {
+    private void _loadCell() throws IOException {
         FXMLLoader budgetCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget/budget-cell.fxml"));
         budgetCellLoader.setController(this);
         this.budgetCell = budgetCellLoader.load();
@@ -83,7 +82,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     private ListView listViewTransactions;
 
     @FXML
-    private Label labelBudgetTime,
+    private Label
+            labelBudgetTime,
             labelBudgetRemainingTime,
             labelBudgetAmount,
             labelBudgetRemainingAmount,
@@ -114,11 +114,10 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     @FXML
     private DatePicker datePickerStartedAt, datePickerEndedAt;
 
-    private IntegerProperty walletId = new SimpleIntegerProperty(0);
-
-    private IntegerProperty selectedCategory = new SimpleIntegerProperty(0);
-
-    private IntegerProperty selectedSubCategory = new SimpleIntegerProperty(0);
+    private IntegerProperty
+            walletId = new SimpleIntegerProperty(0),
+            selectedCategory = new SimpleIntegerProperty(0),
+            selectedSubCategory = new SimpleIntegerProperty(0);
 
     @Override
     protected void updateItem(Budget item, boolean empty) {
@@ -134,17 +133,17 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
         LocalDate startedAt = item.getStartedAt(),
                 endedAt = item.getEndedAt();
         long daysLeft = Math.abs(ChronoUnit.DAYS.between(this.currentDate, endedAt));
-        String startedAtText = startedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
-        String endedAtText = endedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+        String startedAtText = startedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
+                endedAtText = endedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
+                imageUrl = "/assets/images/categories/" + item.getCategoryIcon() + ".png";
         float remainingAmount = budget.getAmount() - budget.getSpentAmount();
-        String imageUrl = "/assets/images/categories/" + item.getCategoryIcon() + ".png";
 
         this.labelBudgetTime.setText(startedAtText + " - " + endedAtText);
+        this.labelBudgetAmount.setText("+" + budget.getAmount() + moneySymbol);
+        this.imageBudgetCategory.setImage(new Image(imageUrl));
         this.labelBudgetRemainingTime.setText(daysLeft + (daysLeft > 1 ? " days" : " day") + " left");
         this.progressBarRemainingAmount.setProgress(budget.getSpentAmount() / budget.getAmount());
-        this.labelBudgetAmount.setText("+" + budget.getAmount() + moneySymbol);
         this.labelBudgetRemainingAmount.setText((remainingAmount > 0 ? "Left +" : "") + remainingAmount + moneySymbol);
-        this.imageBudgetCategory.setImage(new Image(imageUrl));
         setGraphic(this.budgetCell);
     }
 
@@ -182,13 +181,14 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     }
 
     private void _loadAreaChart() throws SQLException {
-        this.transactions = FXCollections.observableArrayList();
         Wallet wallet = this.wallets.get(0);
-        transactions.addAll(this.transactionController.listByBudget(this.budget));
-//        this._loadAreaChartData(this.transactions, this.budget);
+        this.transactions = FXCollections.observableArrayList(this.transactionController.listByBudget(this.budget));
+        ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
+        ReportPresenter.sortTransactionsByDate(transactions, this.transactions, wallet.getMoneySymbol());
+        this._loadAreaChartData(transactions, this.budget);
     }
 
-    private void _loadAreaChartData( ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions, Budget budget) {
+    private void _loadAreaChartData(ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions, Budget budget) {
         this.areaChartDetail.getData().clear();
         XYChart.Series series = new XYChart.Series();
 
@@ -232,7 +232,9 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
 
     @FXML
     private void edit() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-edit.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getResource("/com/moneylover/components/dialogs/budget/budget-edit.fxml")
+        );
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
         this.loadBudgetData();

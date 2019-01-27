@@ -101,7 +101,7 @@ public class TransactionPresenter extends PagePresenter {
     private Button leftTimeRange, middleTimeRange, rightTimeRange, selectCategory;
 
     @FXML
-    private ListView listViewDayTransactions;
+    private ListView listViewTransactions;
 
     @FXML
     private MenuButton selectWallet;
@@ -132,8 +132,8 @@ public class TransactionPresenter extends PagePresenter {
 
     private void _setListViewTransactions() {
         this.handleTransactionId();
-        this.listViewDayTransactions.setItems(this.transactions);
-        this.listViewDayTransactions.setCellFactory(new Callback<ListView, ListCell>() {
+        this.listViewTransactions.setItems(this.transactions);
+        this.listViewTransactions.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {
@@ -147,7 +147,6 @@ public class TransactionPresenter extends PagePresenter {
                 }
             }
         });
-        this.listViewDayTransactions.setFocusTraversable(false);
     }
 
     @FXML
