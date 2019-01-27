@@ -1,12 +1,11 @@
 package com.moneylover.app.Transaction;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
-import com.moneylover.Modules.Time.Entities.CustomDate;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Category.CategoryPresenter;
-import com.moneylover.app.Transaction.View.TransactionDate;
+import com.moneylover.app.Transaction.View.TransactionCell;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,115 +16,53 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.util.Callback;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
 public class TransactionPresenter extends PagePresenter {
     private com.moneylover.Modules.Transaction.Controllers.TransactionController transactionController;
 
-    private ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
+    private ObservableList<Transaction> transactions = FXCollections.observableArrayList();
 
     private StringProperty handledTransactionId = new SimpleStringProperty();
 
-    private CustomDate date;
+    private LocalDate currentDate = LocalDate.now();
 
-    private LocalDate currentDate;
+    private LocalDate tabDate = LocalDate.now();
 
     private CategoryPresenter categoryPresenter;
 
     public void loadPresenter() throws SQLException, ClassNotFoundException {
-        this.currentDate = LocalDate.now();
         this.transactionController = new com.moneylover.Modules.Transaction.Controllers.TransactionController();
         this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
     }
 
-    private void getTransactionsByMonth(Wallet wallet, int month, int year, char operator) throws SQLException {
+    private void getTransactionsByDate(int walletId, LocalDate date, char operator) throws SQLException {
         this.transactions.clear();
-        ArrayList<Transaction> transactions = this.transactionController.listByMonth(wallet.getId(), month, year, operator);
-        TransactionPresenter.sortTransactionsByDate(this.transactions, transactions, wallet.getMoneySymbol());
-        TransactionPresenter.reservedSortTransactions(this.transactions);
+        this.transactions.addAll(
+                this.transactionController.listByMonth(walletId, date, operator)
+        );
     }
 
-    private void addTransaction(Transaction newTransaction, String moneySymbol) {
-        LocalDate newLocalDate = LocalDate.parse(newTransaction.getTransactedAt().toString());
-        int transactionDayOfMonth = newLocalDate.getDayOfMonth();
-        boolean hasDay = false;
-
-        for (Pair<CustomDate, ObservableList<Transaction>> transaction: this.transactions) {
-            int day = transaction.getKey().getDayOfMonth();
-
-            if (transactionDayOfMonth == day) {
-                transaction.getValue().add(newTransaction);
-                hasDay = true;
-                break;
-            }
-        }
-
-        if (!hasDay) {
-            TransactionPresenter.addNewDay(this.transactions, newTransaction, newLocalDate, moneySymbol);
-            TransactionPresenter.sortTransactions(this.transactions);
-            TransactionPresenter.reservedSortTransactions(this.transactions);
-        }
-    }
-
-    public static void sortTransactionsByDate(
-            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> sortedTransactions,
-            ArrayList<Transaction> transactions,
-            String moneySymbol
+    private static void _addNewTransaction(
+            ObservableList<Transaction> transactions,
+            Transaction newTransaction
     ) {
-        sortedTransactions.clear();
-
-        for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
-            Transaction transaction = it.next();
-            boolean hasDay = false;
-            LocalDate localDate = LocalDate.parse(transaction.getTransactedAt().toString());
-            int day = localDate.getDayOfMonth();
-
-            for (Pair<CustomDate, ObservableList<Transaction>> pair: sortedTransactions) {
-                if (pair.getKey().getDayOfMonth() == day) {
-                    pair.getValue().add(transaction);
-                    it.remove();
-                    hasDay = true;
-                    break;
-                }
-            }
-
-            if (!hasDay) {
-                TransactionPresenter.addNewDay(sortedTransactions, transaction, localDate, moneySymbol);
-                it.remove();
-            }
-        }
+        transactions.add(newTransaction);
+        TransactionPresenter.reservedSortTransactions(transactions);
     }
 
-    public static void addNewDay(
-            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions,
-            Transaction newTransaction,
-            LocalDate newLocalDate,
-            String moneySymbol
-    ) {
-        CustomDate newCustomDate = new CustomDate();
-        newCustomDate.setDayOfMonth(newLocalDate.getDayOfMonth());
-        newCustomDate.setDayOfWeek(newLocalDate.getDayOfWeek().toString());
-        newCustomDate.setMonth(newLocalDate.getMonth().toString());
-        newCustomDate.setMonthNumber(newLocalDate.getMonthValue());
-        newCustomDate.setYear(newLocalDate.getYear());
-        newCustomDate.setSymbol(moneySymbol);
-        transactions.add(new Pair<>(newCustomDate, FXCollections.observableArrayList(newTransaction)));
+    public static void sortTransactions(ObservableList<Transaction> transactions) {
+        transactions.sort(Comparator.comparingInt(a -> LocalDate.parse(a.getTransactedAt().toString()).getDayOfMonth()));
     }
 
-    private static void sortTransactions(ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions) {
-        transactions.sort(Comparator.comparingInt(a -> a.getKey().getDayOfMonth()));
-    }
-
-    public static void reservedSortTransactions(ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions) {
-        transactions.sort(Comparator.comparingInt(a -> a.getKey().getDayOfMonth()));
+    public static void reservedSortTransactions(ObservableList<Transaction> transactions) {
+        TransactionPresenter.sortTransactions(transactions);
         FXCollections.reverse(transactions);
     }
 
@@ -137,28 +74,24 @@ public class TransactionPresenter extends PagePresenter {
 
             int id = Integer.parseInt(newValue.substring(7));
 
-            for (Iterator<Pair<CustomDate, ObservableList<Transaction>>> it = transactions.iterator(); it.hasNext();) {
-                int i = 0;
-                Pair<CustomDate, ObservableList<Transaction>> transactionDate = it.next();
-                ObservableList<Transaction> transactions = transactionDate.getValue();
+            for (Iterator<Transaction> it = this.transactions.iterator(); it.hasNext();) {
+                Transaction transaction = it.next();
 
-                for (Transaction transaction: transactions) {
-                    if (transaction.getId() == id) {
-                        transactions.remove(i);
-
-                        if (transactions.size() == 0) {
-                            it.remove();
-                        }
-                        break;
-                    }
-                    i++;
+                if (transaction.getId() == id) {
+                    it.remove();
+                    break;
                 }
             }
 
             if (newValue.contains("UPDATE")) {
                 try {
                     Transaction updatedTransaction = this.transactionController.getDetail(id);
-                    this.addTransaction(updatedTransaction, this.wallets.get(0).getMoneySymbol());
+                    LocalDate transactedAt = LocalDate.parse(updatedTransaction.getTransactedAt().toString());
+
+                    if (transactedAt.getMonthValue() == this.tabDate.getMonthValue()
+                            && transactedAt.getYear() == this.tabDate.getYear()) {
+                        TransactionPresenter._addNewTransaction(this.transactions, updatedTransaction);
+                    }
                 } catch (SQLException | NotFoundException e) {
                     e.printStackTrace();
                 }
@@ -196,20 +129,22 @@ public class TransactionPresenter extends PagePresenter {
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
-        this.date = new CustomDate(this.currentDate.getMonthValue(), this.currentDate.getYear());
-        this.getTransactionsByMonth(wallets.get(0), this.date.getMonthNumber(), this.date.getYear(), '=');
-        this.setListViewTransactions();
+        this.getTransactionsByDate(wallets.get(0).getId(), this.tabDate, '=');
+        this._setListViewTransactions();
     }
 
-    private void setListViewTransactions() {
+    private void _setListViewTransactions() {
         this.handleTransactionId();
         this.listViewDayTransactions.setItems(this.transactions);
         this.listViewDayTransactions.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {
-                    return new TransactionDate(handledTransactionId, wallets);
-                } catch (IOException e) {
+                    TransactionCell transactionCell = new TransactionCell(handledTransactionId);
+                    transactionCell.setWallets(wallets);
+
+                    return transactionCell;
+                } catch (IOException | SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
                     return null;
                 }
@@ -223,11 +158,11 @@ public class TransactionPresenter extends PagePresenter {
         Node button = (Node) e.getSource();
         int selectedTimeRange = Integer.parseInt(button.getUserData().toString());
 
-        if (this.date.getMonthNumber() == this.currentDate.getMonthValue()
-                && this.date.getYear() == this.currentDate.getYear()
+        if (this.tabDate.getMonthValue() == this.currentDate.getMonthValue()
+                && this.tabDate.getYear() == this.currentDate.getYear()
                 && selectedTimeRange == 1) {
             // TODO: Set current tab text is future, hide
-            this.getTransactionsByMonth(this.wallets.get(0), this.date.getMonthNumber(), this.date.getYear(), '>');
+            this.getTransactionsByDate(this.wallets.get(0).getId(), this.tabDate, '>');
             this.leftTimeRange.setText("THIS MONTH");
             this.middleTimeRange.setText("FUTURE");
             this.rightTimeRange.setVisible(false);
@@ -236,30 +171,30 @@ public class TransactionPresenter extends PagePresenter {
             this.rightTimeRange.setVisible(true);
         }
 
-        this.setDay(selectedTimeRange);
+        this._setDay(selectedTimeRange);
     }
 
-    private void setDay(int selectedTimeRange) throws SQLException {
-        int month = this.date.getMonthNumber();
-        int year = this.date.getYear();
+    private void _setDay(int selectedTimeRange) throws SQLException {
+        int month = this.tabDate.getMonthValue();
+        int year = this.tabDate.getYear();
 
         if (this.leftTimeRange.getText().equals("THIS MONTH")) {
-            this.date.setMonthNumber(this.currentDate.getMonthValue());
+            this.tabDate = LocalDate.parse(year + "-" + (month > 9 ? month : "0" + month) + "-01");
         } else if (month == 1 && selectedTimeRange == -1) {
-            this.date.setMonthNumber(12);
-            this.date.setYear(year - 1);
+            this.tabDate = LocalDate.parse((year - 1) + "-12-01");
         } else if (month == 12 && selectedTimeRange == 1) {
-            this.date.setMonthNumber(1);
-            this.date.setYear(year + 1);
+            this.tabDate = LocalDate.parse((year + 1) + "-01-01");
         } else if (selectedTimeRange == -1) {
-            this.date.setMonthNumber(--month);
+            month--;
+            this.tabDate = LocalDate.parse(year + "-" + (month > 9 ? month : "0" + month) + "-01");
         } else if (selectedTimeRange == 1) {
-            this.date.setMonthNumber(++month);
+            month++;
+            this.tabDate = LocalDate.parse(year + "-" + (month > 9 ? month : "0" + month) + "-01");
         }
 
-        month = this.date.getMonthNumber();
-        year = this.date.getYear();
-        this.getTransactionsByMonth(this.wallets.get(0), month, year, '=');
+        this.getTransactionsByDate(this.wallets.get(0).getId(), this.tabDate, '=');
+        month = this.tabDate.getMonthValue();
+        year = this.tabDate.getYear();
         String displayedMonth = (month >= 10) ? Integer.toString(month) : "0" + month;
         int currentMonth = this.currentDate.getMonthValue();
         int prevMonth = (currentMonth == 1) ? 12 : currentMonth - 1;
@@ -273,21 +208,21 @@ public class TransactionPresenter extends PagePresenter {
             this.middleTimeRange.setText("THIS MONTH");
             this.rightTimeRange.setText("FUTURE");
         } else if (year == prevYear && month == prevMonth) {
-            this.leftTimeRange.setText(this.getTimeRangeText(month - 1, year));
+            this.leftTimeRange.setText(this._getTimeRangeText(month - 1, year));
             this.middleTimeRange.setText("LAST MONTH");
             this.rightTimeRange.setText("THIS MONTH");
         } else if (year == prevYear2 && month == prevMonth2) {
-            this.leftTimeRange.setText(this.getTimeRangeText(month - 1, year));
+            this.leftTimeRange.setText(this._getTimeRangeText(month - 1, year));
             this.middleTimeRange.setText(displayedMonth + "/" + year);
             this.rightTimeRange.setText("LAST MONTH");
         } else {
-            this.leftTimeRange.setText(this.getTimeRangeText(month - 1, year));
+            this.leftTimeRange.setText(this._getTimeRangeText(month - 1, year));
             this.middleTimeRange.setText(displayedMonth + "/" + year);
-            this.rightTimeRange.setText(this.getTimeRangeText(month + 1, year));
+            this.rightTimeRange.setText(this._getTimeRangeText(month + 1, year));
         }
     }
 
-    private String getTimeRangeText(int month, int year) {
+    private String _getTimeRangeText(int month, int year) {
         String text;
         if (month == 0) {
             text = "12/" + (year - 1);
@@ -381,7 +316,12 @@ public class TransactionPresenter extends PagePresenter {
 
         try {
             transaction = this.transactionController.create(transaction);
-            this.addTransaction(transaction, this.wallets.get(0).getMoneySymbol());
+            transactedAt = LocalDate.parse(transaction.getTransactedAt().toString());
+
+            if (transactedAt.getMonthValue() == this.tabDate.getMonthValue()
+                    && transactedAt.getYear() == this.tabDate.getYear()) {
+                TransactionPresenter._addNewTransaction(this.transactions, transaction);
+            }
 
             this.closeScene(event);
         } catch (SQLException | NotFoundException e) {

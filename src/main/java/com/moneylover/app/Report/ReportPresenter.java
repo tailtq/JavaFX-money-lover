@@ -58,9 +58,9 @@ public class ReportPresenter extends PagePresenter {
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
         Wallet wallet = this.wallets.get(0);
-        this.transactions = this.loadTransactions(wallet.getId());
-        this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
-        this._loadPieCharts();
+//        this.transactions = this.loadTransactions(wallet.getId());
+//        this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
+//        this._loadPieCharts();
     }
 
     private ArrayList<Transaction> loadTransactions(int walletId) throws SQLException {
@@ -72,15 +72,15 @@ public class ReportPresenter extends PagePresenter {
             LocalDate startDate,
             LocalDate endDate
     ) {
-        ArrayList transactions = (ArrayList) this.transactions.clone();
+//        ArrayList transactions = (ArrayList) this.transactions.clone();
 
-        if (DateHelper.isSameMonth(startDate, endDate)) {
-            TransactionPresenter.sortTransactionsByDate(this.monthTransactions, transactions, moneySymbol);
-        } else {
-            ReportPresenter._sortTransactionsByMonth(this.monthTransactions, transactions, moneySymbol);
-        }
-
-        this._loadBarChartData(this.monthTransactions, startDate, endDate);
+//        if (DateHelper.isSameMonth(startDate, endDate)) {
+//            TransactionPresenter.sortTransactionsByDate(this.monthTransactions, transactions, moneySymbol);
+//        } else {
+//            ReportPresenter._sortTransactionsByMonth(this.monthTransactions, transactions, moneySymbol);
+//        }
+//
+//        this._loadBarChartData(this.monthTransactions, startDate, endDate);
     }
 
     private static void _sortTransactionsByMonth(
@@ -106,7 +106,7 @@ public class ReportPresenter extends PagePresenter {
             }
 
             if (!hasMonth) {
-                TransactionPresenter.addNewDay(sortedTransactions, transaction, localDate, moneySymbol);
+//                TransactionPresenter.addNewDay(sortedTransactions, transaction, localDate, moneySymbol);
                 it.remove();
             }
         }
@@ -296,7 +296,7 @@ public class ReportPresenter extends PagePresenter {
                         ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
                         ArrayList<Transaction> monthTransactions = new ArrayList<>(newValue.getValue());
                         String moneySymbol = wallets.get(0).getMoneySymbol();
-                        TransactionPresenter.sortTransactionsByDate(transactions, monthTransactions, moneySymbol);
+//                        TransactionPresenter.sortTransactionsByDate(transactions, monthTransactions, moneySymbol);
 
                         _loadMonthTransactionsDetail(transactions);
                     } catch (IOException e) {

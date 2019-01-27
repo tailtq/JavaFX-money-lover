@@ -416,7 +416,6 @@ public class FakeData {
             Transaction transaction = new Transaction();
             Time time = times.get((int)(Math.random() * (timesQuantity - 1)));
             transaction.setWalletId(wallets.get((int)(Math.random() * (walletsQuantity - 1))).getId());
-            transaction.setTimeId(time.getId());
             transaction.setTypeId(types.get((int)(Math.random() * (typesQuantity - 1))).getId());
             transaction.setCategoryId(categories.get((int)(Math.random() * (categoriesQuantity - 1))).getId());
             transaction.setSubCategoryId(subCategories.get((int)(Math.random() * (subCategoriesQuantity - 1))).getId());

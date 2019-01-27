@@ -1,6 +1,5 @@
 package com.moneylover.app.Transaction.View;
 
-import com.jfoenix.controls.JFXPopup;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
@@ -17,20 +16,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class TransactionCell extends ListCell<Transaction> implements DialogInterface {
     private HBox transactionCell;
@@ -45,7 +40,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     private StringProperty handledTransactionId;
 
-    TransactionCell(StringProperty handledTransactionId) throws IOException, SQLException, ClassNotFoundException {
+    public TransactionCell(StringProperty handledTransactionId) throws IOException, SQLException, ClassNotFoundException {
         this.handledTransactionId = handledTransactionId;
         this.transactionController = new TransactionController();
         this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
@@ -147,7 +142,6 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-edit.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-        /* TODO: Load old data */
         this.loadTransactionData();
         this.createScreen(parent, "Edit Transaction", 500, 230);
     }
@@ -236,13 +230,4 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
     }
-
-//    @FXML
-//    public void showFriendDialog(Event e) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/choose-friends.fxml"));
-//        fxmlLoader.setController(this);
-//        Parent parent = fxmlLoader.load();
-//
-//        this.createScreen(parent, "Choose Friend", 300, 200);
-//    }
 }

@@ -136,7 +136,7 @@ abstract public class BaseService {
             for (int i = 0; i < quantity; i++) {
                 condition += conditions[i];
 
-                if (i != quantity - 1) {
+                if (i != quantity - 1 && !conditions[i + 1].equals("")) {
                     condition += " AND ";
                 }
             }
