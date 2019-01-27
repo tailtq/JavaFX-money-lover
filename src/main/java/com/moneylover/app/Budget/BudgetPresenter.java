@@ -9,7 +9,6 @@ import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Budget.View.BudgetCell;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.PagePresenter;
-import com.moneylover.app.Transaction.TransactionPresenter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -24,7 +23,6 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,9 +33,9 @@ public class BudgetPresenter extends PagePresenter {
 
     private BudgetController budgetController;
 
-    private ObservableList<Budget> onGoingBudgets = FXCollections.observableArrayList();
-
-    private ObservableList<Budget> finishingBudgets = FXCollections.observableArrayList();
+    private ObservableList<Budget>
+            onGoingBudgets = FXCollections.observableArrayList(),
+            finishingBudgets = FXCollections.observableArrayList();
 
     private LocalDate currentDate;
 
@@ -75,10 +73,7 @@ public class BudgetPresenter extends PagePresenter {
     private TabPane budgetsTabPane;
 
     @FXML
-    private ListView listViewOngoingTab;
-
-    @FXML
-    private ListView listViewFinishingTab;
+    private ListView listViewOngoingTab, listViewFinishingTab;
 
     @FXML
     private Button selectCategory;
@@ -90,16 +85,12 @@ public class BudgetPresenter extends PagePresenter {
     private TextField textFieldBudgetAmount;
 
     @FXML
-    private DatePicker datePickerStartedAt;
+    private DatePicker datePickerStartedAt, datePickerEndedAt;
 
-    @FXML
-    private DatePicker datePickerEndedAt;
-
-    private IntegerProperty walletId = new SimpleIntegerProperty(0);
-
-    private IntegerProperty selectedCategory = new SimpleIntegerProperty(0);
-
-    private IntegerProperty selectedSubCategory = new SimpleIntegerProperty(0);
+    private IntegerProperty
+            walletId = new SimpleIntegerProperty(0),
+            selectedCategory = new SimpleIntegerProperty(0),
+            selectedSubCategory = new SimpleIntegerProperty(0);
 
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
@@ -138,6 +129,7 @@ public class BudgetPresenter extends PagePresenter {
             if (newValue == null) {
                 return;
             }
+
             try {
                 this.handleBudgetIdDetail(this.onGoingBudgets, newValue);
                 this.handleBudgetIdDetail(this.finishingBudgets, newValue);
@@ -148,9 +140,9 @@ public class BudgetPresenter extends PagePresenter {
     }
 
     private void handleBudgetIdDetail(ObservableList<Budget> budgets, String type) throws NotFoundException, SQLException {
-        int id = Integer.parseInt(type.substring(7));
-        int i = 0;
-        int index = -1;
+        int id = Integer.parseInt(type.substring(7)),
+                i = 0,
+                index = -1;
 
         for (Budget budget: budgets) {
             if (budget.getId() == id) {
@@ -286,7 +278,5 @@ public class BudgetPresenter extends PagePresenter {
     }
 
     @Override
-    public void loadPresenter() {
-
-    }
+    public void loadPresenter() {}
 }
