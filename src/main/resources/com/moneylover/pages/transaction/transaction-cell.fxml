@@ -9,7 +9,12 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml">
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="transaction__cell">
+    <HBox styleClass="transaction__time" alignment="CENTER">
+        <Label text="27/07/2018" fx:id="labelTransactionTime"
+               styleClass="transaction__time__dd, gray-color"/>
+    </HBox>
     <ImageView fitHeight="40"
                fitWidth="40"
                fx:id="imageTransactionCategory"

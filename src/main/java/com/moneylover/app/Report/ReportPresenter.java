@@ -10,6 +10,7 @@ import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Report.View.ReportCell;
 import com.moneylover.app.Transaction.TransactionPresenter;
+import com.moneylover.app.Transaction.View.TransactionCell;
 import com.moneylover.app.Transaction.View.TransactionDate;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -93,8 +94,7 @@ public class ReportPresenter extends PagePresenter {
         for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
             Transaction transaction = it.next();
             boolean hasMonth = false;
-            LocalDate localDate = LocalDate.parse(transaction.getTransactedAt().toString());
-            int month = localDate.getMonthValue();
+            int month = transaction.getTransactedAt().getMonthValue();
 
             for (Pair<CustomDate, ObservableList<Transaction>> pair: sortedTransactions) {
                 if (pair.getKey().getMonthNumber() == month) {
@@ -326,24 +326,21 @@ public class ReportPresenter extends PagePresenter {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-        ReportPresenter.listTransactions(this.listViewMonthTransactionsDetail, transactions);
+//        ReportPresenter.listTransactions(this.listViewMonthTransactionsDetail, transactions);
 
         this.createScreen(parent, "Report Detail", 400, 500);
     }
 
-    public static void listTransactions(
-            ListView listView,
-            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions
-    ) {
+    public static void listTransactions(ListView listView, ObservableList<Transaction> transactions) {
         listView.setItems(transactions);
         listView.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {
-                    TransactionDate transactionDate =  new TransactionDate();
-                    transactionDate.setDisableOptions(true);
+                    TransactionCell transactionCell = new TransactionCell();
+                    transactionCell.setDisableOptions(true);
 
-                    return transactionDate;
+                    return transactionCell;
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
@@ -367,5 +364,49 @@ public class ReportPresenter extends PagePresenter {
             this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
             this._loadPieCharts();
         }
+    }
+
+    public static void sortTransactionsByDate(
+            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> sortedTransactions,
+            ArrayList<Transaction> transactions,
+            String moneySymbol
+    ) {
+        sortedTransactions.clear();
+
+        for (Iterator<Transaction> it = transactions.iterator(); it.hasNext();) {
+            Transaction transaction = it.next();
+            boolean hasDay = false;
+            int day = transaction.getTransactedAt().getDayOfMonth();
+
+            for (Pair<CustomDate, ObservableList<Transaction>> pair: sortedTransactions) {
+                if (pair.getKey().getDayOfMonth() == day) {
+                    pair.getValue().add(transaction);
+                    it.remove();
+                    hasDay = true;
+                    break;
+                }
+            }
+
+            if (!hasDay) {
+                ReportPresenter.addNewDay(sortedTransactions, transaction, transaction.getTransactedAt(), moneySymbol);
+                it.remove();
+            }
+        }
+    }
+
+    public static void addNewDay(
+            ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions,
+            Transaction newTransaction,
+            LocalDate newLocalDate,
+            String moneySymbol
+    ) {
+        CustomDate newCustomDate = new CustomDate();
+        newCustomDate.setDayOfMonth(newLocalDate.getDayOfMonth());
+        newCustomDate.setDayOfWeek(newLocalDate.getDayOfWeek().toString());
+        newCustomDate.setMonth(newLocalDate.getMonth().toString());
+        newCustomDate.setMonthNumber(newLocalDate.getMonthValue());
+        newCustomDate.setYear(newLocalDate.getYear());
+        newCustomDate.setSymbol(moneySymbol);
+        transactions.add(new Pair<>(newCustomDate, FXCollections.observableArrayList(newTransaction)));
     }
 }

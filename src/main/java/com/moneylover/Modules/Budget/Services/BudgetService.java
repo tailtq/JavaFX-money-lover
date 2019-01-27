@@ -171,8 +171,8 @@ public class BudgetService extends BaseService {
         budget.setWalletId(resultSet.getInt("wallet_id"));
         budget.setBudgetableId(resultSet.getInt("budgetable_id"));
         budget.setBudgetableType(resultSet.getString("budgetable_type"));
-        budget.setStartedAt(resultSet.getDate("started_at"));
-        budget.setEndedAt(resultSet.getDate("ended_at"));
+        budget.setStartedAt(resultSet.getDate("started_at").toLocalDate());
+        budget.setEndedAt(resultSet.getDate("ended_at").toLocalDate());
         budget.setAmount(resultSet.getFloat("amount"));
         budget.setSpentAmount(resultSet.getFloat("spent_amount"));
         budget.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());

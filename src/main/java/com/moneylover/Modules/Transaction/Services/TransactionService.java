@@ -255,7 +255,7 @@ public class TransactionService extends BaseService {
         transaction.setTypeId(resultSet.getInt("type_id"));
         transaction.setCategoryId(resultSet.getInt("category_id"));
         transaction.setSubCategoryId(resultSet.getInt("sub_category_id"));
-        transaction.setTransactedAt(resultSet.getDate("transacted_at"));
+        transaction.setTransactedAt(resultSet.getDate("transacted_at").toLocalDate());
         transaction.setAmount(resultSet.getFloat("amount"));
         transaction.setLocation(resultSet.getString("location"));
         transaction.setNote(resultSet.getNString("note"));

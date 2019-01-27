@@ -2,7 +2,7 @@ package com.moneylover.Modules.Budget.Entities;
 
 import com.moneylover.Infrastructure.Models.BaseModel;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Budget extends BaseModel {
     private int walletId;
@@ -11,9 +11,9 @@ public class Budget extends BaseModel {
 
     private String budgetableType;
 
-    private Date startedAt;
+    private LocalDate startedAt;
 
-    private Date endedAt;
+    private LocalDate endedAt;
 
     private float amount;
 
@@ -49,19 +49,19 @@ public class Budget extends BaseModel {
         this.budgetableType = budgetableType;
     }
 
-    public Date getStartedAt() {
+    public LocalDate getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(Date startedAt) {
+    public void setStartedAt(LocalDate startedAt) {
         this.startedAt = startedAt;
     }
 
-    public Date getEndedAt() {
+    public LocalDate getEndedAt() {
         return endedAt;
     }
 
-    public void setEndedAt(Date endedAt) {
+    public void setEndedAt(LocalDate endedAt) {
         this.endedAt = endedAt;
     }
 

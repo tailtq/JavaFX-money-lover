@@ -45,6 +45,29 @@ abstract public class PagePresenter extends BaseViewPresenter implements LoaderI
         }
     }
 
+    public static void loadStaticWallets(MenuButton selectWallet, IntegerProperty walletId, ObservableList<Wallet> wallets) {
+        selectWallet.getItems().clear();
+        int walletIdInt = walletId.get();
+
+        for (Wallet wallet: wallets) {
+            if (wallet.getId() == walletIdInt && walletIdInt != 0) {
+                selectWallet.setText(wallet.getName());
+                selectWallet.getStyleClass().add("header__wallet");
+            }
+
+            MenuItem item = new MenuItem();
+            item.setText(wallet.getName());
+            item.getStyleClass().add("header__wallet");
+            item.setOnAction(e -> {
+                MenuItem menuItem = (MenuItem) e.getSource();
+                selectWallet.setText(menuItem.getText());
+                selectWallet.getStyleClass().add("header__wallet");
+                walletId.set(wallet.getId());
+            });
+            selectWallet.getItems().add(item);
+        }
+    }
+
     @FXML
     public void closeScene(Event e) {
         super.closeScene(e);

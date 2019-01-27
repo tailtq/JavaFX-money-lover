@@ -6,7 +6,7 @@ import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Category.CategoryPresenter;
-import com.moneylover.app.Transaction.TransactionPresenter;
+import com.moneylover.app.PagePresenter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -23,9 +23,9 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class TransactionCell extends ListCell<Transaction> implements DialogInterface {
     private HBox transactionCell;
@@ -40,14 +40,18 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     private StringProperty handledTransactionId;
 
+    public TransactionCell() throws IOException {
+        this._loadCell();
+    }
+
     public TransactionCell(StringProperty handledTransactionId) throws IOException, SQLException, ClassNotFoundException {
         this.handledTransactionId = handledTransactionId;
         this.transactionController = new TransactionController();
         this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
-        this.loadCell();
+        this._loadCell();
     }
 
-    private void loadCell() throws IOException {
+    private void _loadCell() throws IOException {
         FXMLLoader transactionCellLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/pages/transaction/transaction-cell.fxml")
         );
@@ -64,21 +68,10 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     private ImageView imageTransactionCategory;
 
     @FXML
-    private Label labelTransactionCategoryName;
+    private Label labelTransactionCategoryName, labelTransactionTime, labelTransactionNote, labelAmount;
 
     @FXML
-    private Label labelTransactionNote;
-
-    @FXML
-    private Label labelAmount;
-
-    @FXML
-    private Button buttonOptions;
-
-    private IntegerProperty walletId = new SimpleIntegerProperty(0);
-
-    @FXML
-    private Button selectCategory;
+    private Button buttonOptions, selectCategory;
 
     @FXML
     private MenuButton selectWallet;
@@ -92,11 +85,17 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     @FXML
     private CheckBox checkBoxIsReported;
 
-    private IntegerProperty selectedType = new SimpleIntegerProperty(0);
+    private IntegerProperty
+            walletId = new SimpleIntegerProperty(0),
+            selectedType = new SimpleIntegerProperty(0),
+            selectedCategory = new SimpleIntegerProperty(0),
+            selectedSubCategory = new SimpleIntegerProperty(0);
 
-    private IntegerProperty selectedCategory = new SimpleIntegerProperty(0);
-
-    private IntegerProperty selectedSubCategory = new SimpleIntegerProperty(0);
+    public void setDisableOptions(boolean disableOptions) {
+        if (disableOptions) {
+            this.buttonOptions.setDisable(true);
+        }
+    }
 
     @Override
     protected void updateItem(Transaction item, boolean empty) {
@@ -114,17 +113,14 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
             imageUrl = "/assets/images/categories/" + item.getCategoryIcon() + ".png";
         }
 
+        this.labelTransactionTime.setText(
+                item.getTransactedAt().format(DateTimeFormatter.ofPattern("MM/dd/YYYY"))
+        );
         this.imageTransactionCategory.setImage(new Image(imageUrl));
         this.labelTransactionCategoryName.setText(text);
         this.labelTransactionNote.setText(item.getNote());
         this.labelAmount.setText(Float.toString(item.getAmount()));
         setGraphic(this.transactionCell);
-    }
-
-    void setDisableOptions(boolean disableOptions) {
-        if (disableOptions) {
-            this.buttonOptions.setDisable(true);
-        }
     }
 
     @FXML
@@ -154,13 +150,13 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         this.walletId.set(this.transaction.getWalletId());
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
-        TransactionPresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
+        PagePresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
         this.selectedType.set(this.transaction.getTypeId());
         this.selectedCategory.set(this.transaction.getCategoryId());
         this.selectedSubCategory.set(this.transaction.getSubCategoryId());
-        this.datePickerTransactedAt.setValue(LocalDate.parse(this.transaction.getTransactedAt().toString()));
+        this.datePickerTransactedAt.setValue(this.transaction.getTransactedAt());
     }
 
     @FXML
@@ -193,7 +189,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         transaction.setSubCategoryId(subCategoryId);
         transaction.setAmount(amount);
         transaction.setNote(this.textFieldNote.getText());
-        transaction.setTransactedAt(Date.valueOf(transactedAt.toString()));
+        transaction.setTransactedAt(transactedAt);
         transaction.setIsReported((byte) (isReported ? 1 : 0));
 
         try {

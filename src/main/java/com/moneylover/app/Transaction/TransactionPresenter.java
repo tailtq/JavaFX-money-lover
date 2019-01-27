@@ -18,7 +18,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.sql.Date;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -49,16 +49,13 @@ public class TransactionPresenter extends PagePresenter {
         );
     }
 
-    private static void _addNewTransaction(
-            ObservableList<Transaction> transactions,
-            Transaction newTransaction
-    ) {
+    private static void _addNewTransaction(ObservableList<Transaction> transactions, Transaction newTransaction) {
         transactions.add(newTransaction);
         TransactionPresenter.reservedSortTransactions(transactions);
     }
 
     public static void sortTransactions(ObservableList<Transaction> transactions) {
-        transactions.sort(Comparator.comparingInt(a -> LocalDate.parse(a.getTransactedAt().toString()).getDayOfMonth()));
+        transactions.sort(Comparator.comparingInt(a -> a.getTransactedAt().getDayOfMonth()));
     }
 
     public static void reservedSortTransactions(ObservableList<Transaction> transactions) {
@@ -86,7 +83,7 @@ public class TransactionPresenter extends PagePresenter {
             if (newValue.contains("UPDATE")) {
                 try {
                     Transaction updatedTransaction = this.transactionController.getDetail(id);
-                    LocalDate transactedAt = LocalDate.parse(updatedTransaction.getTransactedAt().toString());
+                    LocalDate transactedAt = updatedTransaction.getTransactedAt();
 
                     if (transactedAt.getMonthValue() == this.tabDate.getMonthValue()
                             && transactedAt.getYear() == this.tabDate.getYear()) {
@@ -242,38 +239,14 @@ public class TransactionPresenter extends PagePresenter {
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
         this.walletId.set(0);
-        this.selectedType.set(0);
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
-        TransactionPresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
+        PagePresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
         this.datePickerTransactedAt.setValue(LocalDate.now());
 
         this.createScreen(parent, "Add Transaction", 500, 230);
-    }
-
-    public static void loadStaticWallets(MenuButton selectWallet, IntegerProperty walletId, ObservableList<Wallet> wallets) {
-        selectWallet.getItems().clear();
-        int walletIdInt = walletId.get();
-
-        for (Wallet wallet: wallets) {
-            if (wallet.getId() == walletIdInt && walletIdInt != 0) {
-                selectWallet.setText(wallet.getName());
-                selectWallet.getStyleClass().add("header__wallet");
-            }
-
-            MenuItem item = new MenuItem();
-            item.setText(wallet.getName());
-            item.getStyleClass().add("header__wallet");
-            item.setOnAction(e -> {
-                MenuItem menuItem = (MenuItem) e.getSource();
-                selectWallet.setText(menuItem.getText());
-                selectWallet.getStyleClass().add("header__wallet");
-                walletId.set(wallet.getId());
-            });
-            selectWallet.getItems().add(item);
-        }
     }
 
     @FXML
@@ -311,12 +284,12 @@ public class TransactionPresenter extends PagePresenter {
         transaction.setSubCategoryId(subCategoryId);
         transaction.setAmount(amount);
         transaction.setNote(this.textFieldNote.getText());
-        transaction.setTransactedAt(Date.valueOf(transactedAt.toString()));
+        transaction.setTransactedAt(transactedAt);
         transaction.setIsReported((byte) (isReported ? 1 : 0));
 
         try {
             transaction = this.transactionController.create(transaction);
-            transactedAt = LocalDate.parse(transaction.getTransactedAt().toString());
+            transactedAt = transaction.getTransactedAt();
 
             if (transactedAt.getMonthValue() == this.tabDate.getMonthValue()
                     && transactedAt.getYear() == this.tabDate.getYear()) {

@@ -26,14 +26,16 @@
     -fx-padding: 5 0 5 0;
 }
 
+.transaction__cell {
+    /*-fx-spacing: 5px;*/
+}
+
 .transaction__day {
     -fx-padding: 0 0 5px;
 }
 
 .transaction__time__dd {
-    -fx-font-size: 24px;
-    -fx-pref-width: 50;
-    -fx-pref-height: 40;
+    -fx-font-size: 10px;
 }
 
 .transaction__content {
@@ -55,6 +57,11 @@
 
 .transaction__content-container {
     -fx-spacing: 5;
+}
+
+.transaction__cell > .transaction__time {
+    -fx-spacing: 0;
+    -fx-padding: 0 5px 0 0;
 }
 
 .transaction__content, .transaction__time {
