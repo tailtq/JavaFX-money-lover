@@ -7,10 +7,7 @@ import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.Currency.CurrencyPresenter;
 import com.moneylover.app.User.UserPresenter;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -33,7 +30,9 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 
     private BooleanProperty changeScene = new SimpleBooleanProperty(false);
 
-    private IntegerProperty changeWallet = new SimpleIntegerProperty(0);
+    private StringProperty fxmlFile = new SimpleStringProperty();
+
+    private IntegerProperty walletIndex = new SimpleIntegerProperty(0);
 
     private VBox mainView;
 
@@ -54,8 +53,18 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
             com.moneylover.Modules.Wallet.Controllers.WalletController walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
             this.wallets.addAll(walletController.list(UserPresenter.getUser().getId()));
         }
+
         this.controller.setWallets(this.wallets);
-        this.changeWallet.addListener((observableValue, oldValue, newValue) -> {});
+        this.walletIndex.addListener((observableValue, oldValue, newValue) -> {
+            try {
+                if (!this.fxmlFile.get().contains("wallets.fxml")) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.fxmlFile.get()));
+                    this.initView(fxmlLoader);
+                }
+            } catch (IOException | SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
@@ -106,20 +115,18 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     private void initView(FXMLLoader viewLoader) throws IOException, SQLException, ClassNotFoundException {
-        // TODO: set wallets
+        String file = viewLoader.getLocation().getFile();
+        this.fxmlFile.set(file.substring(file.indexOf("/com/moneylover")));
         this.changeViewLoader(viewLoader);
         this.setChangeScene(true);
         this.controller.loadPresenter();
+        this.controller.setWalletIndex(this.walletIndex);
         this.setWallets();
-        this.controller.setChangeWallet(this.changeWallet);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
-//            this.changeViewLoader(fxmlLoader);
-//            this.controller.loadPresenter();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
             this.initView(fxmlLoader);
             this.changeScene.set(false);

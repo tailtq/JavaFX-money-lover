@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public interface LoaderInterface {
     void loadPresenter() throws SQLException, ClassNotFoundException;
 
-    void setChangeWallet(IntegerProperty changeWallet);
+    void setWalletIndex(IntegerProperty walletIndex);
 
     void setWallets(ObservableList<Wallet> wallets) throws IOException, SQLException;
 }

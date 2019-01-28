@@ -9,10 +9,12 @@ import javafx.beans.property.StringProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -154,5 +156,12 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
                 this.showErrorDialog("An error has occurred");
             }
         }
+    }
+
+    @FXML
+    public void closeScene(Event e) {
+        Node node = (Node) e.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
     }
 }

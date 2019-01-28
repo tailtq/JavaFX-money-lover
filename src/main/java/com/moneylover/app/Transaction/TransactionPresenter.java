@@ -134,7 +134,7 @@ public class TransactionPresenter extends PagePresenter {
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
-        this.getTransactionsByDate(wallets.get(0).getId(), this.tabDate, '=');
+        this.getTransactionsByDate(this.getWallet().getId(), this.tabDate, '=');
         this._calculateStatistic();
         this._setListViewTransactions();
     }
@@ -183,7 +183,7 @@ public class TransactionPresenter extends PagePresenter {
                 && this.tabDate.getYear() == this.currentDate.getYear()
                 && selectedTimeRange == 1) {
             // TODO: Set current tab text is future, hide
-            this.getTransactionsByDate(this.wallets.get(0).getId(), this.tabDate, '>');
+            this.getTransactionsByDate(this.getWallet().getId(), this.tabDate, '>');
             this.leftTimeRange.setText("THIS MONTH");
             this.middleTimeRange.setText("FUTURE");
             this.rightTimeRange.setVisible(false);
@@ -213,7 +213,7 @@ public class TransactionPresenter extends PagePresenter {
             this.tabDate = LocalDate.parse(year + "-" + (month > 9 ? month : "0" + month) + "-01");
         }
 
-        this.getTransactionsByDate(this.wallets.get(0).getId(), this.tabDate, '=');
+        this.getTransactionsByDate(this.getWallet().getId(), this.tabDate, '=');
         month = this.tabDate.getMonthValue();
         year = this.tabDate.getYear();
         String displayedMonth = (month >= 10) ? Integer.toString(month) : "0" + month;

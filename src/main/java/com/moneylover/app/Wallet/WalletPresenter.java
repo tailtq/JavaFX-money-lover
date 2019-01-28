@@ -81,7 +81,7 @@ public class WalletPresenter extends PagePresenter implements Initializable {
             for (Wallet wallet: this.wallets) {
                 if (wallet.getId() == id) {
                     if (newValue.contains("DELETE-")) {
-                        this.wallets.remove(i);
+                        break;
                     } else {
                         try {
                             this.wallets.set(i, this.walletController.getDetail(id));
@@ -89,13 +89,24 @@ public class WalletPresenter extends PagePresenter implements Initializable {
                             e.printStackTrace();
                         }
                     }
-
-                    this.loadHeaderWallets();
-                    return;
                 }
 
                 i++;
             }
+
+            if (newValue.contains("DELETE-")) {
+                int walletIndex = this.walletIndex.get();
+
+                if (walletIndex == i) {
+                    this.walletIndex.set(0);
+                } else if (walletIndex > i) {
+                    this.walletIndex.set(walletIndex - 1);
+                }
+
+                this.wallets.remove(i);
+            }
+
+            this.loadHeaderWallets();
         });
     }
 

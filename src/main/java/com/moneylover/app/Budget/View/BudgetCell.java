@@ -55,6 +55,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
 
     private ObservableList<Wallet> wallets;
 
+    private IntegerProperty walletIndex;
+
     private ObservableList<Transaction> transactions;
 
     private LocalDate currentDate = LocalDate.now();
@@ -75,6 +77,14 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
 
     public void setWallets(ObservableList<Wallet> wallets) {
         this.wallets = wallets;
+    }
+
+    public void setWalletIndex(IntegerProperty walletIndex) {
+        this.walletIndex = walletIndex;
+    }
+
+    public Wallet getWallet() {
+        return this.wallets.get(this.walletIndex.getValue());
     }
 
     /*========================== Draw ==========================*/
@@ -129,7 +139,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
             return;
         }
 
-        String moneySymbol = this.wallets.get(0).getMoneySymbol();
+        String moneySymbol = this.getWallet().getMoneySymbol();
         LocalDate startedAt = item.getStartedAt(),
                 endedAt = item.getEndedAt();
         long daysLeft = ChronoUnit.DAYS.between(this.currentDate, endedAt);
@@ -193,7 +203,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
     }
 
     private void _loadAreaChart() throws SQLException {
-        Wallet wallet = this.wallets.get(0);
+        Wallet wallet = this.getWallet();
         this.transactions = FXCollections.observableArrayList(this.transactionController.listByBudget(this.budget));
         ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
         ReportPresenter.sortTransactionsByDate(transactions, this.transactions, wallet.getMoneySymbol());

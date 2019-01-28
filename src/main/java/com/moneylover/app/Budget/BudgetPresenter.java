@@ -95,7 +95,7 @@ public class BudgetPresenter extends PagePresenter {
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
-        this.loadBudgets(wallets.get(0).getId());
+        this.loadBudgets(this.getWallet().getId());
     }
 
     private void loadBudgets(int walletId) throws SQLException {
@@ -114,6 +114,7 @@ public class BudgetPresenter extends PagePresenter {
                 try {
                     BudgetCell budgetCell = new BudgetCell(handledBudgetId);
                     budgetCell.setWallets(wallets);
+                    budgetCell.setWalletIndex(walletIndex);
 
                     return budgetCell;
                 } catch (IOException | SQLException | ClassNotFoundException e) {

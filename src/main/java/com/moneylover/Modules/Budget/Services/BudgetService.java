@@ -162,7 +162,6 @@ public class BudgetService extends BaseService {
     }
 
     private void _increaseSpentAmount(float amount, int typeId, String type, LocalDate transactedAt) throws SQLException {
-        System.out.println(transactedAt);
         String statementString = "UPDATE " + getTable() + " SET spent_amount = spent_amount + ?, updated_at = ? WHERE budgetable_id = ? AND budgetable_type = ? AND started_at <= CAST(? AS DATE) AND ended_at > CAST(? AS DATE)";
         String transactedAtText = transactedAt.toString();
         PreparedStatement statement = this.getPreparedStatement(statementString);

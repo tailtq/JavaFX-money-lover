@@ -9,9 +9,7 @@ import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Report.View.ReportCell;
-import com.moneylover.app.Transaction.TransactionPresenter;
 import com.moneylover.app.Transaction.View.TransactionCell;
-import com.moneylover.app.Transaction.View.TransactionDate;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,14 +22,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Pair;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ReportPresenter extends PagePresenter {
@@ -56,7 +52,7 @@ public class ReportPresenter extends PagePresenter {
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
-        Wallet wallet = this.wallets.get(0);
+        Wallet wallet = this.getWallet();
         this.transactions = FXCollections.observableArrayList(
                 this.transactionController.listByDateRange(wallet.getId(), startDate, endDate)
         );
@@ -233,11 +229,11 @@ public class ReportPresenter extends PagePresenter {
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        Wallet wallet = this.wallets.get(0);
+        Wallet wallet = this.getWallet();
         this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
         this._listMonthTransactions();
         this.dateRangeChart.setTitle("Report");
-        Stage stage = this.createScreen(parent, "Report", 500, 700);
+        this.createScreen(parent, "Report", 500, 700);
     }
 
     private void _listMonthTransactions() {
@@ -318,7 +314,7 @@ public class ReportPresenter extends PagePresenter {
             this.startDate = startDate;
             this.endDate = endDate;
 
-            Wallet wallet = this.wallets.get(0);
+            Wallet wallet = this.getWallet();
             this.transactions.clear();
             this.transactions.addAll(
                     this.transactionController.listByDateRange(wallet.getId(), startDate, endDate)
