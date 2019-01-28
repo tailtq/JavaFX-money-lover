@@ -13,12 +13,16 @@ import javafx.scene.control.MenuItem;
 import java.sql.SQLException;
 
 abstract public class PagePresenter extends BaseViewPresenter implements LoaderInterface, ParserInterface {
-    protected IntegerProperty changeWallet;
+    protected IntegerProperty walletIndex;
 
     protected ObservableList<Wallet> wallets;
 
-    public void setChangeWallet(IntegerProperty changeWallet) {
-        this.changeWallet = changeWallet;
+    public void setWalletIndex(IntegerProperty walletIndex) {
+        this.walletIndex = walletIndex;
+    }
+
+    public Wallet getWallet() {
+        return this.wallets.get(this.walletIndex.get());
     }
 
     /*========================== Draw ==========================*/
@@ -31,18 +35,22 @@ abstract public class PagePresenter extends BaseViewPresenter implements LoaderI
         this.loadHeaderWallets();
     }
 
-    public void setWalletsOnly(ObservableList<Wallet> wallets) {
-        this.wallets = wallets;
-    }
-
     protected void loadHeaderWallets() {
+        this.dropdownWallets.setText(this.wallets.get(this.walletIndex.get()).getName());
         ObservableList<MenuItem> items = this.dropdownWallets.getItems();
         items.clear();
+        int i = 0;
 
         for (Wallet wallet: this.wallets) {
+            int j = i;
             MenuItem menuItem = new MenuItem(wallet.getName());
+            menuItem.setOnAction(actionEvent -> {
+                this.walletIndex.set(j);
+                this.dropdownWallets.setText(wallet.getName());
+            });
             menuItem.getStyleClass().add("header__wallet");
             items.add(menuItem);
+            i++;
         }
     }
 

@@ -86,6 +86,8 @@ public class WalletService extends BaseService {
 
     public boolean delete(int id) throws SQLException {
         this.deleteBy("user_wallet", "wallet_id = " + id);
+        this.deleteBy("budgets", "wallet_id = " + id);
+        this.deleteBy("transactions", "wallet_id = " + id);
 
         return this.deleteById(id);
     }
