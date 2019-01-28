@@ -46,9 +46,9 @@ public class UserController {
     }
 
     public boolean update(User user, int id) throws SQLException {
-        boolean result = this.service.update(user, id);
+        this.service.update(user, id);
 
-        return result;
+        return true;
     }
 
     public boolean delete(int id) throws SQLException {

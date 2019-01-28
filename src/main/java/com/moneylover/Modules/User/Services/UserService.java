@@ -32,7 +32,7 @@ public class UserService extends BaseService {
             throw new NotFoundException();
         }
 
-        User user = toObject(resultSet);
+        User user = this._toObject(resultSet);
         this.closeStatement();
 
         return user;
@@ -49,7 +49,7 @@ public class UserService extends BaseService {
             throw new NotFoundException();
         }
 
-        user = this.toObject(resultSet);
+        user = this._toObject(resultSet);
         this.closeStatement();
 
         return user;
@@ -61,7 +61,7 @@ public class UserService extends BaseService {
             throw new NotFoundException();
         }
 
-        User user = this.toObject(resultSet);
+        User user = this._toObject(resultSet);
         this.closeStatement();
 
         return user;
@@ -73,10 +73,8 @@ public class UserService extends BaseService {
         return this.getDetail(id);
     }
 
-    public boolean update(User user, int id) throws SQLException {
+    public void update(User user, int id) throws SQLException {
         this._update(user, id);
-
-        return true;
     }
 
     /*====================================================================================*/
@@ -86,7 +84,7 @@ public class UserService extends BaseService {
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {
-            users.add(this.toObject(resultSet));
+            users.add(this._toObject(resultSet));
         }
 
         return users;
@@ -106,7 +104,7 @@ public class UserService extends BaseService {
         return id;
     }
 
-    private boolean _update(User user, int id) throws SQLException {
+    private void _update(User user, int id) throws SQLException {
         String passwordStatement = "";
         int i = 3;
 
@@ -127,12 +125,10 @@ public class UserService extends BaseService {
         statement.setDouble(i, id);
         statement.executeUpdate();
         this.closePreparedStatement();
-
-        return true;
     }
 
     @Override
-    protected User toObject(ResultSet resultSet) throws SQLException {
+    protected User _toObject(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getInt("id"));
         user.setName(resultSet.getNString("name"));

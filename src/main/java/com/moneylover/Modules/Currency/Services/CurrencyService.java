@@ -57,7 +57,7 @@ public class CurrencyService extends BaseService {
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {
-            currencies.add(this.toObject(resultSet));
+            currencies.add(this._toObject(resultSet));
         }
 
         return currencies;
@@ -89,7 +89,7 @@ public class CurrencyService extends BaseService {
     }
 
     @Override
-    protected Currency toObject(ResultSet resultSet) throws SQLException {
+    protected Currency _toObject(ResultSet resultSet) throws SQLException {
         Currency currency = new Currency();
         currency.setId(resultSet.getInt("id"));
         currency.setName(resultSet.getNString("name"));

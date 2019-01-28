@@ -56,16 +56,16 @@
                 <GridPane styleClass="transaction__statistic">
                     <Text text="Inflow"
                           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                    <Label text="+2,960,000.00 ₫" fx:id="inflow"
+                    <Label text="+2,960,000.00 ₫" fx:id="labelInflow"
                            styleClass="primary-color"
                            GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                     <Text text="Outflow"
                           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    <Label text="-15,960,000.00 ₫" fx:id="outflow"
+                    <Label text="-15,960,000.00 ₫" fx:id="labelOutflow"
                            styleClass="danger-color"
                            GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                    <Label text="-60,000.00 ₫"
-                           styleClass="transaction__statistic__residual-amount"
+                    <Label text="-60,000.00 ₫" fx:id="labelRemainingAmount"
+                           styleClass="transaction__statistic__remaining-amount"
                            GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
                     <columnConstraints>

@@ -1,6 +1,5 @@
 package com.moneylover.app.Wallet.View;
 
-import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
 import com.moneylover.app.Currency.CurrencyPresenter;
@@ -119,7 +118,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
     }
 
     @FXML
-    private void updateWallet(Event event) throws SQLException, ClassNotFoundException {
+    private void updateWallet(Event event) {
         String name = this.textFieldTransactionName.getText().trim();
         String amountText = this.textFieldWalletAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
@@ -135,7 +134,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
             this.handledWalletId.set("UPDATE-" + this.wallet.getId());
 
             this.closeScene(event);
-        } catch (SQLException | NotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }

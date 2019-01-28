@@ -1,5 +1,6 @@
 package com.moneylover.app;
 
+import com.moneylover.Infrastructure.Contracts.ParserInterface;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Infrastructure.Contracts.LoaderInterface;
 import javafx.beans.property.IntegerProperty;
@@ -11,7 +12,7 @@ import javafx.scene.control.MenuItem;
 
 import java.sql.SQLException;
 
-abstract public class PagePresenter extends BaseViewPresenter implements LoaderInterface {
+abstract public class PagePresenter extends BaseViewPresenter implements LoaderInterface, ParserInterface {
     protected IntegerProperty changeWallet;
 
     protected ObservableList<Wallet> wallets;

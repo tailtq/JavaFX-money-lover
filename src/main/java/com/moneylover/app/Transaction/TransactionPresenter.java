@@ -55,7 +55,10 @@ public class TransactionPresenter extends PagePresenter {
     }
 
     public static void sortTransactions(ObservableList<Transaction> transactions) {
-        transactions.sort(Comparator.comparingInt(a -> a.getTransactedAt().getDayOfMonth()));
+        transactions.sort(
+                Comparator.comparingInt(e -> ((Transaction) e).getTransactedAt().getDayOfMonth())
+                        .thenComparingInt(e -> ((Transaction) e).getId())
+        );
     }
 
     public static void reservedSortTransactions(ObservableList<Transaction> transactions) {
@@ -93,10 +96,15 @@ public class TransactionPresenter extends PagePresenter {
                     e.printStackTrace();
                 }
             }
+
+            this._calculateStatistic();
         });
     }
 
     /*========================== Draw ==========================*/
+    @FXML
+    private Label labelInflow, labelOutflow, labelRemainingAmount;
+
     @FXML
     private Button leftTimeRange, middleTimeRange, rightTimeRange, selectCategory;
 
@@ -127,7 +135,24 @@ public class TransactionPresenter extends PagePresenter {
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
         this.getTransactionsByDate(wallets.get(0).getId(), this.tabDate, '=');
+        this._calculateStatistic();
         this._setListViewTransactions();
+    }
+
+    private void _calculateStatistic() {
+        float inflow = 0, outflow = 0;
+
+        for (Transaction transaction: this.transactions) {
+            if (transaction.getAmount() > 0) {
+                inflow += transaction.getAmount();
+            } else {
+                outflow += transaction.getAmount();
+            }
+        }
+
+        this.labelInflow.setText(this.toMoneyString(inflow));
+        this.labelOutflow.setText(this.toMoney(outflow));
+        this.labelRemainingAmount.setText(this.toMoneyString(inflow + outflow));
     }
 
     private void _setListViewTransactions() {
@@ -162,12 +187,12 @@ public class TransactionPresenter extends PagePresenter {
             this.leftTimeRange.setText("THIS MONTH");
             this.middleTimeRange.setText("FUTURE");
             this.rightTimeRange.setVisible(false);
-            return;
         } else {
             this.rightTimeRange.setVisible(true);
+            this._setDay(selectedTimeRange);
         }
 
-        this._setDay(selectedTimeRange);
+        this._calculateStatistic();
     }
 
     private void _setDay(int selectedTimeRange) throws SQLException {
@@ -293,10 +318,11 @@ public class TransactionPresenter extends PagePresenter {
             if (transactedAt.getMonthValue() == this.tabDate.getMonthValue()
                     && transactedAt.getYear() == this.tabDate.getYear()) {
                 TransactionPresenter._addNewTransaction(this.transactions, transaction);
+                this._calculateStatistic();
             }
 
             this.closeScene(event);
-        } catch (SQLException | NotFoundException e) {
+        } catch (SQLException | NotFoundException | ClassNotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }

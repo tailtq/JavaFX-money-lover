@@ -2,7 +2,7 @@ package com.moneylover.app.Budget.View;
 
 import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
-import com.moneylover.Infrastructure.Exceptions.NotFoundException;
+import com.moneylover.Infrastructure.Contracts.ParserInterface;
 import com.moneylover.Infrastructure.Helpers.DateHelper;
 import com.moneylover.Modules.Budget.Controllers.BudgetController;
 import com.moneylover.Modules.Budget.Entities.Budget;
@@ -40,7 +40,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class BudgetCell extends ListCell<Budget> implements DialogInterface {
+public class BudgetCell extends ListCell<Budget> implements DialogInterface, ParserInterface {
     private BudgetController budgetController;
 
     private TransactionController transactionController;
@@ -122,28 +122,40 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     @Override
     protected void updateItem(Budget item, boolean empty) {
         super.updateItem(item, empty);
+        this.budget = item;
 
         if (empty) {
             setGraphic(null);
             return;
         }
 
-        this.budget = item;
         String moneySymbol = this.wallets.get(0).getMoneySymbol();
         LocalDate startedAt = item.getStartedAt(),
                 endedAt = item.getEndedAt();
-        long daysLeft = Math.abs(ChronoUnit.DAYS.between(this.currentDate, endedAt));
+        long daysLeft = ChronoUnit.DAYS.between(this.currentDate, endedAt);
+
+        if (daysLeft >= 1) {
+            this.labelBudgetRemainingTime.setText(daysLeft + (daysLeft > 1 ? " days" : " day") + " left");
+        } else {
+            this.labelBudgetRemainingTime.setText(null);
+        }
+
+        float remainingAmount = budget.getAmount() - budget.getSpentAmount();
+        this.labelBudgetRemainingAmount.setText((remainingAmount > 0 ? "Left " : "Spent ") + this.toMoneyString(remainingAmount) + moneySymbol);
+
+        if (remainingAmount < 0) {
+            this.labelBudgetRemainingAmount.getStyleClass().add("danger-color");
+        } else {
+            this.labelBudgetRemainingAmount.getStyleClass().remove("danger-color");
+        }
+
         String startedAtText = startedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
                 endedAtText = endedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
                 imageUrl = "/assets/images/categories/" + item.getCategoryIcon() + ".png";
-        float remainingAmount = budget.getAmount() - budget.getSpentAmount();
-
         this.labelBudgetTime.setText(startedAtText + " - " + endedAtText);
         this.labelBudgetAmount.setText("+" + budget.getAmount() + moneySymbol);
         this.imageBudgetCategory.setImage(new Image(imageUrl));
-        this.labelBudgetRemainingTime.setText(daysLeft + (daysLeft > 1 ? " days" : " day") + " left");
         this.progressBarRemainingAmount.setProgress(budget.getSpentAmount() / budget.getAmount());
-        this.labelBudgetRemainingAmount.setText((remainingAmount > 0 ? "Left +" : "") + remainingAmount + moneySymbol);
         setGraphic(this.budgetCell);
     }
 
@@ -299,7 +311,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
             this.handledBudgetId.set(null);
             this.handledBudgetId.set("UPDATE-" + id);
             this.closeScene(event);
-        } catch (SQLException | NotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

@@ -27,8 +27,7 @@
     </VBox>
     <Pane HBox.hgrow="ALWAYS"></Pane>
     <HBox alignment="CENTER_RIGHT" styleClass="transaction__amount">
-        <Label fx:id="labelAmount"
-               styleClass="success-color"/>
+        <Label fx:id="labelAmount"/>
         <Button fx:id="buttonOptions" onAction="#showPopup" styleClass="bg--linear-succeed-color">
             <graphic>
                 <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white" />

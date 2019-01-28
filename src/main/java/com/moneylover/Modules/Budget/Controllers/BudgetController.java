@@ -32,7 +32,7 @@ public class BudgetController {
         return budget;
     }
 
-    public Budget create(Budget budget) throws SQLException, NotFoundException {
+    public Budget create(Budget budget) throws SQLException, NotFoundException, ClassNotFoundException {
         Budget newBudget = this.service.create(budget);
 
         return newBudget;
@@ -44,10 +44,10 @@ public class BudgetController {
         return true;
     }
 
-    public Budget update(Budget budget, int id) throws SQLException, NotFoundException {
-        Budget updatedBudget = this.service.update(budget, id);
+    public boolean update(Budget budget, int id) throws SQLException {
+        this.service.update(budget, id);
 
-        return updatedBudget;
+        return true;
     }
 
     public boolean delete(int id) throws SQLException {

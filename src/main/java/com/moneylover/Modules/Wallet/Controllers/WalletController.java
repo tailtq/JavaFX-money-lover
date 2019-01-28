@@ -45,10 +45,10 @@ public class WalletController {
         return result;
     }
 
-    public boolean update(Wallet wallet, int id) throws SQLException, NotFoundException {
-        boolean result = this.service.update(wallet, id);
+    public boolean update(Wallet wallet, int id) throws SQLException {
+        this.service.update(wallet, id);
 
-        return result;
+        return true;
     }
 
     public boolean delete(int id) throws SQLException {
