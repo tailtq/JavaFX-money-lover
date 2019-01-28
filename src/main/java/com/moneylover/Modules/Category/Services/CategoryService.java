@@ -38,7 +38,7 @@ public class CategoryService extends BaseService {
             throw new NotFoundException();
         }
 
-        Category category = this.toObject(resultSet);
+        Category category = this._toObject(resultSet);
         this.closeStatement();
 
         return category;
@@ -51,7 +51,7 @@ public class CategoryService extends BaseService {
             throw new NotFoundException();
         }
 
-        Category category = this.toObject(resultSet);
+        Category category = this._toObject(resultSet);
         this.closeStatement();
 
         return category;
@@ -81,7 +81,7 @@ public class CategoryService extends BaseService {
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {
-            categories.add(this.toObject(resultSet));
+            categories.add(this._toObject(resultSet));
         }
 
         return categories;
@@ -92,7 +92,7 @@ public class CategoryService extends BaseService {
         ResultSet resultSet = this.get("type_id = " + typeId);
 
         while (resultSet.next()) {
-            categories.add(this.toObject(resultSet));
+            categories.add(this._toObject(resultSet));
         }
 
         return categories;
@@ -145,7 +145,7 @@ public class CategoryService extends BaseService {
     }
 
     @Override
-    protected Category toObject(ResultSet resultSet) throws SQLException {
+    protected Category _toObject(ResultSet resultSet) throws SQLException {
         Category category = new Category();
         category.setId(resultSet.getInt("id"));
         category.setTypeId(resultSet.getInt("type_id"));

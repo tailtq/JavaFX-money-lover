@@ -32,7 +32,7 @@ public class TimeService extends BaseService {
             throw new NotFoundException();
         }
 
-        Time time = this.toObject(resultSet);
+        Time time = this._toObject(resultSet);
         this.closeStatement();
 
         return time;
@@ -48,7 +48,7 @@ public class TimeService extends BaseService {
             return null;
         }
 
-        Time time = this.toObject(resultSet);
+        Time time = this._toObject(resultSet);
         this.closeStatement();
 
         return time;
@@ -78,7 +78,7 @@ public class TimeService extends BaseService {
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {
-            times.add(this.toObject(resultSet));
+            times.add(this._toObject(resultSet));
         }
 
         return times;
@@ -89,7 +89,7 @@ public class TimeService extends BaseService {
         ResultSet resultSet = this.get("id in (" + String.join(",", ids) + ")" );
 
         while (resultSet.next()) {
-            times.add(this.toObject(resultSet));
+            times.add(this._toObject(resultSet));
         }
 
         return times;
@@ -108,7 +108,7 @@ public class TimeService extends BaseService {
         return id;
     }
 
-    private boolean _create(ArrayList<Time> times) throws SQLException {
+    private void _create(ArrayList<Time> times) throws SQLException {
         String statementString = "INSERT INTO times(month, year, created_at) VALUES (?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString);
         int i = 0;
@@ -123,8 +123,6 @@ public class TimeService extends BaseService {
                 statement.executeBatch(); // Execute every 1000 items.
             }
         }
-
-        return true;
     }
 
     private int _update(Time time, int id) throws SQLException {
@@ -138,7 +136,7 @@ public class TimeService extends BaseService {
     }
 
     @Override
-    protected Time toObject(ResultSet resultSet) throws SQLException {
+    protected Time _toObject(ResultSet resultSet) throws SQLException {
         Time time = new Time();
         time.setId(resultSet.getInt("id"));
         time.setMonth(resultSet.getInt("month"));

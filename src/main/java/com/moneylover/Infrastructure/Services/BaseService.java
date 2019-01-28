@@ -14,7 +14,7 @@ abstract public class BaseService {
         connection = connectToDB();
     }
 
-    abstract protected Object toObject(ResultSet resultSet) throws SQLException;
+    abstract protected Object _toObject(ResultSet resultSet) throws SQLException;
 
     abstract protected String getTable();
 
@@ -61,6 +61,16 @@ abstract public class BaseService {
         ResultSet resultSet = statement.executeQuery(query);
 
         return resultSet;
+    }
+
+    protected float _calculate(String select, String column, String... args) throws SQLException {
+        String condition = this.handleConditions(args);
+        String query = "SELECT " + select + " FROM " + getTable() + condition;
+        statement = getStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        resultSet.next();
+
+        return resultSet.getFloat(column);
     }
 
     protected ResultSet getByJoin(String select, String join, String... args) throws SQLException {

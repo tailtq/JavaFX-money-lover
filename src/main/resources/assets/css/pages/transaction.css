@@ -6,7 +6,7 @@
     -fx-vgap: 5;
 }
 
-.transaction__statistic__residual-amount {
+.transaction__statistic__remaining-amount {
     -fx-border-width: 1 0 0 0;
     -fx-border-color: rgba(0,0,0,.12);
 }

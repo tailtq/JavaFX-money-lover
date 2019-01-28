@@ -37,7 +37,7 @@ public class SubCategoryService extends BaseService {
             throw new NotFoundException();
         }
 
-        SubCategory subCategory = this.toObject(resultSet);
+        SubCategory subCategory = this._toObject(resultSet);
         this.closeStatement();
 
         return subCategory;
@@ -67,7 +67,7 @@ public class SubCategoryService extends BaseService {
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {
-            subCategories.add(this.toObject(resultSet));
+            subCategories.add(this._toObject(resultSet));
         }
 
         return subCategories;
@@ -78,7 +78,7 @@ public class SubCategoryService extends BaseService {
         ResultSet resultSet = this.get("type_id = " + typeId);
 
         while (resultSet.next()) {
-            subCategories.add(this.toObject(resultSet));
+            subCategories.add(this._toObject(resultSet));
         }
 
         return subCategories;
@@ -133,7 +133,7 @@ public class SubCategoryService extends BaseService {
     }
 
     @Override
-    protected SubCategory toObject(ResultSet resultSet) throws SQLException {
+    protected SubCategory _toObject(ResultSet resultSet) throws SQLException {
         SubCategory subCategory = new SubCategory();
         subCategory.setId(resultSet.getInt("id"));
         subCategory.setTypeId(resultSet.getInt("type_id"));

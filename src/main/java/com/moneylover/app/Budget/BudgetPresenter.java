@@ -262,7 +262,7 @@ public class BudgetPresenter extends PagePresenter {
             budget = this.budgetController.create(budget);
             this._addNewBudget(budget);
             this.closeScene(event);
-        } catch (SQLException | NotFoundException e) {
+        } catch (SQLException | NotFoundException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

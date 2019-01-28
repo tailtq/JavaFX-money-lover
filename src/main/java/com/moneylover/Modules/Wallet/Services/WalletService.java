@@ -1,14 +1,11 @@
 package com.moneylover.Modules.Wallet.Services;
 
-import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 public class WalletService extends BaseService {
@@ -49,7 +46,7 @@ public class WalletService extends BaseService {
             throw new NotFoundException();
         }
 
-        Wallet wallet = this.toObject(resultSet);
+        Wallet wallet = this._toObject(resultSet);
         this.closeStatement();
 
         return wallet;
@@ -64,7 +61,7 @@ public class WalletService extends BaseService {
         );
 
         if (resultSet.next()) {
-            wallet = this.toObject(resultSet);
+            wallet = this._toObject(resultSet);
         }
 
         this.closeStatement();
@@ -79,14 +76,12 @@ public class WalletService extends BaseService {
         return result;
     }
 
-    public boolean update(Wallet wallet, int id) throws SQLException, NotFoundException {
+    public void update(Wallet wallet, int id) throws SQLException {
         this._update(wallet, id);
-
-        return true;
     }
 
-    public void calculateAmount(float amount, int id) throws SQLException {
-        this._calculateAmount(amount, id);
+    public void setAmount(float inflow, float outflow, int id) throws SQLException {
+        this._setAmount(inflow, outflow, id);
     }
 
     public boolean delete(int id) throws SQLException {
@@ -106,7 +101,7 @@ public class WalletService extends BaseService {
         );
 
         while (resultSet.next()) {
-            wallets.add(this.toObject(resultSet));
+            wallets.add(this._toObject(resultSet));
         }
 
         this.closeStatement();
@@ -124,7 +119,7 @@ public class WalletService extends BaseService {
         );
 
         while (resultSet.next()) {
-            wallets.add(this.toObject(resultSet));
+            wallets.add(this._toObject(resultSet));
         }
 
         this.closeStatement();
@@ -165,7 +160,7 @@ public class WalletService extends BaseService {
         return true;
     }
 
-    private boolean _update(Wallet wallet, int id) throws SQLException {
+    private void _update(Wallet wallet, int id) throws SQLException {
         String statementString = "UPDATE " + getTable() + " SET currency_id = ?, name = ?, inflow = ?, outflow = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
         statement.setInt(1, wallet.getCurrencyId());
@@ -176,20 +171,10 @@ public class WalletService extends BaseService {
         statement.setInt(6, id);
         statement.executeUpdate();
         this.closePreparedStatement();
-
-        return true;
     }
 
-    private boolean _calculateAmount(float amount, int id) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET inflow = inflow + ?, outflow = outflow + ?, updated_at = ? WHERE id = ?";
-        float inflow = 0;
-        float outflow = 0;
-
-        if (amount > 0) {
-            inflow = amount;
-        } else {
-            outflow = Math.abs(amount);
-        }
+    private void _setAmount(float inflow, float outflow, int id) throws SQLException {
+        String statementString = "UPDATE " + getTable() + " SET inflow = ?, outflow = ?, updated_at = ? WHERE id = ?";
 
         PreparedStatement statement = this.getPreparedStatement(statementString);
         statement.setFloat(1, inflow);
@@ -197,14 +182,11 @@ public class WalletService extends BaseService {
         statement.setTimestamp(3, this.getCurrentTime());
         statement.setInt(4, id);
         statement.executeUpdate();
-        statement.executeUpdate();
         this.closePreparedStatement();
-
-        return true;
     }
 
     @Override
-    protected Wallet toObject(ResultSet resultSet) throws SQLException {
+    protected Wallet _toObject(ResultSet resultSet) throws SQLException {
         Wallet wallet = new Wallet();
         wallet.setId(resultSet.getInt("id"));
         wallet.setCurrencyId(resultSet.getInt("currency_id"));

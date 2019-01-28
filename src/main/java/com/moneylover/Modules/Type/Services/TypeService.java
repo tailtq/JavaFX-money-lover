@@ -24,6 +24,12 @@ public class TypeService extends BaseService {
         return types;
     }
 
+    public ArrayList<Type> list(String ...names) throws SQLException {
+        ArrayList<Type> types = this._list(names);
+
+        return types;
+    }
+
     public Type getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
 
@@ -31,7 +37,7 @@ public class TypeService extends BaseService {
             throw new NotFoundException();
         }
 
-        Type type = this.toObject(resultSet);
+        Type type = this._toObject(resultSet);
         this.closeStatement();
 
         return type;
@@ -61,7 +67,18 @@ public class TypeService extends BaseService {
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {
-            types.add(this.toObject(resultSet));
+            types.add(this._toObject(resultSet));
+        }
+
+        return types;
+    }
+
+    private ArrayList<Type> _list(String ...names) throws SQLException {
+        ArrayList<Type> types = new ArrayList<>();
+        ResultSet resultSet = this.get("money_type in (" + String.join(",", names) + ")");
+
+        while (resultSet.next()) {
+            types.add(this._toObject(resultSet));
         }
 
         return types;
@@ -110,7 +127,7 @@ public class TypeService extends BaseService {
     }
 
     @Override
-    protected Type toObject(ResultSet resultSet) throws SQLException {
+    protected Type _toObject(ResultSet resultSet) throws SQLException {
         Type type = new Type();
         type.setId(resultSet.getInt("id"));
         type.setMoneyType(resultSet.getString("money_type"));

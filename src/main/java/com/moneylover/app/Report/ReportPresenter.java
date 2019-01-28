@@ -37,17 +37,15 @@ import java.util.Iterator;
 public class ReportPresenter extends PagePresenter {
     private TransactionController transactionController;
 
-    private LocalDate startDate;
-
-    private LocalDate endDate;
+    private LocalDate startDate, endDate;
 
     private ObservableList<Transaction> transactions;
 
     private ObservableList<Pair<CustomDate, ObservableList<Transaction>>> monthTransactions = FXCollections.observableArrayList();
 
-    private ObservableList<Pair<Category, ObservableList<Transaction>>> inflowTransactions = FXCollections.observableArrayList();
-
-    private ObservableList<Pair<Category, ObservableList<Transaction>>> outflowTransactions = FXCollections.observableArrayList();
+    private ObservableList<Pair<Category, ObservableList<Transaction>>>
+            inflowTransactions = FXCollections.observableArrayList(),
+            outflowTransactions = FXCollections.observableArrayList();
 
     public ReportPresenter() throws SQLException, ClassNotFoundException {
         this.startDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
@@ -133,22 +131,13 @@ public class ReportPresenter extends PagePresenter {
     private BarChart dateRangeChart;
 
     @FXML
-    private PieChart expenseChart;
+    private PieChart expenseChart, incomeChart;
 
     @FXML
-    private PieChart incomeChart;
+    private ListView listViewMonthTransactions, listViewTransactions;
 
     @FXML
-    private ListView listViewMonthTransactions;
-
-    @FXML
-    private ListView listViewMonthTransactionsDetail;
-
-    @FXML
-    private DatePicker datePickerStartDate;
-
-    @FXML
-    private DatePicker datePickerEndDate;
+    private DatePicker datePickerStartDate, datePickerEndDate;
 
     @FXML
     private Text title;
@@ -261,7 +250,6 @@ public class ReportPresenter extends PagePresenter {
                         Pair<CustomDate, ObservableList<Transaction>> newValue
                 ) {
                     try {
-                        System.out.println("Calll");
                         if (newValue == null) {
                             return;
                         }
@@ -297,7 +285,7 @@ public class ReportPresenter extends PagePresenter {
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-        ReportPresenter.listTransactions(this.listViewMonthTransactionsDetail, transactions);
+        ReportPresenter.listTransactions(this.listViewTransactions, transactions);
 
         this.createScreen(parent, "Report Detail", 400, 500);
     }

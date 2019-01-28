@@ -23,6 +23,6 @@
                 </Insets>
             </VBox.margin>
         </Text>
-        <ListView fx:id="listViewMonthTransactionsDetail"/>
+        <ListView fx:id="listViewTransactions"/>
     </VBox>
 </VBox>

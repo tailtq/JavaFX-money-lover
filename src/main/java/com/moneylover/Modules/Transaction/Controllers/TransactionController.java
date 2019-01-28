@@ -40,7 +40,7 @@ public class TransactionController {
         return transaction;
     }
 
-    public Transaction create(Transaction transaction) throws SQLException, NotFoundException {
+    public Transaction create(Transaction transaction) throws SQLException, NotFoundException, ClassNotFoundException {
         Transaction newTransaction = this.service.create(transaction);
 
         return newTransaction;
@@ -52,13 +52,15 @@ public class TransactionController {
         return true;
     }
 
-    public boolean update(Transaction transaction, int id) throws SQLException, NotFoundException {
+    public boolean update(Transaction transaction, int id) throws SQLException, NotFoundException, ClassNotFoundException {
         this.service.update(transaction, id);
 
         return true;
     }
 
-    public boolean delete(int id) throws SQLException {
-        return this.service.deleteById(id);
+    public boolean delete(int id) throws SQLException, NotFoundException, ClassNotFoundException {
+        this.service.delete(id);
+
+        return true;
     }
 }

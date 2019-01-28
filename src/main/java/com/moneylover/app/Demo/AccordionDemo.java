@@ -1,4 +1,4 @@
-package com.moneylover.app;
+package com.moneylover.app.Demo;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;

@@ -1,5 +1,6 @@
 package com.moneylover.app.Transaction.View;
 
+import com.moneylover.Infrastructure.Contracts.ParserInterface;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
@@ -27,7 +28,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class TransactionCell extends ListCell<Transaction> implements DialogInterface {
+public class TransactionCell extends ListCell<Transaction> implements DialogInterface, ParserInterface {
     private HBox transactionCell;
 
     private Transaction transaction;
@@ -99,12 +100,14 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     @Override
     protected void updateItem(Transaction item, boolean empty) {
+        super.updateItem(item, empty);
+        this.transaction = item;
+
         if (empty) {
             setGraphic(null);
             return;
         }
 
-        this.transaction = item;
         String text = item.getSubCategoryName();
         String imageUrl = "/assets/images/categories/" + item.getSubCategoryIcon() + ".png";
 
@@ -119,7 +122,15 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         this.imageTransactionCategory.setImage(new Image(imageUrl));
         this.labelTransactionCategoryName.setText(text);
         this.labelTransactionNote.setText(item.getNote());
-        this.labelAmount.setText(Float.toString(item.getAmount()));
+        this.labelAmount.setText(this.toMoneyString(item.getAmount()));
+        this.labelAmount.getStyleClass().removeAll("danger-color", "success-color");
+
+        if (item.getAmount() < 0) {
+            this.labelAmount.getStyleClass().add("danger-color");
+        } else {
+            this.labelAmount.getStyleClass().add("success-color");
+        }
+
         setGraphic(this.transactionCell);
     }
 
@@ -145,7 +156,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     private void loadTransactionData() {
         this.walletId.set(this.transaction.getWalletId());
         this.textFieldNote.setText(this.transaction.getNote());
-        this.textFieldTransactionAmount.setText(Float.toString(this.transaction.getAmount()));
+        this.textFieldTransactionAmount.setText(Float.toString(Math.abs(this.transaction.getAmount())));
         /* TODO: reload update after transaction cell is edit again */
         this.walletId.set(this.transaction.getWalletId());
         this.selectedCategory.set(0);
@@ -199,7 +210,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
             this.handledTransactionId.set("UPDATE-" + id);
 
             this.closeScene(event);
-        } catch (SQLException | NotFoundException e) {
+        } catch (SQLException | NotFoundException | ClassNotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }
@@ -213,7 +224,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
                 int id = this.transaction.getId();
                 this.transactionController.delete(id);
                 this.handledTransactionId.set("DELETE-" + id);
-            } catch (SQLException e1) {
+            } catch (SQLException | NotFoundException | ClassNotFoundException e1) {
                 e1.printStackTrace();
                 this.showErrorDialog("An error has occurred");
             }

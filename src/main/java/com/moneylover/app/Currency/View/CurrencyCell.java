@@ -42,6 +42,8 @@ public class CurrencyCell extends ListCell<Currency> implements DialogInterface 
     @Override
     protected void updateItem(Currency item, boolean empty) {
         super.updateItem(item, empty);
+        this.currency = item;
+
         if (empty) {
             setGraphic(null);
         } else {
@@ -50,7 +52,6 @@ public class CurrencyCell extends ListCell<Currency> implements DialogInterface 
             this.currencyCode.setText(item.getCode() + " - " + item.getSymbol());
             setGraphic(this.currencyCell);
         }
-        this.currency = item;
     }
 
     @FXML
