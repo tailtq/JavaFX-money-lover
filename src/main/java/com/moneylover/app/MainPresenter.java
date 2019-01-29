@@ -80,6 +80,14 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     @FXML
+    private void pressDebt(Event e) throws IOException, SQLException, ClassNotFoundException {
+        if (this.activeButton((Node) e.getSource())) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/debt/debts.fxml"));
+            this.initView(fxmlLoader);
+        }
+    }
+
+    @FXML
     private void pressReport(Event e) throws IOException, SQLException, ClassNotFoundException {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report/report.fxml"));
@@ -103,6 +111,14 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
             CurrencyPresenter.setCurrencies(
                     (new com.moneylover.Modules.Currency.Controllers.CurrencyController()).list()
             );
+        }
+    }
+
+    @FXML
+    private void pressFriend(Event e) throws IOException, SQLException, ClassNotFoundException {
+        if (this.activeButton((Node) e.getSource())) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/friend/friends.fxml"));
+            this.initView(fxmlLoader);
         }
     }
 

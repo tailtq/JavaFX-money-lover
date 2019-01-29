@@ -70,6 +70,14 @@
     -fx-background-image: url("../../images/coloured-wallet.png");
 }
 
+.debt {
+    -fx-background-image: url("../../images/debt.png");
+}
+
+.debt.active {
+    -fx-background-image: url("../../images/coloured-debt.png");
+}
+
 .report {
     -fx-background-image: url("../../images/statistics.png");
 }
@@ -100,4 +108,12 @@
 
 .user.active {
     -fx-background-image: url("../../images/coloured-user.png");
+}
+
+.friends {
+    -fx-background-image: url("../../images/friends.png");
+}
+
+.friends.active {
+    -fx-background-image: url("../../images/coloured-friends.png");
 }

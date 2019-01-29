@@ -88,7 +88,8 @@ public class TransactionPresenter extends PagePresenter {
                     Transaction updatedTransaction = this.transactionController.getDetail(id);
                     LocalDate transactedAt = updatedTransaction.getTransactedAt();
 
-                    if (transactedAt.getMonthValue() == this.tabDate.getMonthValue()
+                    if (updatedTransaction.getWalletId() == this.walletIndex.intValue()
+                            && transactedAt.getMonthValue() == this.tabDate.getMonthValue()
                             && transactedAt.getYear() == this.tabDate.getYear()) {
                         TransactionPresenter._addNewTransaction(this.transactions, updatedTransaction);
                     }
@@ -157,6 +158,11 @@ public class TransactionPresenter extends PagePresenter {
 
     private void _setListViewTransactions() {
         this.handleTransactionId();
+
+        if (this.transactions.size() == 0) {
+            this.listViewTransactions.setPlaceholder(new Label("No Transaction In List"));
+        }
+
         this.listViewTransactions.setItems(this.transactions);
         this.listViewTransactions.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
@@ -315,7 +321,8 @@ public class TransactionPresenter extends PagePresenter {
             transaction = this.transactionController.create(transaction);
             transactedAt = transaction.getTransactedAt();
 
-            if (transactedAt.getMonthValue() == this.tabDate.getMonthValue()
+            if (transaction.getWalletId() == this.walletIndex.intValue()
+                    && transactedAt.getMonthValue() == this.tabDate.getMonthValue()
                     && transactedAt.getYear() == this.tabDate.getYear()) {
                 TransactionPresenter._addNewTransaction(this.transactions, transaction);
                 this._calculateStatistic();
