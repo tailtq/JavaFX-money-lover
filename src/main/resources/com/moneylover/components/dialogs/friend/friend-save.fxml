@@ -18,16 +18,16 @@
           styleClass="transaction__create-form">
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2">
         <Text>Name</Text>
-        <TextField fx:id="textFieldTransactionAmount" styleClass="transaction__create-form__select"/>
+        <TextField fx:id="textFieldFriendName" styleClass="transaction__create-form__select"/>
     </VBox>
 
-    <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="button-group" alignment="BOTTOM_RIGHT">
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="button-group" alignment="BOTTOM_RIGHT">
         <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button, cancel-button"
                     onAction="#closeScene">
             <text>Cancel</text>
         </fx:include>
         <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button"
-                    onAction="#storeFriend">
+                    onAction="#saveFriend">
             <text>Done</text>
         </fx:include>
     </HBox>

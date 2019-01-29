@@ -25,6 +25,20 @@ abstract public class PagePresenter extends BaseViewPresenter implements LoaderI
         return this.wallets.get(this.walletIndex.get());
     }
 
+    protected int getWalletIndexId() {
+        int i = 0, index = this.walletIndex.get();
+
+        for (Wallet wallet: this.wallets) {
+            if (index == i) {
+                return wallet.getId();
+            }
+
+            i++;
+        }
+
+        return 0;
+    }
+
     /*========================== Draw ==========================*/
     @FXML
     protected MenuButton dropdownWallets;

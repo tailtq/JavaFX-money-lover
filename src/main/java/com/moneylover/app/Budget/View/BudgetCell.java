@@ -255,7 +255,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
     @FXML
     private void edit() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/budget/budget-edit.fxml")
+                getClass().getResource("/com/moneylover/components/dialogs/budget/budget-save.fxml")
         );
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
@@ -282,7 +282,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
     }
 
     @FXML
-    private void updateBudget(Event event) {
+    private void saveBudget(Event event) {
         int walletId = this.walletId.get();
         int categoryId = this.selectedCategory.get();
         int subCategoryId = this.selectedSubCategory.get();
@@ -323,6 +323,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
             this.closeScene(event);
         } catch (SQLException e) {
             e.printStackTrace();
+            this.showErrorDialog("An error has occurred");
         }
     }
 

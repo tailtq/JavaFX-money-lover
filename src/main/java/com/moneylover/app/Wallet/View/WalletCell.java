@@ -109,7 +109,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
     @FXML
     private void edit() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-edit.fxml")
+                getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-save.fxml")
         );
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
@@ -125,7 +125,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
     }
 
     @FXML
-    private void updateWallet(Event event) {
+    private void saveWallet(Event event) {
         String name = this.textFieldTransactionName.getText().trim();
         String amountText = this.textFieldWalletAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
@@ -139,7 +139,6 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
             this.walletController.update(new Wallet(currencyId, name, amount), this.wallet.getId());
             this.handledWalletId.set(null);
             this.handledWalletId.set("UPDATE-" + this.wallet.getId());
-
             this.closeScene(event);
         } catch (SQLException e) {
             e.printStackTrace();

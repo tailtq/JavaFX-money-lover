@@ -88,7 +88,7 @@ public class TransactionPresenter extends PagePresenter {
                     Transaction updatedTransaction = this.transactionController.getDetail(id);
                     LocalDate transactedAt = updatedTransaction.getTransactedAt();
 
-                    if (updatedTransaction.getWalletId() == this.walletIndex.intValue()
+                    if (updatedTransaction.getWalletId() == this.getWalletIndexId()
                             && transactedAt.getMonthValue() == this.tabDate.getMonthValue()
                             && transactedAt.getYear() == this.tabDate.getYear()) {
                         TransactionPresenter._addNewTransaction(this.transactions, updatedTransaction);
@@ -265,7 +265,7 @@ public class TransactionPresenter extends PagePresenter {
 
     @FXML
     private void createTransaction() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-create.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-save.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
         this.walletId.set(0);
@@ -285,7 +285,7 @@ public class TransactionPresenter extends PagePresenter {
     }
 
     @FXML
-    private void storeTransaction(Event event) {
+    private void saveTransaction(Event event) {
         String amountText = this.textFieldTransactionAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
         LocalDate transactedAt = this.datePickerTransactedAt.getValue();
@@ -321,7 +321,7 @@ public class TransactionPresenter extends PagePresenter {
             transaction = this.transactionController.create(transaction);
             transactedAt = transaction.getTransactedAt();
 
-            if (transaction.getWalletId() == this.walletIndex.intValue()
+            if (transaction.getWalletId() == this.getWalletIndexId()
                     && transactedAt.getMonthValue() == this.tabDate.getMonthValue()
                     && transactedAt.getYear() == this.tabDate.getYear()) {
                 TransactionPresenter._addNewTransaction(this.transactions, transaction);

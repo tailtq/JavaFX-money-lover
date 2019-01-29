@@ -28,7 +28,7 @@ public class FriendService extends BaseService {
     public Friend getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
 
-        if (resultSet.wasNull()) {
+        if (!resultSet.next()) {
             throw new NotFoundException();
         }
 
@@ -118,6 +118,7 @@ public class FriendService extends BaseService {
         friend.setId(resultSet.getInt("id"));
         friend.setUserId(resultSet.getInt("user_id"));
         friend.setName(resultSet.getString("name"));
+        friend.setImage(resultSet.getString("image"));
         friend.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
         friend.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
 

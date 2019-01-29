@@ -27,7 +27,7 @@ public class CurrencyService extends BaseService {
     public Currency getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getById(id);
 
-        if (resultSet.wasNull()) {
+        if (!resultSet.next()) {
             throw new NotFoundException();
         }
 

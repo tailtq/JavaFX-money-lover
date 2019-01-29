@@ -10,6 +10,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
+
 <GridPane xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"
           stylesheets="
@@ -65,7 +66,7 @@
             <text>Cancel</text>
         </fx:include>
         <fx:include source="../../buttons/normal-button.fxml" styleClass="form__button"
-                    onAction="#updateTransaction">
+                    onAction="#saveTransaction">
             <text>Done</text>
         </fx:include>
     </HBox>

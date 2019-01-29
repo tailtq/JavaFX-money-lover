@@ -136,7 +136,7 @@ public class WalletPresenter extends PagePresenter implements Initializable {
     @FXML
     public void createWallet() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-create.fxml")
+                getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-save.fxml")
         );
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
@@ -145,7 +145,7 @@ public class WalletPresenter extends PagePresenter implements Initializable {
     }
 
     @FXML
-    private void storeWallet(Event event) throws NotFoundException, SQLException, ClassNotFoundException {
+    private void saveWallet(Event event) throws NotFoundException, SQLException, ClassNotFoundException {
         this.walletController = new WalletController();
 
         String name = this.textFieldTransactionName.getText().trim();
@@ -160,11 +160,9 @@ public class WalletPresenter extends PagePresenter implements Initializable {
         try {
             Wallet wallet = this.walletController.create(new Wallet(currencyId, name, amount));
             ArrayList<UserWallet> userWallet = new ArrayList<>();
-
             userWallet.add(new UserWallet(UserPresenter.getUser().getId(), wallet.getId()));
             this.walletController.attachUsers(userWallet);
             this.wallets.add(0, wallet);
-
             this.closeScene(event);
         } catch (SQLException e) {
             e.printStackTrace();
