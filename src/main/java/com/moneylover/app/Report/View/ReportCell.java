@@ -18,10 +18,10 @@ public class ReportCell extends ListCell<Pair<CustomDate, ObservableList<Transac
     private HBox reportCell;
 
     public ReportCell() throws IOException {
-        this.loadCell();
+        this._loadCell();
     }
 
-    private void loadCell() throws IOException {
+    private void _loadCell() throws IOException {
         FXMLLoader reportCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report/report-cell.fxml"));
         reportCellLoader.setController(this);
         this.reportCell = reportCellLoader.load();

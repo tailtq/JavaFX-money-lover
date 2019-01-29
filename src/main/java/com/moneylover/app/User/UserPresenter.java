@@ -4,15 +4,11 @@ import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.User.Entities.User;
 import com.moneylover.Infrastructure.Contracts.LoaderInterface;
 import com.moneylover.app.PagePresenter;
-import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 public class UserPresenter extends PagePresenter implements LoaderInterface {
     private com.moneylover.Modules.User.Controllers.UserController userController;

@@ -102,11 +102,11 @@ public class BudgetPresenter extends PagePresenter {
         ArrayList<Budget> budgets = this.budgetController.list(walletId);
         BudgetPresenter._sortFinishingBudgets(this.onGoingBudgets, this.finishingBudgets, budgets);
         this.handleBudgetId();
-        this.listBudgets(this.listViewOngoingTab, this.onGoingBudgets);
-        this.listBudgets(this.listViewFinishingTab, this.finishingBudgets);
+        this._setListViewBudgets(this.listViewOngoingTab, this.onGoingBudgets);
+        this._setListViewBudgets(this.listViewFinishingTab, this.finishingBudgets);
     }
 
-    private void listBudgets(ListView listView, ObservableList<Budget> budgets) {
+    private void _setListViewBudgets(ListView listView, ObservableList<Budget> budgets) {
         if (budgets.size() == 0) {
             listView.setPlaceholder(new Label("No Budget In List"));
         }

@@ -32,10 +32,10 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         this.currencyPresenter = new CurrencyPresenter(this.selectedCurrencyId);
         this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
         this.handledWalletId = handledWalletId;
-        this.loadCell();
+        this._loadCell();
     }
 
-    private void loadCell() throws IOException {
+    private void _loadCell() throws IOException {
         FXMLLoader walletCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallet-cell.fxml"));
         walletCellLoader.setController(this);
         this.walletCell = walletCellLoader.load();
@@ -90,6 +90,11 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
     }
 
     @FXML
+    private void showPopup(Event e) throws IOException {
+        this.addEditPopup((Node) e.getSource());
+    }
+
+    @FXML
     private void listCurrencies() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/components/dialogs/choose-currency/choose-currency.fxml")
@@ -102,7 +107,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
     }
 
     @FXML
-    private void editWallet() throws SQLException, IOException {
+    private void edit() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-edit.fxml")
         );
@@ -143,7 +148,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
     }
 
     @FXML
-    private void deleteWallet() {
+    private void delete() {
         ButtonBar.ButtonData buttonData = this.showDeleteDialog();
 
         if (buttonData == ButtonBar.ButtonData.YES) {

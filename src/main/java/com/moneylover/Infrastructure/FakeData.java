@@ -10,6 +10,8 @@ import com.moneylover.Modules.Category.Controllers.CategoryController;
 import com.moneylover.Modules.Category.Entities.Category;
 import com.moneylover.Modules.Currency.Controllers.CurrencyController;
 import com.moneylover.Modules.Currency.Entities.Currency;
+import com.moneylover.Modules.Friend.Controllers.FriendController;
+import com.moneylover.Modules.Friend.Entities.Friend;
 import com.moneylover.Modules.SubCategory.Controllers.SubCategoryController;
 import com.moneylover.Modules.SubCategory.Entities.SubCategory;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
@@ -48,6 +50,8 @@ public class FakeData {
 
     private BudgetController budgetController;
 
+    private FriendController friendController;
+
     public FakeData() throws SQLException, ClassNotFoundException {
         this.faker = new Faker();
         this.currencyController = new CurrencyController();
@@ -58,6 +62,7 @@ public class FakeData {
         this.subCategoryController = new SubCategoryController();
         this.transactionController = new TransactionController();
         this.budgetController = new BudgetController();
+        this.friendController = new FriendController();
     }
 
     public static void main(String args[]) throws SQLException, ClassNotFoundException, NotFoundException {
@@ -71,6 +76,7 @@ public class FakeData {
 //            fakeData.createSubCategories();
 //            fakeData.createTransactions();
 //            fakeData.createBudgets();
+            fakeData.createFriends();
         } catch (Exception e) {
             throw e;
         }
@@ -436,5 +442,18 @@ public class FakeData {
         }
 
         this.budgetController.create(budgets);
+    }
+
+    private void createFriends() throws NotFoundException, SQLException {
+        ArrayList<Friend> friends = new ArrayList<>();
+
+        for (int i = 0; i < 20; i++) {
+            Friend friend = new Friend();
+            friend.setUserId(2002);
+            friend.setName(this.faker.name().fullName());
+            friends.add(friend);
+        }
+
+        this.friendController.create(friends);
     }
 }

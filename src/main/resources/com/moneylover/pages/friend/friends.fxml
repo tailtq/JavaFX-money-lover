@@ -18,7 +18,7 @@
             </left>
             <right>
                 <fx:include source="../../components/buttons/normal-button.fxml" onAction="#createFriend">
-                    <text>ADD WALLET</text>
+                    <text>ADD FRIEND</text>
                 </fx:include>
             </right>
         </BorderPane>
