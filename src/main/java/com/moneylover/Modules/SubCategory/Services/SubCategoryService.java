@@ -122,14 +122,13 @@ public class SubCategoryService extends BaseService {
         return true;
     }
 
-    private int _update(SubCategory subCategory, int id) throws SQLException {
+    private void _update(SubCategory subCategory, int id) throws SQLException {
         String statementString = "UPDATE " + getTable() + " SET created_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
         // Continue
 //        state.setInt(2, id)
 //        statement.setDouble(1, subCategory.getAmount());
-
-        return statement.executeUpdate();
+        statement.executeUpdate();
     }
 
     @Override

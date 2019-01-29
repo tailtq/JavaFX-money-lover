@@ -78,14 +78,13 @@ public class CurrencyService extends BaseService {
         return id;
     }
 
-    private int _update(Currency currency, int id) throws SQLException {
+    private void _update(Currency currency, int id) throws SQLException {
         String statementString = "UPDATE " + getTable() + " SET created_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
         // Continue
 //        state.setInt(2, id)
 //        statement.setDouble(1, currency.getAmount());
-
-        return statement.executeUpdate();
+        statement.executeUpdate();
     }
 
     @Override

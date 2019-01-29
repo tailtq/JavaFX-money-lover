@@ -52,7 +52,7 @@ public class WalletPresenter extends PagePresenter implements Initializable {
 
     private IntegerProperty selectedCurrencyId = new SimpleIntegerProperty(0);
 
-    public void setListViewWallets() {
+    private void _setListViewWallets() {
         this.handleWalletId();
 
         if (this.wallets.size() == 0) {
@@ -117,7 +117,7 @@ public class WalletPresenter extends PagePresenter implements Initializable {
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
         super.setWallets(wallets);
-        this.setListViewWallets();
+        this._setListViewWallets();
     }
 
     @FXML

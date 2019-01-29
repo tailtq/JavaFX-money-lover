@@ -21,23 +21,9 @@
         <Label fx:id="labelWalletAmount"/>
     </VBox>
     <Pane HBox.hgrow="ALWAYS"></Pane>
-    <MenuButton xmlns:fx="http://javafx.com/fxml"
-                mnemonicParsing="false"
-                styleClass="wallet__select-btn, white-color"
-                text="Options">
-        <items>
-            <MenuItem styleClass="white-color, warning-bg-color" onAction="#editWallet">
-                <text>Edit</text>
-                <graphic>
-                    <FontAwesomeIconView glyphName="PENCIL" size="12px" glyphStyle="-fx-fill: white" />
-                </graphic>
-            </MenuItem>
-            <MenuItem styleClass="white-color, danger-bg-color" onAction="#deleteWallet">
-                <text>Delete</text>
-                <graphic>
-                    <FontAwesomeIconView glyphName="TIMES" size="12px" glyphStyle="-fx-fill: white" />
-                </graphic>
-            </MenuItem>
-        </items>
-    </MenuButton>
+    <Button fx:id="buttonOptions" onAction="#showPopup" styleClass="bg--linear-succeed-color">
+        <graphic>
+            <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white" />
+        </graphic>
+    </Button>
 </HBox>

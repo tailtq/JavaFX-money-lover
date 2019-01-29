@@ -116,14 +116,10 @@ public class TypeService extends BaseService {
         return true;
     }
 
-    private int _update(Type type, int id) throws SQLException {
+    private void _update(Type type, int id) throws SQLException {
         String statementString = "UPDATE " + getTable() + " SET created_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        // Continue
-//        state.setInt(2, id)
-//        statement.setDouble(1, type.getAmount());
-
-        return statement.executeUpdate();
+        statement.executeUpdate();
     }
 
     @Override
