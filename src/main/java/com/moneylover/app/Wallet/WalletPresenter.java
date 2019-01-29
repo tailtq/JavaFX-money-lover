@@ -55,6 +55,10 @@ public class WalletPresenter extends PagePresenter implements Initializable {
     public void setListViewWallets() {
         this.handleWalletId();
 
+        if (this.wallets.size() == 0) {
+            this.listViewWallets.setPlaceholder(new Label("No Wallet In List"));
+        }
+
         this.listViewWallets.setItems(this.wallets);
         this.listViewWallets.setCellFactory(new Callback<ListView, ListCell>() {
             @Override

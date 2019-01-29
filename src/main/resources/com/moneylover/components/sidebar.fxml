@@ -6,14 +6,18 @@
       stylesheets="@../../../assets/css/components/sidebar.css"
       styleClass="sidebar">
     <fx:include source="buttons/sidebar-button.fxml" onAction="#pressTransaction" styleClass="active, transaction">
-        <text>Transactions</text>
-        <styleClass>wallet</styleClass>
-
         <VBox.margin>
             <Insets>
                 <top>10</top>
             </Insets>
         </VBox.margin>
+
+        <text>Transactions</text>
+        <styleClass>wallet</styleClass>
+    </fx:include>
+
+    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressDebt" styleClass="debt">
+        <text>Debts</text>
     </fx:include>
 
     <fx:include source="buttons/sidebar-button.fxml" onAction="#pressReport" styleClass="report">
@@ -26,6 +30,10 @@
 
     <fx:include source="buttons/sidebar-button.fxml" onAction="#pressWallet" styleClass="wallet">
         <text>Wallets</text>
+    </fx:include>
+
+    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressFriend" styleClass="friends">
+        <text>Friends</text>
     </fx:include>
 
     <fx:include source="buttons/sidebar-button.fxml" onAction="#pressUser" styleClass="user">

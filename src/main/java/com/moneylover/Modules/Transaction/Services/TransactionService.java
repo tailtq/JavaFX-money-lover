@@ -7,14 +7,11 @@ import com.moneylover.Modules.Budget.Entities.Budget;
 import com.moneylover.Modules.Budget.Services.BudgetService;
 import com.moneylover.Modules.Category.Entities.Category;
 import com.moneylover.Modules.Category.Services.CategoryService;
-import com.moneylover.Modules.Time.Entities.Time;
-import com.moneylover.Modules.Time.Services.TimeService;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Services.WalletService;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 public class TransactionService extends BaseService {
@@ -93,8 +90,8 @@ public class TransactionService extends BaseService {
                 "totalAmount",
                 "wallet_id = " + budget.getWalletId(),
                 condition,
-                "date(transacted_at) >= " + budget.getStartedAt().toString(),
-                "date(transacted_at) <=" + budget.getEndedAt().toString()
+                "transacted_at >= CAST('" + budget.getStartedAt().toString() + "' AS DATE)",
+                "transacted_at <= CAST('" + budget.getEndedAt().toString() + "' AS DATE)"
         );
 
         return amount;

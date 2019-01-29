@@ -76,7 +76,7 @@ public class BudgetService extends BaseService {
     public Budget create(Budget budget) throws SQLException, NotFoundException, ClassNotFoundException {
         int id = this._create(budget);
         float amount = this._getTransactionService().getAmountByBudget(budget);
-        this._setSpentAmount(amount, id);
+        this._setSpentAmount(Math.abs(amount), id);
 
         return this.getDetail(id);
     }

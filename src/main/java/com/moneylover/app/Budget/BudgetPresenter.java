@@ -107,6 +107,10 @@ public class BudgetPresenter extends PagePresenter {
     }
 
     private void listBudgets(ListView listView, ObservableList<Budget> budgets) {
+        if (budgets.size() == 0) {
+            listView.setPlaceholder(new Label("No Budget In List"));
+        }
+
         listView.setItems(budgets);
         listView.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
@@ -158,7 +162,10 @@ public class BudgetPresenter extends PagePresenter {
 
             if (type.contains("UPDATE")) {
                 Budget budget = this.budgetController.getDetail(id);
-                this._setBudget(budget);
+
+                if (budget.getWalletId() == this.walletIndex.intValue()) {
+                    this._setBudget(budget);
+                }
             }
         }
     }
@@ -261,7 +268,11 @@ public class BudgetPresenter extends PagePresenter {
 
         try {
             budget = this.budgetController.create(budget);
-            this._addNewBudget(budget);
+
+            if (budget.getWalletId() == this.walletIndex.intValue()) {
+                this._addNewBudget(budget);
+            }
+
             this.closeScene(event);
         } catch (SQLException | NotFoundException | ClassNotFoundException e) {
             e.printStackTrace();

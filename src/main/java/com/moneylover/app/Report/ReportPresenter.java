@@ -19,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.chart.*;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
@@ -258,6 +259,11 @@ public class ReportPresenter extends PagePresenter {
                 }
             }
         );
+
+        if (this.monthTransactions.size() == 0) {
+            this.listViewMonthTransactions.setPlaceholder(new Label("No Transaction In List"));
+        }
+
         this.listViewMonthTransactions.setItems(this.monthTransactions);
         this.listViewMonthTransactions.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
@@ -287,6 +293,10 @@ public class ReportPresenter extends PagePresenter {
     }
 
     public static void listTransactions(ListView listView, ObservableList<Transaction> transactions) {
+        if (transactions.size() == 0) {
+            listView.setPlaceholder(new Label("No Transaction In List"));
+        }
+
         listView.setItems(transactions);
         listView.setCellFactory(new Callback<ListView, ListCell>() {
             @Override

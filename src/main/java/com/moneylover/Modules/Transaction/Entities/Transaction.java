@@ -7,8 +7,6 @@ import java.time.LocalDate;
 public class Transaction extends BaseModel {
     private int walletId;
 
-    private int timeId;
-
     private int typeId;
 
     private int categoryId;
@@ -47,14 +45,6 @@ public class Transaction extends BaseModel {
 
     public void setWalletId(int walletId) {
         this.walletId = walletId;
-    }
-
-    public int getTimeId() {
-        return timeId;
-    }
-
-    public void setTimeId(int timeId) {
-        this.timeId = timeId;
     }
 
     public int getTypeId() {
