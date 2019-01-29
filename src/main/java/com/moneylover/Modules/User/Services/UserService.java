@@ -80,7 +80,7 @@ public class UserService extends BaseService {
     /*====================================================================================*/
 
     private ArrayList<User> _list() throws SQLException {
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
         ResultSet resultSet = this.get();
 
         while (resultSet.next()) {

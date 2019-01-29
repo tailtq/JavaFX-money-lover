@@ -163,7 +163,7 @@ public class BudgetPresenter extends PagePresenter {
             if (type.contains("UPDATE")) {
                 Budget budget = this.budgetController.getDetail(id);
 
-                if (budget.getWalletId() == this.walletIndex.intValue()) {
+                if (budget.getWalletId() == this.getWalletIndexId()) {
                     this._setBudget(budget);
                 }
             }
@@ -218,7 +218,7 @@ public class BudgetPresenter extends PagePresenter {
 
     @FXML
     private void createBudget() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-create.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-save.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
         this.walletId.set(0);
@@ -232,7 +232,7 @@ public class BudgetPresenter extends PagePresenter {
     }
 
     @FXML
-    private void storeBudget(Event event) {
+    private void saveBudget(Event event) {
         int walletId = this.walletId.get();
         int categoryId = this.selectedCategory.get();
         int subCategoryId = this.selectedSubCategory.get();
@@ -269,13 +269,14 @@ public class BudgetPresenter extends PagePresenter {
         try {
             budget = this.budgetController.create(budget);
 
-            if (budget.getWalletId() == this.walletIndex.intValue()) {
+            if (budget.getWalletId() == this.getWalletIndexId()) {
                 this._addNewBudget(budget);
             }
 
             this.closeScene(event);
         } catch (SQLException | NotFoundException | ClassNotFoundException e) {
             e.printStackTrace();
+            this.showErrorDialog("An error has occurred");
         }
     }
 

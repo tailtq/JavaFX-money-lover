@@ -1,5 +1,6 @@
 package com.moneylover.app.Friend;
 
+import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.Friend.Controllers.FriendController;
 import com.moneylover.Modules.Friend.Entities.Friend;
 import com.moneylover.app.Friend.View.FriendCell;
@@ -9,12 +10,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -34,6 +37,9 @@ public class FriendPresenter extends PagePresenter {
     /*========================== Draw ==========================*/
     @FXML
     private ListView listViewFriends;
+
+    @FXML
+    private TextField textFieldFriendName;
 
     private void _setListViewFriends() {
         this._handleFriendId();
@@ -56,25 +62,67 @@ public class FriendPresenter extends PagePresenter {
         });
     }
 
+    private void _addNewFriend(Friend friend) {
+        this.friends.add(0, friend);
+    }
+
     @FXML
     private void createFriend() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/friend/friend-create.fxml")
+                getClass().getResource("/com/moneylover/components/dialogs/friend/friend-save.fxml")
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
 
-        this.createScreen(parent, "Add Friend", 300, 230);
+        this.createScreen(parent, "Add Friend", 300, 120);
     }
 
     @FXML
-    private void storeFriend() {
-        System.out.println("Test");
+    private void saveFriend(Event event) {
+        String name = this.textFieldFriendName.getText();
+
+        if (name.isEmpty()) {
+            this.showErrorDialog("Please input all needed information!");
+            return;
+        }
+
+        Friend friend = new Friend(UserPresenter.getUser().getId(), name);
+        try {
+            friend = this.friendController.create(friend);
+            this._addNewFriend(friend);
+            this.closeScene(event);
+        } catch (SQLException | NotFoundException e) {
+            e.printStackTrace();
+            this.showErrorDialog("An error has occurred");
+        }
     }
 
     private void _handleFriendId() {
         this.handledFriendId.addListener((observableValue, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
 
+            int id = Integer.parseInt(newValue.substring(7)), i = 0;
+
+            for (Friend friend: this.friends) {
+                if (friend.getId() == id) {
+                    break;
+                }
+                i++;
+            }
+
+
+            if (newValue.contains("UPDATE")) {
+                try {
+                    Friend friend = this.friendController.getDetail(id);
+                    this.friends.set(i, friend);
+                } catch (SQLException | NotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                this.friends.remove(i);
+            }
         });
     }
 

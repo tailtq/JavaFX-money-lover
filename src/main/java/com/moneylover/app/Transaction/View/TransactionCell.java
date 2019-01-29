@@ -146,7 +146,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     @FXML
     private void edit() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-edit.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-save.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
         this.loadTransactionData();
@@ -171,7 +171,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     }
 
     @FXML
-    private void updateTransaction(Event event) {
+    private void saveTransaction(Event event) {
         String amountText = this.textFieldTransactionAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
         LocalDate transactedAt = this.datePickerTransactedAt.getValue();
