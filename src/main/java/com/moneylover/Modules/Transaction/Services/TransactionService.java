@@ -51,6 +51,12 @@ public class TransactionService extends BaseService {
         return transactions;
     }
 
+    public ArrayList<Transaction> listNotReportedByDateRange(int walletId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        ArrayList<Transaction> transactions = this._listNotReported(walletId, startDate, endDate);
+
+        return transactions;
+    }
+
     public ArrayList<Transaction> listByBudget(Budget budget) throws SQLException {
         ArrayList<Transaction> transactions = this._list(budget);
 
@@ -108,7 +114,7 @@ public class TransactionService extends BaseService {
         );
         Transaction newTransaction = this.getDetail(id);
 
-        if (TransactionService.isSpent(category.getMoneyType())) {
+        if (TransactionService.isSpent(category.getMoneyType()) && !newTransaction.getIsNotReported()) {
             this._increaseBudgetAmount(newTransaction, false);
         }
 
@@ -122,10 +128,10 @@ public class TransactionService extends BaseService {
     }
 
     public void update(Transaction transaction, int id) throws SQLException, NotFoundException, ClassNotFoundException {
-        Transaction selectedTransaction = this.getDetail(id);
+        Transaction selectedTransaction = this._getTransactionById(id);
         Category oldCategory = this.categoryService.getDetail(selectedTransaction.getCategoryId());
 
-        if (TransactionService.isSpent(oldCategory.getMoneyType())) {
+        if (TransactionService.isSpent(oldCategory.getMoneyType()) && !selectedTransaction.getIsNotReported()) {
             this._increaseBudgetAmount(selectedTransaction, true);
         }
 
@@ -139,8 +145,11 @@ public class TransactionService extends BaseService {
         );
 
         if (TransactionService.isSpent(newCategory.getMoneyType())) {
-            selectedTransaction = this.getDetail(id);
-            this._increaseBudgetAmount(selectedTransaction, false);
+            selectedTransaction = this._getTransactionById(id);
+
+            if (!selectedTransaction.getIsNotReported()) {
+                this._increaseBudgetAmount(selectedTransaction, false);
+            }
         }
     }
 
@@ -167,6 +176,11 @@ public class TransactionService extends BaseService {
 
     public void delete(int id) throws SQLException, NotFoundException, ClassNotFoundException {
         Transaction transaction = this._getTransactionById(id);
+        this.walletService.setAmount(
+                this._getTotalAmount(transaction.getWalletId(), '>'),
+                this._getTotalAmount(transaction.getWalletId(), '<'),
+                transaction.getWalletId()
+        );
         this._increaseBudgetAmount(transaction, true);
         this.deleteById(id);
     }
@@ -207,6 +221,26 @@ public class TransactionService extends BaseService {
                 "INNER JOIN categories ON transactions.category_id = categories.id " +
                      "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
                 "wallet_id = " + walletId,
+                "transacted_at >= CAST('" + startDate.toString() + "' AS DATE) AND transacted_at <= CAST('" + endDate.toString() + "' AS DATE)"
+        );
+
+        while (resultSet.next()) {
+            transactions.add(this._toObject(resultSet));
+        }
+
+        return transactions;
+    }
+
+    private ArrayList<Transaction> _listNotReported(int walletId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        ResultSet resultSet = this.getByJoin(
+                "transactions.*, " +
+                        "categories.name as category_name, categories.icon as category_icon, categories.money_type as category_money_type, " +
+                        "sub_categories.name as sub_category_name, sub_categories.icon as sub_category_icon",
+                "INNER JOIN categories ON transactions.category_id = categories.id " +
+                        "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
+                "wallet_id = " + walletId,
+                "is_not_reported = 0",
                 "transacted_at >= CAST('" + startDate.toString() + "' AS DATE) AND transacted_at <= CAST('" + endDate.toString() + "' AS DATE)"
         );
 
@@ -263,7 +297,7 @@ public class TransactionService extends BaseService {
     }
 
     private int _create(Transaction transaction, String moneyType) throws SQLException {
-        String statementString = "INSERT INTO " + getTable() + "(wallet_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_reported, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String statementString = "INSERT INTO " + getTable() + "(wallet_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_not_reported, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
         statement.setTimestamp(11, this.getCurrentTime());
@@ -284,7 +318,7 @@ public class TransactionService extends BaseService {
         statement.setString(7, transaction.getLocation());
         statement.setNString(8, transaction.getNote());
         statement.setString(9, transaction.getImage());
-        statement.setByte(10, transaction.getIsReported());
+        statement.setByte(10, (byte) (transaction.getIsNotReported() ? 1 : 0));
 
         if (subcategoryId == 0) {
             statement.setNull(4, Types.INTEGER);
@@ -304,7 +338,7 @@ public class TransactionService extends BaseService {
     }
 
     private int _create(ArrayList<Transaction> transactions) throws SQLException {
-        String statementString = "INSERT INTO " + getTable() + "(wallet_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_reported, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)";
+        String statementString = "INSERT INTO " + getTable() + "(wallet_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_not_reported, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)";
         PreparedStatement statement = this.getPreparedStatement(statementString);
         int i = 0;
 
@@ -318,7 +352,7 @@ public class TransactionService extends BaseService {
             statement.setString(7, transaction.getLocation());
             statement.setNString(8, transaction.getNote());
             statement.setString(9, transaction.getImage());
-            statement.setByte(10, transaction.getIsReported());
+            statement.setByte(10, (byte) (transaction.getIsNotReported() ? 1 : 0));
             statement.setTimestamp(11, this.getCurrentTime());
             statement.addBatch();
             i++;
@@ -331,7 +365,7 @@ public class TransactionService extends BaseService {
     }
 
     private void _update(Transaction transaction, int id, String moneyType) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, type_id = ?, category_id = ?, sub_category_id = ?, transacted_at = ?, amount = ?, location = ?, note = ?, image = ?, is_reported = ?, updated_at = ? WHERE id = ?";
+        String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, type_id = ?, category_id = ?, sub_category_id = ?, transacted_at = ?, amount = ?, location = ?, note = ?, image = ?, is_not_reported = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
         statement.setTimestamp(11, this.getCurrentTime());
         statement.setInt(12, id);
@@ -352,7 +386,7 @@ public class TransactionService extends BaseService {
         transaction.setLocation(resultSet.getString("location"));
         transaction.setNote(resultSet.getNString("note"));
         transaction.setImage(resultSet.getString("image"));
-        transaction.setIsReported(resultSet.getByte("is_reported"));
+        transaction.setIsNotReported(resultSet.getByte("is_not_reported") == 1);
         transaction.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
         transaction.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
         transaction.setCategoryName(resultSet.getString("category_name"));
@@ -389,7 +423,7 @@ public class TransactionService extends BaseService {
         transaction.setLocation(resultSet.getString("location"));
         transaction.setNote(resultSet.getNString("note"));
         transaction.setImage(resultSet.getString("image"));
-        transaction.setIsReported(resultSet.getByte("is_reported"));
+        transaction.setIsNotReported(resultSet.getByte("is_not_reported") == 1);
         transaction.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
         transaction.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
 

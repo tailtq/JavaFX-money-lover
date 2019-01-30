@@ -55,7 +55,7 @@
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="2">
         <Text/>
-        <CheckBox fx:id="checkBoxIsReported">
+        <CheckBox fx:id="checkBoxIsNotReported">
             Exclude from report
         </CheckBox>
     </VBox>

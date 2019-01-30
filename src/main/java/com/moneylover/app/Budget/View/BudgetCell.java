@@ -321,7 +321,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
             this.handledBudgetId.set(null);
             this.handledBudgetId.set("UPDATE-" + id);
             this.closeScene(event);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }
@@ -348,8 +348,6 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
 
     @FXML
     public void closeScene(Event e) {
-        Node node = (Node) e.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
+        DialogInterface.closeScene(e);
     }
 }

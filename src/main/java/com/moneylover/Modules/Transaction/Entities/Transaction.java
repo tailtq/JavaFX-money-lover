@@ -23,7 +23,7 @@ public class Transaction extends BaseModel {
 
     private String image;
 
-    private byte isReported;
+    private boolean isNotReported;
 
     private String categoryName;
 
@@ -111,12 +111,12 @@ public class Transaction extends BaseModel {
         this.image = image;
     }
 
-    public byte getIsReported() {
-        return isReported;
+    public boolean getIsNotReported() {
+        return isNotReported;
     }
 
-    public void setIsReported(byte isReported) {
-        this.isReported = isReported;
+    public void setIsNotReported(boolean isNotReported) {
+        this.isNotReported = isNotReported;
     }
 
     public String getCategoryName() {

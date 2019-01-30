@@ -404,7 +404,6 @@ public class FakeData {
             transaction.setTransactedAt(LocalDate.now());
             transaction.setAmount((float) this.faker.number().randomDouble(1, 1000, 10000000));
             transaction.setNote("This is note!");
-            transaction.setIsReported((byte) (Math.random()));
 
             transactions.add(transaction);
         }
