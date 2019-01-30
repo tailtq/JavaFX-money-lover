@@ -40,6 +40,12 @@ public class TransactionController {
         return transactions;
     }
 
+    public ArrayList<Transaction> listDebts(int walletId) throws SQLException {
+        ArrayList<Transaction> transactions = this.service.listDebts(walletId);
+
+        return transactions;
+    }
+
     public Transaction getDetail(int id) throws SQLException, NotFoundException {
         Transaction transaction = this.service.getDetail(id);
 

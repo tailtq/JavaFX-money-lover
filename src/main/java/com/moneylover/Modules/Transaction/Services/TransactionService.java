@@ -63,6 +63,12 @@ public class TransactionService extends BaseService {
         return transactions;
     }
 
+    public ArrayList<Transaction> listDebts(int walletId) throws SQLException {
+        ArrayList<Transaction> transactions = this._list(walletId);
+
+        return transactions;
+    }
+
     public Transaction getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this.getByJoin(
                 "transactions.*, " +
@@ -270,6 +276,26 @@ public class TransactionService extends BaseService {
                 "wallet_id = " + budget.getWalletId(),
                 categoryCondition,
                 "transacted_at >= CAST('" + budget.getStartedAt().toString() + "' AS DATE) AND transacted_at <= CAST('" + budget.getEndedAt().toString() + "' AS DATE)"
+        );
+
+        while (resultSet.next()) {
+            transactions.add(this._toObject(resultSet));
+        }
+
+        return transactions;
+    }
+
+    private ArrayList<Transaction> _list(int walletId) throws SQLException {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+
+        ResultSet resultSet = this.getByJoin(
+                "transactions.*, " +
+                        "categories.name as category_name, categories.icon as category_icon, categories.money_type as category_money_type, " +
+                        "sub_categories.name as sub_category_name, sub_categories.icon as sub_category_icon",
+                "INNER JOIN categories ON transactions.category_id = categories.id " +
+                        "LEFT JOIN sub_categories ON transactions.sub_category_id = sub_categories.id",
+                "wallet_id = " + walletId,
+                "friend_id IS NOT NULL"
         );
 
         while (resultSet.next()) {
