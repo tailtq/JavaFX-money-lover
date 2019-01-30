@@ -4,8 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
-
 <?import javafx.scene.control.ListView?>
+
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.moneylover.app.Transaction.TransactionPresenter"

@@ -84,7 +84,7 @@ public class WalletPresenter extends PagePresenter implements Initializable {
 
             for (Wallet wallet: this.wallets) {
                 if (wallet.getId() == id) {
-                    if (newValue.contains("DELETE-")) {
+                    if (newValue.contains("DELETE")) {
                         break;
                     } else {
                         try {
@@ -98,7 +98,7 @@ public class WalletPresenter extends PagePresenter implements Initializable {
                 i++;
             }
 
-            if (newValue.contains("DELETE-")) {
+            if (newValue.contains("DELETE")) {
                 int walletIndex = this.walletIndex.get();
 
                 if (walletIndex == i) {

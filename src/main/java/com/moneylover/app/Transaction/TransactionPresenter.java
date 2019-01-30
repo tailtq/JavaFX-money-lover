@@ -163,8 +163,22 @@ public class TransactionPresenter extends PagePresenter {
             this.listViewTransactions.setPlaceholder(new Label("No Transaction In List"));
         }
 
-        this.listViewTransactions.setItems(this.transactions);
-        this.listViewTransactions.setCellFactory(new Callback<ListView, ListCell>() {
+        TransactionPresenter.listTransactions(
+                this.listViewTransactions,
+                this.transactions,
+                this.wallets,
+                this.handledTransactionId
+        );
+    }
+
+    public static void listTransactions(
+            ListView listView,
+            ObservableList<Transaction> transactions,
+            ObservableList<Wallet> wallets,
+            StringProperty handledTransactionId
+    ) {
+        listView.setItems(transactions);
+        listView.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
                 try {
