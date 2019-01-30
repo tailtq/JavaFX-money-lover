@@ -25,6 +25,8 @@ import java.util.Iterator;
 public class CategoryPresenter extends BaseViewPresenter implements DialogInterface {
     private boolean onlyExpenseCategories = false;
 
+    private boolean onlyDebtCategories = false;
+
     private IntegerProperty selectedType;
 
     private IntegerProperty selectedCategory;
@@ -48,6 +50,10 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
     public CategoryPresenter(IntegerProperty selectedCategory, IntegerProperty selectedSubCategory) {
         this.selectedCategory = selectedCategory;
         this.selectedSubCategory = selectedSubCategory;
+    }
+
+    public void setOnlyDebtCategories(boolean onlyExpenseCategories) {
+        this.onlyExpenseCategories = onlyExpenseCategories;
     }
 
     public void setOnlyExpenseCategories(boolean onlyExpenseCategories) {
@@ -127,6 +133,11 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
         int i = 0;
 
         for (Pair<Type, ArrayList<Pair<Category, ArrayList<SubCategory>>>> type: this.combinedTypes) {
+            if (this.onlyDebtCategories &&
+                    !type.getKey().getName().equals(CommonConstants.DEBT_LOAN)) {
+                continue;
+            }
+
             FXMLLoader tabLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/buttons/tag-button.fxml"));
             tabLoader.setController(this);
             Button buttonTab = tabLoader.load();

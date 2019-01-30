@@ -1,8 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ListView?>
 
 <VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml">
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../../../../assets/css/content.css"
+      fx:controller="com.moneylover.app.Debt.DebtPresenter"
+      styleClass="root__content" HBox.hgrow="ALWAYS">
+    <HBox stylesheets="@../../../../assets/css/components/header.css"
+          styleClass="header">
+        <BorderPane HBox.hgrow="ALWAYS">
+            <left>
+                <fx:include source="../../components/buttons/wallet-dropdown.fxml" fx:id="dropdownWallets"/>
+            </left>
+            <right>
+                <fx:include source="../../components/buttons/normal-button.fxml" onAction="#createDebt">
+                    <text>ADD DEBT</text>
+                </fx:include>
+            </right>
+        </BorderPane>
+    </HBox>
 
+    <VBox stylesheets="
+            @../../../../assets/css/colors.css,
+            @../../../../assets/css/pages/transaction.css,
+            @../../../../assets/css/pages/budget.css
+          "
+          alignment="CENTER"
+          styleClass="container">
+        <VBox styleClass="container__content">
+            <HBox styleClass="tab-button-group--border" alignment="TOP_CENTER">
+                <fx:include source="../../components/buttons/tag-button.fxml"
+                            styleClass="active"
+                            userData="0"
+                            onAction="#changeTab">
+                    <text>Debts</text>
+                </fx:include>
+                <fx:include source="../../components/buttons/tag-button.fxml"
+                            userData="1"
+                            onAction="#changeTab">
+                    <text>Loans</text>
+                </fx:include>
+            </HBox>
+
+            <TabPane fx:id="tabPaneDebts">
+                <Tab>
+                    <ListView styleClass="budget__tab" fx:id="listViewDebts"/>
+                </Tab>
+                <Tab>
+                    <ListView styleClass="budget__tab" fx:id="listViewLoans"/>
+                </Tab>
+            </TabPane>
+        </VBox>
+    </VBox>
 </VBox>

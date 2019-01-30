@@ -24,4 +24,8 @@ public class CommonConstants {
     public static final String APP_CATEGORY = "APP/CATEGORY";
 
     public static final String APP_SUB_CATEGORY = "APP/SUB-CATEGORY";
+
+    public static final String CATEGORY_DEBT = "Debt";
+
+    public static final String CATEGORY_LOAN = "Loan";
 }
