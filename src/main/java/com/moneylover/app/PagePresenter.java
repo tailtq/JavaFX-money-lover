@@ -1,5 +1,6 @@
 package com.moneylover.app;
 
+import com.moneylover.Infrastructure.Contracts.DialogInterface;
 import com.moneylover.Infrastructure.Contracts.ParserInterface;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Infrastructure.Contracts.LoaderInterface;
@@ -93,6 +94,6 @@ abstract public class PagePresenter extends BaseViewPresenter implements LoaderI
 
     @FXML
     public void closeScene(Event e) {
-        super.closeScene(e);
+        DialogInterface.closeScene(e);
     }
 }

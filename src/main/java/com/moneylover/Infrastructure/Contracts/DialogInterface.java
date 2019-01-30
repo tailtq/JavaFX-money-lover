@@ -86,7 +86,7 @@ public interface DialogInterface {
     }
 
     @FXML
-    default void closeScene(Event e) {
+    static void closeScene(Event e) {
         Node node = (Node) e.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();

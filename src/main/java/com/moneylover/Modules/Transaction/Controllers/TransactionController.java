@@ -28,6 +28,12 @@ public class TransactionController {
         return transactions;
     }
 
+    public ArrayList<Transaction> listNotReportedByDateRange(int walletId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        ArrayList<Transaction> transactions = this.service.listNotReportedByDateRange(walletId, startDate, endDate);
+
+        return transactions;
+    }
+
     public ArrayList<Transaction> listByBudget(Budget budget) throws SQLException {
         ArrayList<Transaction> transactions = this.service.listByBudget(budget);
 

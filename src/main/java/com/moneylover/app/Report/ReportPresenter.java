@@ -55,7 +55,7 @@ public class ReportPresenter extends PagePresenter {
         super.setWallets(wallets);
         Wallet wallet = this.getWallet();
         this.transactions = FXCollections.observableArrayList(
-                this.transactionController.listByDateRange(wallet.getId(), startDate, endDate)
+                this.transactionController.listNotReportedByDateRange(wallet.getId(), startDate, endDate)
         );
         this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
         this._loadPieCharts();
@@ -327,7 +327,7 @@ public class ReportPresenter extends PagePresenter {
             Wallet wallet = this.getWallet();
             this.transactions.clear();
             this.transactions.addAll(
-                    this.transactionController.listByDateRange(wallet.getId(), startDate, endDate)
+                    this.transactionController.listNotReportedByDateRange(wallet.getId(), startDate, endDate)
             );
             this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
             this._loadPieCharts();

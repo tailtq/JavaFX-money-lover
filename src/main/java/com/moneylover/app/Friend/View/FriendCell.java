@@ -120,8 +120,6 @@ public class FriendCell extends ListCell<Friend> implements DialogInterface {
 
     @FXML
     public void closeScene(Event e) {
-        Node node = (Node) e.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
+        DialogInterface.closeScene(e);
     }
 }

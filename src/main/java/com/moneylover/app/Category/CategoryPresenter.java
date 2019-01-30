@@ -259,6 +259,6 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
 
     @FXML
     public void closeScene(Event e) {
-        super.closeScene(e);
+        DialogInterface.closeScene(e);
     }
 }

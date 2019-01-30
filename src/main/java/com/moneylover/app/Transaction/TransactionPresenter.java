@@ -122,7 +122,7 @@ public class TransactionPresenter extends PagePresenter {
     private DatePicker datePickerTransactedAt;
 
     @FXML
-    private CheckBox checkBoxIsReported;
+    private CheckBox checkBoxIsNotReported;
 
     private IntegerProperty walletId = new SimpleIntegerProperty(0);
 
@@ -289,7 +289,7 @@ public class TransactionPresenter extends PagePresenter {
         String amountText = this.textFieldTransactionAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
         LocalDate transactedAt = this.datePickerTransactedAt.getValue();
-        boolean isReported = this.checkBoxIsReported.isSelected();
+        boolean isNotReported = this.checkBoxIsNotReported.isSelected();
         int walletId = this.walletId.get();
         int categoryId = this.selectedCategory.get();
         int subCategoryId = this.selectedSubCategory.get();
@@ -315,7 +315,7 @@ public class TransactionPresenter extends PagePresenter {
         transaction.setAmount(amount);
         transaction.setNote(this.textFieldNote.getText());
         transaction.setTransactedAt(transactedAt);
-        transaction.setIsReported((byte) (isReported ? 1 : 0));
+        transaction.setIsNotReported(isNotReported);
 
         try {
             transaction = this.transactionController.create(transaction);

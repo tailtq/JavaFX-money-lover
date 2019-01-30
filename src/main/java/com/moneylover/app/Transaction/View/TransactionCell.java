@@ -21,7 +21,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -84,7 +83,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     private DatePicker datePickerTransactedAt;
 
     @FXML
-    private CheckBox checkBoxIsReported;
+    private CheckBox checkBoxIsNotReported;
 
     private IntegerProperty
             walletId = new SimpleIntegerProperty(0),
@@ -168,6 +167,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         this.selectedCategory.set(this.transaction.getCategoryId());
         this.selectedSubCategory.set(this.transaction.getSubCategoryId());
         this.datePickerTransactedAt.setValue(this.transaction.getTransactedAt());
+        this.checkBoxIsNotReported.setSelected(this.transaction.getIsNotReported());
     }
 
     @FXML
@@ -175,7 +175,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         String amountText = this.textFieldTransactionAmount.getText();
         float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
         LocalDate transactedAt = this.datePickerTransactedAt.getValue();
-        boolean isReported = this.checkBoxIsReported.isSelected();
+        boolean isNotReported = this.checkBoxIsNotReported.isSelected();
         int walletId = this.walletId.get();
         int categoryId = this.selectedCategory.get();
         int subCategoryId = this.selectedSubCategory.get();
@@ -201,7 +201,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         transaction.setAmount(amount);
         transaction.setNote(this.textFieldNote.getText());
         transaction.setTransactedAt(transactedAt);
-        transaction.setIsReported((byte) (isReported ? 1 : 0));
+        transaction.setIsNotReported(isNotReported);
 
         try {
             int id = this.transaction.getId();
@@ -233,8 +233,6 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     @FXML
     public void closeScene(Event e) {
-        Node node = (Node) e.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
+        DialogInterface.closeScene(e);
     }
 }

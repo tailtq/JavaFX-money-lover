@@ -44,7 +44,7 @@ public class BudgetController {
         return true;
     }
 
-    public boolean update(Budget budget, int id) throws SQLException {
+    public boolean update(Budget budget, int id) throws SQLException, ClassNotFoundException {
         this.service.update(budget, id);
 
         return true;
