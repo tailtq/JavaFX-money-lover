@@ -1,5 +1,6 @@
 package com.moneylover.app.Wallet.View;
 
+import com.moneylover.Modules.Wallet.Controllers.WalletController;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
 import com.moneylover.app.Currency.CurrencyPresenter;
@@ -14,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
@@ -23,15 +23,11 @@ import java.sql.SQLException;
 public class WalletCell extends ListCell<Wallet> implements DialogInterface {
     private StringProperty handledWalletId;
 
-    private com.moneylover.Modules.Wallet.Controllers.WalletController walletController;
-
     private CurrencyPresenter currencyPresenter;
 
     private Wallet wallet;
 
-    public WalletCell(StringProperty handledWalletId) throws IOException, SQLException, ClassNotFoundException {
-        this.currencyPresenter = new CurrencyPresenter(this.selectedCurrencyId);
-        this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
+    public WalletCell(StringProperty handledWalletId) throws IOException {
         this.handledWalletId = handledWalletId;
         this._loadCell();
     }
@@ -113,17 +109,19 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
                 getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-save.fxml")
         );
         fxmlLoader.setController(this);
-        GridPane parent = fxmlLoader.load();
+        Parent parent = fxmlLoader.load();
+        this.currencyPresenter = new CurrencyPresenter(this.selectedCurrencyId);
+        this.loadWalletData();
+        this.createScreen(parent, "Edit Wallet", 500, 115);
+    }
 
-        // TODO: set data for new instance
+    private void loadWalletData() {
         this.selectedCurrencyId.set(0);
-        currencyPresenter.setSelectedCurrencyId(this.selectedCurrencyId);
-        currencyPresenter.handleSelectedCurrencyId(this.selectCurrency);
+        this.currencyPresenter.setSelectedCurrencyId(this.selectedCurrencyId);
+        this.currencyPresenter.handleSelectedCurrencyId(this.selectCurrency);
         this.selectedCurrencyId.set(this.wallet.getCurrencyId());
         this.textFieldTransactionName.setText(this.wallet.getName());
         this.textFieldWalletAmount.setText(String.format("%.1f", this.wallet.getAmount()));
-
-        this.createScreen(parent, "Edit Wallet", 500, 115);
     }
 
     @FXML
@@ -145,11 +143,11 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         }
 
         try {
-            this.walletController.update(new Wallet(currencyId, name, amount), this.wallet.getId());
+            (new WalletController()).update(new Wallet(currencyId, name, amount), this.wallet.getId());
             this.handledWalletId.set(null);
             this.handledWalletId.set("UPDATE-" + this.wallet.getId());
             this.closeScene(event);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }
@@ -162,9 +160,9 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         if (buttonData == ButtonBar.ButtonData.YES) {
             try {
                 int id = this.wallet.getId();
-                this.walletController.delete(id);
+                (new WalletController()).delete(id);
                 this.handledWalletId.set("DELETE-" + id);
-            } catch (SQLException e1) {
+            } catch (SQLException | ClassNotFoundException e1) {
                 e1.printStackTrace();
                 this.showErrorDialog("An error has occurred");
             }

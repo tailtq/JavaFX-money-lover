@@ -116,6 +116,7 @@ public class SubCategoryService extends BaseService {
             i++;
             if (i % 1000 == 0 || i == subCategories.size()) {
                 statement.executeBatch(); // Execute every 1000 items.
+                statement.clearBatch();
             }
         }
 

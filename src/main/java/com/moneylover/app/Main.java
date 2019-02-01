@@ -64,11 +64,8 @@ public class Main extends Application {
         mainPresenter.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
                 ObservableList<Node> nodes = this.layout.getChildren();
-                if (nodes.size() == 2) {
-                    nodes.remove(1);
-                }
+                nodes.set(1, mainPresenter.getMainView());
 
-                nodes.add(mainPresenter.getMainView());
                 // The difference between oldValue and newValue triggers an event
                 mainPresenter.setChangeScene(false);
             }

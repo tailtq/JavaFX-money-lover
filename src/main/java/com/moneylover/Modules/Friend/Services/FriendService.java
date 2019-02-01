@@ -94,6 +94,7 @@ public class FriendService extends BaseService {
             i++;
             if (i % 1000 == 0 || i == friends.size()) {
                 statement.executeBatch(); // Execute every 1000 items.
+                statement.clearBatch();
             }
         }
 

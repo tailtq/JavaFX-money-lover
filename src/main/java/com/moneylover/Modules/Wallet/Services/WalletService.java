@@ -159,6 +159,7 @@ public class WalletService extends BaseService {
             i++;
             if (i % 1000 == 0 || i == userWallets.size()) {
                 statement.executeBatch(); // Execute every 1000 items.
+                statement.clearBatch();
             }
         }
 

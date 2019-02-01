@@ -38,6 +38,8 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 
     private VBox mainView;
 
+    public static long time;
+
     BooleanProperty getChangeScene() {
         return changeScene;
     }
@@ -50,7 +52,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         return this.mainView;
     }
 
-    private void setWallets() throws IOException, SQLException, ClassNotFoundException {
+    private void setWallets() throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.wallets.isEmpty()) {
             com.moneylover.Modules.Wallet.Controllers.WalletController walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
             this.wallets.addAll(walletController.list(UserPresenter.getUser().getId()));
@@ -63,14 +65,14 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.fxmlFile));
                     this.initView(fxmlLoader);
                 }
-            } catch (IOException | SQLException | ClassNotFoundException e) {
+            } catch (IOException | SQLException | ClassNotFoundException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
     }
 
     @FXML
-    private void pressTransaction(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressTransaction(Event e) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
             this.initView(fxmlLoader);
@@ -78,7 +80,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     @FXML
-    private void pressDebt(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressDebt(Event e) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/debt/debts.fxml"));
             this.initView(fxmlLoader);
@@ -86,7 +88,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     @FXML
-    private void pressReport(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressReport(Event e) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report/report.fxml"));
             this.initView(fxmlLoader);
@@ -94,15 +96,16 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     @FXML
-    private void pressBudget(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressBudget(Event e) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.activeButton((Node) e.getSource())) {
+            time = System.nanoTime();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget/budgets.fxml"));
             this.initView(fxmlLoader);
         }
     }
 
     @FXML
-    private void pressWallet(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressWallet(Event e) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallets.fxml"));
             this.initView(fxmlLoader);
@@ -113,7 +116,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     @FXML
-    private void pressFriend(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressFriend(Event e) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/friend/friends.fxml"));
             this.initView(fxmlLoader);
@@ -121,14 +124,14 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     @FXML
-    private void pressUser(Event e) throws IOException, SQLException, ClassNotFoundException {
+    private void pressUser(Event e) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/user/user.fxml"));
             this.initView(fxmlLoader);
         }
     }
 
-    private void initView(FXMLLoader viewLoader) throws IOException, SQLException, ClassNotFoundException {
+    private void initView(FXMLLoader viewLoader) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         String file = viewLoader.getLocation().getFile();
         this.fxmlFile = file.substring(file.indexOf("/com/moneylover"));
         this.changeViewLoader(viewLoader);
@@ -149,19 +152,19 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
                 @Override
                 public void run() {
                     super.run();
-                    try {
-                        CategoryPresenter.setTypes((new TypeController()).list());
-                        CategoryPresenter.setCategories((new CategoryController()).list());
-                        CategoryPresenter.setSubCategories((new SubCategoryController()).list());
-                        CategoryPresenter.combineCategories();
-                        FriendDialogPresenter.setFriends((new FriendController()).list(UserPresenter.getUser().getId()));
-                    } catch (SQLException | ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        CategoryPresenter.setTypes((new TypeController()).list());
+//                        CategoryPresenter.setCategories((new CategoryController()).list());
+//                        CategoryPresenter.setSubCategories((new SubCategoryController()).list());
+//                        CategoryPresenter.combineCategories();
+//                        FriendDialogPresenter.setFriends((new FriendController()).list(UserPresenter.getUser().getId()));
+//                    } catch (SQLException | ClassNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             };
             thread.start();
-        } catch (IOException | SQLException | ClassNotFoundException e) {
+        } catch (IOException | SQLException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
         }
     }

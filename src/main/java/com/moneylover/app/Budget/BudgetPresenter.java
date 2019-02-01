@@ -94,7 +94,7 @@ public class BudgetPresenter extends PagePresenter {
             selectedSubCategory = new SimpleIntegerProperty(0);
 
     @Override
-    public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
+    public void setWallets(ObservableList<Wallet> wallets) throws SQLException, InterruptedException {
         super.setWallets(wallets);
         this.loadBudgets(this.getWallet().getId());
     }
@@ -122,7 +122,7 @@ public class BudgetPresenter extends PagePresenter {
                     budgetCell.setWalletIndex(walletIndex);
 
                     return budgetCell;
-                } catch (IOException | SQLException | ClassNotFoundException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }
