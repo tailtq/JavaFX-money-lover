@@ -80,8 +80,12 @@ public class WalletService extends BaseService {
         this._update(wallet, id);
     }
 
-    public void setAmount(float inflow, float outflow, int id) throws SQLException {
-        this._setAmount(inflow, outflow, id);
+    public void setAmount(float amount, int id, boolean isRollback) throws SQLException {
+        if (isRollback) {
+            amount = -amount;
+        }
+
+        this._setAmount(amount, id);
     }
 
     public boolean delete(int id) throws SQLException {
@@ -130,13 +134,12 @@ public class WalletService extends BaseService {
     }
 
     private int _create(Wallet wallet) throws SQLException {
-        String statementString = "INSERT INTO " + getTable() + "(currency_id, name, inflow, outflow, created_at) VALUES (?, ?, ?, ?, ?)";
+        String statementString = "INSERT INTO " + getTable() + "(currency_id, name, amount, created_at) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, wallet.getCurrencyId());
         statement.setString(2, wallet.getName());
-        statement.setFloat(3, wallet.getInflow());
-        statement.setFloat(4, wallet.getOutflow());
-        statement.setTimestamp(5, this.getCurrentTime());
+        statement.setFloat(3, wallet.getAmount());
+        statement.setTimestamp(4, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -163,26 +166,23 @@ public class WalletService extends BaseService {
     }
 
     private void _update(Wallet wallet, int id) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET currency_id = ?, name = ?, inflow = ?, outflow = ?, updated_at = ? WHERE id = ?";
+        String statementString = "UPDATE " + getTable() + " SET currency_id = ?, name = ?, amount = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
         statement.setInt(1, wallet.getCurrencyId());
         statement.setNString(2, wallet.getName());
-        statement.setFloat(3, wallet.getInflow());
-        statement.setFloat(4, wallet.getOutflow());
-        statement.setTimestamp(5, this.getCurrentTime());
-        statement.setInt(6, id);
+        statement.setFloat(3, wallet.getAmount());
+        statement.setTimestamp(4, this.getCurrentTime());
+        statement.setInt(5, id);
         statement.executeUpdate();
         this.closePreparedStatement();
     }
 
-    private void _setAmount(float inflow, float outflow, int id) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET inflow = ?, outflow = ?, updated_at = ? WHERE id = ?";
-
+    private void _setAmount(float amount, int id) throws SQLException {
+        String statementString = "UPDATE " + getTable() + " SET amount = amount + ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.getPreparedStatement(statementString);
-        statement.setFloat(1, inflow);
-        statement.setFloat(2, outflow);
-        statement.setTimestamp(3, this.getCurrentTime());
-        statement.setInt(4, id);
+        statement.setFloat(1, amount);
+        statement.setTimestamp(2, this.getCurrentTime());
+        statement.setInt(3, id);
         statement.executeUpdate();
         this.closePreparedStatement();
     }
@@ -193,8 +193,7 @@ public class WalletService extends BaseService {
         wallet.setId(resultSet.getInt("id"));
         wallet.setCurrencyId(resultSet.getInt("currency_id"));
         wallet.setName(resultSet.getNString("name"));
-        wallet.setInflow(resultSet.getFloat("inflow"));
-        wallet.setOutflow(resultSet.getFloat("outflow"));
+        wallet.setAmount(resultSet.getFloat("amount"));
         wallet.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
         wallet.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
         wallet.setMoneySymbol(resultSet.getNString("money_symbol"));

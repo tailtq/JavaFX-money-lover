@@ -16,9 +16,9 @@
         <styleClass>wallet</styleClass>
     </fx:include>
 
-    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressDebt" styleClass="debt">
-        <text>Debts</text>
-    </fx:include>
+    <!--<fx:include source="buttons/sidebar-button.fxml" onAction="#pressDebt" styleClass="debt">-->
+        <!--<text>Debts</text>-->
+    <!--</fx:include>-->
 
     <fx:include source="buttons/sidebar-button.fxml" onAction="#pressReport" styleClass="report">
         <text>Reports</text>

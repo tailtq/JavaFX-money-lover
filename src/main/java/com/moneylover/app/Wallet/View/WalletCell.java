@@ -3,6 +3,8 @@ package com.moneylover.app.Wallet.View;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
 import com.moneylover.app.Currency.CurrencyPresenter;
+import com.moneylover.app.Transaction.TransactionPresenter;
+import com.moneylover.app.Wallet.WalletPresenter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -14,7 +16,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -74,7 +75,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
             return;
         }
 
-        float amount = item.getInflow() - item.getOutflow();
+        float amount = item.getAmount();
         String amountText = String.format("%.1f", amount) + " " + item.getMoneySymbol();
 
         if (amount > 0) {
@@ -115,26 +116,34 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         GridPane parent = fxmlLoader.load();
 
         // TODO: set data for new instance
+        this.selectedCurrencyId.set(0);
         currencyPresenter.setSelectedCurrencyId(this.selectedCurrencyId);
         currencyPresenter.handleSelectedCurrencyId(this.selectCurrency);
         this.selectedCurrencyId.set(this.wallet.getCurrencyId());
         this.textFieldTransactionName.setText(this.wallet.getName());
-        this.textFieldWalletAmount.setText(String.format("%.1f", this.wallet.getInflow() - this.wallet.getOutflow()));
+        this.textFieldWalletAmount.setText(String.format("%.1f", this.wallet.getAmount()));
 
         this.createScreen(parent, "Edit Wallet", 500, 115);
+    }
+
+    @FXML
+    private void changeAmount() {
+        TransactionPresenter.parseTextFieldMoney(this.textFieldWalletAmount);
     }
 
     @FXML
     private void saveWallet(Event event) {
         String name = this.textFieldTransactionName.getText().trim();
         String amountText = this.textFieldWalletAmount.getText();
-        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
+        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.replaceAll("[^\\d.]", ""));
         int currencyId = this.selectedCurrencyId.get();
+        String validation = WalletPresenter.validateWallet(name, currencyId, amount);
 
-        if (name.isEmpty() || currencyId == 0) {
-            this.showErrorDialog("Please input all needed information");
+        if (validation != null) {
+            this.showErrorDialog(validation);
             return;
         }
+
         try {
             this.walletController.update(new Wallet(currencyId, name, amount), this.wallet.getId());
             this.handledWalletId.set(null);

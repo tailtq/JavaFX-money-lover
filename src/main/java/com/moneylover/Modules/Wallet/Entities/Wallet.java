@@ -7,9 +7,7 @@ public class Wallet extends BaseModel {
 
     private String name;
 
-    private float inflow;
-
-    private float outflow;
+    private float amount;
 
     private String moneySymbol;
 
@@ -18,13 +16,7 @@ public class Wallet extends BaseModel {
     public Wallet(int currencyId, String name, float amount) {
         this.currencyId = currencyId;
         this.name = name;
-        this.inflow = 0;
-        this.outflow = 0;
-        if (amount > 0) {
-            this.inflow = amount;
-        } else if (amount < 0) {
-            this.outflow = amount;
-        }
+        this.amount = amount;
     }
 
     public static String getTable() {
@@ -47,20 +39,12 @@ public class Wallet extends BaseModel {
         this.name = name;
     }
 
-    public float getInflow() {
-        return inflow;
+    public float getAmount() {
+        return amount;
     }
 
-    public void setInflow(float inflow) {
-        this.inflow = inflow;
-    }
-
-    public float getOutflow() {
-        return outflow;
-    }
-
-    public void setOutflow(float outflow) {
-        this.outflow = outflow;
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 
     public String getMoneySymbol() {

@@ -130,8 +130,7 @@ public class FakeData {
             wallet = new Wallet();
             wallet.setCurrencyId(currencies.get(number).getId());
             wallet.setName("Wallet " + i);
-            wallet.setInflow((float) this.faker.number().randomDouble(1, 1000000, 10000000));
-            wallet.setOutflow((float) this.faker.number().randomDouble(1, 1000000, 10000000));
+            wallet.setAmount((float) this.faker.number().randomDouble(1, 1000000, 10000000));
             this.walletController.create(wallet);
         }
 

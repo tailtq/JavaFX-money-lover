@@ -113,6 +113,12 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
     @FXML
     private TreeView categoriesView;
 
+    private VBox vBoxSelectFriend;
+
+    public void setVBoxSelectFriend(VBox vBoxSelectFriend) {
+        this.vBoxSelectFriend = vBoxSelectFriend;
+    }
+
     @FXML
     public void showCategoryDialog() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/choose-category.fxml"));
@@ -233,6 +239,8 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                     if (category.getId() != newValue.intValue()) {
                         continue;
                     }
+
+                    this._setVisibleSelectFriend(category.getMoneyType());
                     selectCategory.setText(category.getName());
                     classes.add(category.getIcon());
 
@@ -243,6 +251,8 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                     if (subCategory.getId() != newValue.intValue()) {
                         continue;
                     }
+
+                    this._setVisibleSelectFriend(subCategory.getMoneyType());
                     selectCategory.setText(subCategory.getName());
                     classes.add(subCategory.getIcon());
 
@@ -250,6 +260,16 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                 }
             }
         });
+    }
+
+    private void _setVisibleSelectFriend(String moneyType) {
+        if (this.vBoxSelectFriend != null) {
+            if ((moneyType.equals(CommonConstants.EXPENSE) || moneyType.equals(CommonConstants.INCOME))) {
+                this.vBoxSelectFriend.setVisible(false);
+            } else {
+                this.vBoxSelectFriend.setVisible(true);
+            }
+        }
     }
 
     @FXML

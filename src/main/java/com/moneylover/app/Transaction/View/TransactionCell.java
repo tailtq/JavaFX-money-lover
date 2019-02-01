@@ -2,12 +2,15 @@ package com.moneylover.app.Transaction.View;
 
 import com.moneylover.Infrastructure.Contracts.ParserInterface;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
+import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Category.CategoryPresenter;
+import com.moneylover.app.Friend.FriendDialogPresenter;
 import com.moneylover.app.PagePresenter;
+import com.moneylover.app.Transaction.TransactionPresenter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -21,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -38,6 +42,8 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     private CategoryPresenter categoryPresenter;
 
+    private FriendDialogPresenter friendDialogPresenter;
+
     private StringProperty handledTransactionId;
 
     public TransactionCell() throws IOException {
@@ -48,6 +54,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         this.handledTransactionId = handledTransactionId;
         this.transactionController = new TransactionController();
         this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
+        this.friendDialogPresenter = new FriendDialogPresenter(this.selectedFriend);
         this._loadCell();
     }
 
@@ -71,7 +78,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     private Label labelTransactionCategoryName, labelTransactionTime, labelTransactionNote, labelAmount;
 
     @FXML
-    private Button buttonOptions, selectCategory;
+    private Button buttonOptions, selectCategory, selectFriend;
 
     @FXML
     private MenuButton selectWallet;
@@ -85,11 +92,15 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     @FXML
     private CheckBox checkBoxIsNotReported;
 
+    @FXML
+    private VBox vBoxSelectFriend;
+
     private IntegerProperty
             walletId = new SimpleIntegerProperty(0),
             selectedType = new SimpleIntegerProperty(0),
             selectedCategory = new SimpleIntegerProperty(0),
-            selectedSubCategory = new SimpleIntegerProperty(0);
+            selectedSubCategory = new SimpleIntegerProperty(0),
+            selectedFriend = new SimpleIntegerProperty(0);
 
     public void setDisableOptions(boolean disableOptions) {
         if (disableOptions) {
@@ -139,15 +150,11 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     }
 
     @FXML
-    private void chooseCategory() throws IOException {
-        this.categoryPresenter.showCategoryDialog();
-    }
-
-    @FXML
     private void edit() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-save.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
+        this.categoryPresenter.setVBoxSelectFriend(this.vBoxSelectFriend);
         this.loadTransactionData();
         this.createScreen(parent, "Edit Transaction", 500, 230);
     }
@@ -157,12 +164,14 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         this.textFieldNote.setText(this.transaction.getNote());
         this.textFieldTransactionAmount.setText(Float.toString(Math.abs(this.transaction.getAmount())));
         /* TODO: reload update after transaction cell is edit again */
-        this.walletId.set(this.transaction.getWalletId());
+        this.selectedFriend.set(0);
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
         PagePresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
+        this.friendDialogPresenter.handleSelectedFriendId(this.selectFriend);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
+        this.selectedFriend.set(this.transaction.getFriendId());
         this.selectedType.set(this.transaction.getTypeId());
         this.selectedCategory.set(this.transaction.getCategoryId());
         this.selectedSubCategory.set(this.transaction.getSubCategoryId());
@@ -171,35 +180,46 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     }
 
     @FXML
+    private void chooseCategory() throws IOException {
+        this.categoryPresenter.showCategoryDialog();
+    }
+
+    @FXML
+    private void chooseFriend() throws IOException {
+        this.friendDialogPresenter.showFriendDialog();
+    }
+
+    @FXML
+    private void changeAmount() {
+        TransactionPresenter.parseTextFieldMoney(this.textFieldTransactionAmount);
+    }
+
+    @FXML
     private void saveTransaction(Event event) {
         String amountText = this.textFieldTransactionAmount.getText();
-        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
+        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.replaceAll("[^\\d.]", ""));
         LocalDate transactedAt = this.datePickerTransactedAt.getValue();
         boolean isNotReported = this.checkBoxIsNotReported.isSelected();
+        int friendId = this.selectedFriend.get();
         int walletId = this.walletId.get();
         int categoryId = this.selectedCategory.get();
         int subCategoryId = this.selectedSubCategory.get();
+        String note = this.textFieldNote.getText();
+        String validation = TransactionPresenter.validateData(walletId, categoryId, amount, note);
 
-        if (walletId == 0) {
-            this.showErrorDialog("Wallet is not selected");
-            return;
-        }
-        if (categoryId == 0) {
-            this.showErrorDialog("Category is not selected");
-            return;
-        }
-        if (amount <= 0) {
-            this.showErrorDialog("Amount is not valid");
+        if (validation != null) {
+            this.showErrorDialog(validation);
             return;
         }
 
         Transaction transaction = new Transaction();
+        transaction.setFriendId(friendId);
         transaction.setWalletId(walletId);
         transaction.setTypeId(this.selectedType.get());
         transaction.setCategoryId(categoryId);
         transaction.setSubCategoryId(subCategoryId);
         transaction.setAmount(amount);
-        transaction.setNote(this.textFieldNote.getText());
+        transaction.setNote(note);
         transaction.setTransactedAt(transactedAt);
         transaction.setIsNotReported(isNotReported);
 
@@ -224,7 +244,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
                 int id = this.transaction.getId();
                 this.transactionController.delete(id);
                 this.handledTransactionId.set("DELETE-" + id);
-            } catch (SQLException | NotFoundException | ClassNotFoundException e1) {
+            } catch (SQLException | NotFoundException e1) {
                 e1.printStackTrace();
                 this.showErrorDialog("An error has occurred");
             }

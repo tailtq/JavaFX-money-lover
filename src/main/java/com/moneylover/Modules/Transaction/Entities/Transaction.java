@@ -35,6 +35,8 @@ public class Transaction extends BaseModel {
 
     private String subCategoryIcon;
 
+    private int friendId;
+
     public static String getTable() {
         return "transactions";
     }
@@ -157,5 +159,13 @@ public class Transaction extends BaseModel {
 
     public void setSubCategoryIcon(String subCategoryIcon) {
         this.subCategoryIcon = subCategoryIcon;
+    }
+
+    public int getFriendId() {
+        return friendId;
+    }
+
+    public void setFriendId(int friendId) {
+        this.friendId = friendId;
     }
 }

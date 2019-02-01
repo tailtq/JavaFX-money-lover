@@ -26,7 +26,7 @@
 
     <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
         <Text>Initial Balance</Text>
-        <TextField styleClass="transaction__create-form__select" fx:id="textFieldWalletAmount"/>
+        <TextField styleClass="transaction__create-form__select" onKeyTyped="#changeAmount" fx:id="textFieldWalletAmount"/>
     </VBox>
 
     <HBox GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="BASELINE_RIGHT" styleClass="button-group">

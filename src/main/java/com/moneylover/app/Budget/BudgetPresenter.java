@@ -9,6 +9,7 @@ import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Budget.View.BudgetCell;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.PagePresenter;
+import com.moneylover.app.Transaction.TransactionPresenter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -232,29 +233,23 @@ public class BudgetPresenter extends PagePresenter {
     }
 
     @FXML
+    private void changeAmount() {
+        TransactionPresenter.parseTextFieldMoney(this.textFieldBudgetAmount);
+    }
+
+    @FXML
     private void saveBudget(Event event) {
         int walletId = this.walletId.get();
         int categoryId = this.selectedCategory.get();
         int subCategoryId = this.selectedSubCategory.get();
         String amountText = this.textFieldBudgetAmount.getText();
-        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
+        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.replaceAll("[^\\d.]", ""));
         LocalDate startedAt = this.datePickerStartedAt.getValue();
         LocalDate endedAt = this.datePickerEndedAt.getValue();
+        String validation = BudgetPresenter.validateBudget(walletId, categoryId, subCategoryId, amount, startedAt, endedAt);
 
-        if (walletId == 0) {
-            this.showErrorDialog("Wallet is not selected");
-            return;
-        }
-        if (categoryId == 0 && subCategoryId == 0) {
-            this.showErrorDialog("Category is not selected");
-            return;
-        }
-        if (amount <= 0) {
-            this.showErrorDialog("Amount is not valid");
-            return;
-        }
-        if (DateHelper.isLaterThan(endedAt, startedAt)) {
-            this.showErrorDialog("Budget time is not valid");
+        if (validation != null) {
+            this.showErrorDialog(validation);
             return;
         }
 
@@ -278,6 +273,23 @@ public class BudgetPresenter extends PagePresenter {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }
+    }
+
+    public static String validateBudget(int walletId, int categoryId, int subCategoryId, float amount, LocalDate startedAt, LocalDate endedAt) {
+        if (walletId == 0) {
+            return "Wallet is not selected";
+        }
+        if (categoryId == 0 && subCategoryId == 0) {
+            return "Category is not selected";
+        }
+        if (amount <= 0) {
+            return "Amount is not valid";
+        }
+        if (DateHelper.isLaterThan(endedAt, startedAt)) {
+            return "Budget time is not valid";
+        }
+
+        return null;
     }
 
     public static void addCategory(Budget budget, int categoryId, int subCategoryId) {
