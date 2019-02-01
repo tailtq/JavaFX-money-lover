@@ -46,7 +46,7 @@ public class TransactionController {
         return transaction;
     }
 
-    public Transaction create(Transaction transaction) throws SQLException, NotFoundException, ClassNotFoundException {
+    public Transaction create(Transaction transaction) throws SQLException, NotFoundException {
         Transaction newTransaction = this.service.create(transaction);
 
         return newTransaction;
@@ -64,7 +64,7 @@ public class TransactionController {
         return true;
     }
 
-    public boolean delete(int id) throws SQLException, NotFoundException, ClassNotFoundException {
+    public boolean delete(int id) throws SQLException, NotFoundException {
         this.service.delete(id);
 
         return true;

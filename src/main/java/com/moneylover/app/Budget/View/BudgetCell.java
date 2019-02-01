@@ -14,6 +14,7 @@ import com.moneylover.app.Budget.BudgetPresenter;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Report.ReportPresenter;
+import com.moneylover.app.Transaction.TransactionPresenter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -282,29 +283,23 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
     }
 
     @FXML
+    private void changeAmount() {
+        TransactionPresenter.parseTextFieldMoney(this.textFieldBudgetAmount);
+    }
+
+    @FXML
     private void saveBudget(Event event) {
         int walletId = this.walletId.get();
         int categoryId = this.selectedCategory.get();
         int subCategoryId = this.selectedSubCategory.get();
         String amountText = this.textFieldBudgetAmount.getText();
-        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
+        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.replaceAll("[^\\d.]", ""));
         LocalDate startedAt = this.datePickerStartedAt.getValue();
         LocalDate endedAt = this.datePickerEndedAt.getValue();
+        String validation = BudgetPresenter.validateBudget(walletId, categoryId, subCategoryId, amount, startedAt, endedAt);
 
-        if (walletId == 0) {
-            this.showErrorDialog("Wallet is not selected");
-            return;
-        }
-        if (categoryId == 0 && subCategoryId == 0) {
-            this.showErrorDialog("Category is not selected");
-            return;
-        }
-        if (amount <= 0) {
-            this.showErrorDialog("Amount is not valid");
-            return;
-        }
-        if (DateHelper.isLaterThan(endedAt, startedAt)) {
-            this.showErrorDialog("Budget time is not valid");
+        if (validation != null) {
+            this.showErrorDialog(validation);
             return;
         }
 

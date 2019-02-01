@@ -103,20 +103,31 @@ public class TransactionService extends BaseService {
         return amount;
     }
 
-    public Transaction create(Transaction transaction) throws SQLException, NotFoundException, ClassNotFoundException {
+    public Transaction create(Transaction transaction) throws SQLException, NotFoundException {
         Category category = this.categoryService.getDetail(transaction.getCategoryId());
         int id = this._create(transaction, category.getMoneyType()),
                 walletId = transaction.getWalletId();
-        this.walletService.setAmount(
-                this._getTotalAmount(walletId, '>'),
-                this._getTotalAmount(walletId, '<'),
-                walletId
-        );
         Transaction newTransaction = this.getDetail(id);
+        Thread rollbackUpdatingAmount = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    walletService.setAmount(
+                            newTransaction.getAmount(),
+                            walletId,
+                            false
+                    );
 
-        if (TransactionService.isSpent(category.getMoneyType()) && !newTransaction.getIsNotReported()) {
-            this._increaseBudgetAmount(newTransaction, false);
-        }
+                    if (TransactionService.isSpent(category.getMoneyType()) && !newTransaction.getIsNotReported()) {
+                        _increaseBudgetAmount(newTransaction, false);
+                    }
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        rollbackUpdatingAmount.start();
 
         return newTransaction;
     }
@@ -128,29 +139,33 @@ public class TransactionService extends BaseService {
     }
 
     public void update(Transaction transaction, int id) throws SQLException, NotFoundException, ClassNotFoundException {
-        Transaction selectedTransaction = this._getTransactionById(id);
-        Category oldCategory = this.categoryService.getDetail(selectedTransaction.getCategoryId());
+        Transaction selectedTransaction = _getTransactionById(id);
+        Category oldCategory = categoryService.getDetail(selectedTransaction.getCategoryId());
+        this.walletService.setAmount(selectedTransaction.getAmount(), selectedTransaction.getWalletId(), true);
 
         if (TransactionService.isSpent(oldCategory.getMoneyType()) && !selectedTransaction.getIsNotReported()) {
             this._increaseBudgetAmount(selectedTransaction, true);
         }
-
-        Category newCategory = this.categoryService.getDetail(transaction.getCategoryId());
+        Category newCategory = categoryService.getDetail(transaction.getCategoryId());
         this._update(transaction, id, newCategory.getMoneyType());
-        int walletId = transaction.getWalletId();
-        this.walletService.setAmount(
-                this._getTotalAmount(walletId, '>'),
-                this._getTotalAmount(walletId, '<'),
-                walletId
-        );
 
-        if (TransactionService.isSpent(newCategory.getMoneyType())) {
-            selectedTransaction = this._getTransactionById(id);
+        Thread updateAmount = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    Transaction selectedTransaction = _getTransactionById(id);
+                    walletService.setAmount(selectedTransaction.getAmount(), selectedTransaction.getWalletId(), false);
 
-            if (!selectedTransaction.getIsNotReported()) {
-                this._increaseBudgetAmount(selectedTransaction, false);
+                    if (TransactionService.isSpent(newCategory.getMoneyType()) && !selectedTransaction.getIsNotReported()) {
+                        _increaseBudgetAmount(selectedTransaction, false);
+                    }
+                } catch (SQLException | ClassNotFoundException | NotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        };
+        updateAmount.start();
     }
 
     private void _increaseBudgetAmount(Transaction transaction, boolean isRevert) throws SQLException, ClassNotFoundException {
@@ -174,14 +189,21 @@ public class TransactionService extends BaseService {
         );
     }
 
-    public void delete(int id) throws SQLException, NotFoundException, ClassNotFoundException {
+    public void delete(int id) throws SQLException, NotFoundException {
         Transaction transaction = this._getTransactionById(id);
-        this.walletService.setAmount(
-                this._getTotalAmount(transaction.getWalletId(), '>'),
-                this._getTotalAmount(transaction.getWalletId(), '<'),
-                transaction.getWalletId()
-        );
-        this._increaseBudgetAmount(transaction, true);
+        Thread updateAmount = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    walletService.setAmount(transaction.getAmount(), transaction.getWalletId(), true);
+                    _increaseBudgetAmount(transaction, true);
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        updateAmount.start();
         this.deleteById(id);
     }
 
@@ -279,28 +301,11 @@ public class TransactionService extends BaseService {
         return transactions;
     }
 
-    /**
-     * @param walletId      int
-     * @param operator      represent for expense or income
-     * @return total amount
-     * @throws SQLException ...
-     */
-    private float _getTotalAmount(int walletId, char operator) throws SQLException {
-        float totalAmount = this._calculate(
-                "SUM(amount) AS totalAmount",
-                "totalAmount",
-                "wallet_id = " + walletId,
-                "amount " + operator + " 0"
-        );
-
-        return totalAmount;
-    }
-
     private int _create(Transaction transaction, String moneyType) throws SQLException {
-        String statementString = "INSERT INTO " + getTable() + "(wallet_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_not_reported, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String statementString = "INSERT INTO " + getTable() + "(wallet_id, type_id, category_id, sub_category_id, transacted_at, amount, location, note, image, is_not_reported, friend_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
-        statement.setTimestamp(11, this.getCurrentTime());
+        statement.setTimestamp(12, this.getCurrentTime());
         statement.executeUpdate();
         int id = this.getIdAfterCreate(statement.getGeneratedKeys());
         this.closePreparedStatement();
@@ -324,6 +329,12 @@ public class TransactionService extends BaseService {
             statement.setNull(4, Types.INTEGER);
         } else {
             statement.setInt(4, subcategoryId);
+        }
+
+        if (!moneyType.equals(CommonConstants.EXPENSE) && !moneyType.equals(CommonConstants.INCOME)) {
+            statement.setInt(11, transaction.getFriendId());
+        } else {
+            statement.setNull(11, Types.INTEGER);
         }
 
         if (moneyType.equals(CommonConstants.EXPENSE)
@@ -365,10 +376,10 @@ public class TransactionService extends BaseService {
     }
 
     private void _update(Transaction transaction, int id, String moneyType) throws SQLException {
-        String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, type_id = ?, category_id = ?, sub_category_id = ?, transacted_at = ?, amount = ?, location = ?, note = ?, image = ?, is_not_reported = ?, updated_at = ? WHERE id = ?";
+        String statementString = "UPDATE " + getTable() + " SET wallet_id = ?, type_id = ?, category_id = ?, sub_category_id = ?, transacted_at = ?, amount = ?, location = ?, note = ?, image = ?, is_not_reported = ?, friend_id = ?, updated_at = ? WHERE id = ?";
         PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
-        statement.setTimestamp(11, this.getCurrentTime());
-        statement.setInt(12, id);
+        statement.setTimestamp(12, this.getCurrentTime());
+        statement.setInt(13, id);
         statement.executeUpdate();
         this.closePreparedStatement();
     }
@@ -389,6 +400,7 @@ public class TransactionService extends BaseService {
         transaction.setIsNotReported(resultSet.getByte("is_not_reported") == 1);
         transaction.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
         transaction.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
+        transaction.setFriendId(resultSet.getInt("friend_id"));
         transaction.setCategoryName(resultSet.getString("category_name"));
         transaction.setCategoryIcon(resultSet.getString("category_icon"));
         transaction.setCategoryMoneyType(resultSet.getString("category_money_type"));
@@ -426,6 +438,7 @@ public class TransactionService extends BaseService {
         transaction.setIsNotReported(resultSet.getByte("is_not_reported") == 1);
         transaction.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
         transaction.setUpdatedAt(this.getUpdatedAt(resultSet.getTimestamp("updated_at")));
+        transaction.setFriendId(resultSet.getInt("friend_id"));
 
         return transaction;
     }

@@ -80,6 +80,12 @@ public class FriendPresenter extends PagePresenter {
     @FXML
     private void saveFriend(Event event) {
         String name = this.textFieldFriendName.getText();
+        String validation = FriendPresenter.validateFriend(name);
+
+        if (validation != null) {
+            this.showErrorDialog(validation);
+            return;
+        }
 
         if (name.isEmpty()) {
             this.showErrorDialog("Please input all needed information!");
@@ -95,6 +101,18 @@ public class FriendPresenter extends PagePresenter {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }
+    }
+
+    public static String validateFriend(String name) {
+        if (name.isEmpty()) {
+            return "Please input all needed information!";
+        }
+
+        if (name.length() > 80) {
+            return "Name is not valid";
+        }
+
+        return null;
     }
 
     private void _handleFriendId() {

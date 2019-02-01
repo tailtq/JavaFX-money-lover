@@ -35,7 +35,7 @@
 
     <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
         <Text>Amount</Text>
-        <TextField fx:id="textFieldTransactionAmount" styleClass="transaction__create-form__select"/>
+        <TextField fx:id="textFieldTransactionAmount" styleClass="transaction__create-form__select" onKeyTyped="#changeAmount"/>
     </VBox>
 
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
@@ -48,10 +48,11 @@
         <TextField fx:id="textFieldNote" styleClass="transaction__create-form__select"/>
     </VBox>
 
-    <!--<VBox GridPane.columnIndex="0" GridPane.rowIndex="2">-->
-        <!--<Text>With</Text>-->
-        <!--<Button text="Friends" styleClass="transaction__create-form__select" onAction="#showFriendDialog"/>-->
-    <!--</VBox>-->
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="vBoxSelectFriend" visible="false">
+        <Text>Friend</Text>
+        <Button fx:id="selectFriend" styleClass="transaction__create-form__select, select-category, select-category--stylesheet"
+                onAction="#chooseFriend"/>
+    </VBox>
 
     <VBox GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="2">
         <Text/>

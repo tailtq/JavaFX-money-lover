@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fitToHeight="true"
+            fitToWidth="true"
+            stylesheets="
+              @../../../../../assets/css/colors.css,
+              @../../../../../assets/css/icons.css,
+              @../../../../../assets/css/content.css,
+              @../../../../../assets/css/components/normal-button.css,
+              @../../../../../assets/css/components/dialogs/choose-currency.css
+            "
+            HBox.hgrow="ALWAYS">
+    <VBox fx:id="VBoxFriends" styleClass="dialog-container--max-width-0, white-bg-color" HBox.hgrow="ALWAYS"/>
+</ScrollPane>

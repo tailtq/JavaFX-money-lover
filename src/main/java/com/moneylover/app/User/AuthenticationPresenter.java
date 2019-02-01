@@ -13,6 +13,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -98,6 +100,18 @@ public class AuthenticationPresenter extends BaseViewPresenter {
         String passwordConfirmation = this.passwordConfirmation.getText().trim();
         if (email.isEmpty() || name.isEmpty() || password.isEmpty() || passwordConfirmation.isEmpty()) {
             this.showErrorDialog("Please input all information!");
+            return;
+        }
+
+        if (name.length() > 80) {
+            this.showErrorDialog("Name is not valid");
+            return;
+        }
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            this.showErrorDialog("Email is not valid");
             return;
         }
         if (!password.equals(passwordConfirmation)) {

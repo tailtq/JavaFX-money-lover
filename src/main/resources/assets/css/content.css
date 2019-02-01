@@ -27,6 +27,11 @@
     -fx-max-width: 400px;
 }
 
+.dialog-container--max-width-0 {
+    -fx-spacing: 10;
+    -fx-padding: 10;
+}
+
 .container {
     -fx-min-width: 600px;
     -fx-padding: 20px 30px 0;

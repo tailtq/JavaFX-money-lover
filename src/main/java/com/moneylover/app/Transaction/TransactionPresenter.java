@@ -1,8 +1,10 @@
 package com.moneylover.app.Transaction;
 
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
+import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
+import com.moneylover.app.Friend.FriendDialogPresenter;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.Transaction.View.TransactionCell;
@@ -15,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -37,9 +40,12 @@ public class TransactionPresenter extends PagePresenter {
 
     private CategoryPresenter categoryPresenter;
 
+    private FriendDialogPresenter friendDialogPresenter;
+
     public void loadPresenter() throws SQLException, ClassNotFoundException {
         this.transactionController = new com.moneylover.Modules.Transaction.Controllers.TransactionController();
         this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
+        this.friendDialogPresenter = new FriendDialogPresenter(this.selectedFriend);
     }
 
     private void getTransactionsByDate(int walletId, LocalDate date, char operator) throws SQLException {
@@ -107,7 +113,7 @@ public class TransactionPresenter extends PagePresenter {
     private Label labelInflow, labelOutflow, labelRemainingAmount;
 
     @FXML
-    private Button leftTimeRange, middleTimeRange, rightTimeRange, selectCategory;
+    private Button leftTimeRange, middleTimeRange, rightTimeRange, selectCategory, selectFriend;
 
     @FXML
     private ListView listViewTransactions;
@@ -124,20 +130,33 @@ public class TransactionPresenter extends PagePresenter {
     @FXML
     private CheckBox checkBoxIsNotReported;
 
-    private IntegerProperty walletId = new SimpleIntegerProperty(0);
+    @FXML
+    private VBox vBoxSelectFriend;
 
-    private IntegerProperty selectedType = new SimpleIntegerProperty(0);
-
-    private IntegerProperty selectedCategory = new SimpleIntegerProperty(0);
-
-    private IntegerProperty selectedSubCategory = new SimpleIntegerProperty(0);
+    private IntegerProperty
+            walletId = new SimpleIntegerProperty(0),
+            selectedType = new SimpleIntegerProperty(0),
+            selectedCategory = new SimpleIntegerProperty(0),
+            selectedSubCategory = new SimpleIntegerProperty(0),
+            selectedFriend = new SimpleIntegerProperty(0);
 
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    getTransactionsByDate(getWallet().getId(), tabDate, '=');
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                _calculateStatistic();
+                _setListViewTransactions();
+            }
+        };
+        thread.start();
         super.setWallets(wallets);
-        this.getTransactionsByDate(this.getWallet().getId(), this.tabDate, '=');
-        this._calculateStatistic();
-        this._setListViewTransactions();
     }
 
     private void _calculateStatistic() {
@@ -282,6 +301,8 @@ public class TransactionPresenter extends PagePresenter {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-save.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
+        this.categoryPresenter.setVBoxSelectFriend(this.vBoxSelectFriend);
+        this.friendDialogPresenter.handleSelectedFriendId(this.selectFriend);
         this.walletId.set(0);
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
@@ -299,35 +320,48 @@ public class TransactionPresenter extends PagePresenter {
     }
 
     @FXML
+    private void chooseFriend() throws IOException {
+        this.friendDialogPresenter.showFriendDialog();
+    }
+
+    @FXML
+    private void changeAmount() {
+        TransactionPresenter.parseTextFieldMoney(this.textFieldTransactionAmount);
+    }
+
+    public static void parseTextFieldMoney(TextField textFieldAmount) {
+        String amountText = CurrencyHelper.parseToCurrency(textFieldAmount.getText());
+        int position = amountText.length();
+        textFieldAmount.setText(amountText);
+        textFieldAmount.positionCaret(position);
+    }
+
+    @FXML
     private void saveTransaction(Event event) {
         String amountText = this.textFieldTransactionAmount.getText();
-        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
+        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.replaceAll("[^\\d.]", ""));
         LocalDate transactedAt = this.datePickerTransactedAt.getValue();
         boolean isNotReported = this.checkBoxIsNotReported.isSelected();
+        int friendId = this.selectedFriend.get();
         int walletId = this.walletId.get();
         int categoryId = this.selectedCategory.get();
         int subCategoryId = this.selectedSubCategory.get();
+        String note = this.textFieldNote.getText();
+        String validation = TransactionPresenter.validateData(walletId, categoryId, amount, note);
 
-        if (walletId == 0) {
-            this.showErrorDialog("Wallet is not selected");
-            return;
-        }
-        if (categoryId == 0) {
-            this.showErrorDialog("Category is not selected");
-            return;
-        }
-        if (amount <= 0) {
-            this.showErrorDialog("Amount is not valid");
+        if (validation != null) {
+            this.showErrorDialog(validation);
             return;
         }
 
         Transaction transaction = new Transaction();
+        transaction.setFriendId(friendId);
         transaction.setWalletId(walletId);
         transaction.setTypeId(this.selectedType.get());
         transaction.setCategoryId(categoryId);
         transaction.setSubCategoryId(subCategoryId);
         transaction.setAmount(amount);
-        transaction.setNote(this.textFieldNote.getText());
+        transaction.setNote(note);
         transaction.setTransactedAt(transactedAt);
         transaction.setIsNotReported(isNotReported);
 
@@ -343,9 +377,26 @@ public class TransactionPresenter extends PagePresenter {
             }
 
             this.closeScene(event);
-        } catch (SQLException | NotFoundException | ClassNotFoundException e) {
+        } catch (SQLException | NotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }
+    }
+
+    public static String validateData(int walletId, int categoryId, float amount, String note) {
+        if (walletId == 0) {
+            return "Wallet is not selected";
+        }
+        if (categoryId == 0) {
+            return "Category is not selected";
+        }
+        if (amount <= 0) {
+            return "Amount is not valid";
+        }
+        if (note.length() > 255) {
+            return "Note is too long";
+        }
+
+        return null;
     }
 }

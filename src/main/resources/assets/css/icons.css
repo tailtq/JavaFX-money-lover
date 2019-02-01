@@ -248,3 +248,8 @@
 .currency__sgd {
     -fx-background-image: url("../images/flags/currency_sgd.png");
 }
+
+/* FRIEND */
+.boy {
+    -fx-background-image: url("../images/boy.png");
+}

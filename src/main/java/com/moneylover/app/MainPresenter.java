@@ -1,11 +1,13 @@
 package com.moneylover.app;
 
 import com.moneylover.Modules.Category.Controllers.CategoryController;
+import com.moneylover.Modules.Friend.Controllers.FriendController;
 import com.moneylover.Modules.SubCategory.Controllers.SubCategoryController;
 import com.moneylover.Modules.Type.Controllers.TypeController;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.Currency.CurrencyPresenter;
+import com.moneylover.app.Friend.FriendDialogPresenter;
 import com.moneylover.app.User.UserPresenter;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -30,7 +32,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 
     private BooleanProperty changeScene = new SimpleBooleanProperty(false);
 
-    private StringProperty fxmlFile = new SimpleStringProperty();
+    private String fxmlFile = "";
 
     private IntegerProperty walletIndex = new SimpleIntegerProperty(0);
 
@@ -57,8 +59,8 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         this.controller.setWallets(this.wallets);
         this.walletIndex.addListener((observableValue, oldValue, newValue) -> {
             try {
-                if (!this.fxmlFile.get().contains("wallets.fxml")) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.fxmlFile.get()));
+                if (!this.fxmlFile.contains("wallets.fxml")) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.fxmlFile));
                     this.initView(fxmlLoader);
                 }
             } catch (IOException | SQLException | ClassNotFoundException e) {
@@ -72,10 +74,6 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
             this.initView(fxmlLoader);
-            CategoryPresenter.setTypes((new TypeController()).list());
-            CategoryPresenter.setCategories((new CategoryController()).list());
-            CategoryPresenter.setSubCategories((new SubCategoryController()).list());
-            CategoryPresenter.combineCategories();
         }
     }
 
@@ -132,7 +130,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 
     private void initView(FXMLLoader viewLoader) throws IOException, SQLException, ClassNotFoundException {
         String file = viewLoader.getLocation().getFile();
-        this.fxmlFile.set(file.substring(file.indexOf("/com/moneylover")));
+        this.fxmlFile = file.substring(file.indexOf("/com/moneylover"));
         this.changeViewLoader(viewLoader);
         this.setChangeScene(true);
         this.controller.loadPresenter();
@@ -147,10 +145,22 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
             this.initView(fxmlLoader);
             this.changeScene.set(false);
 
-            CategoryPresenter.setTypes((new TypeController()).list());
-            CategoryPresenter.setCategories((new CategoryController()).list());
-            CategoryPresenter.setSubCategories((new SubCategoryController()).list());
-            CategoryPresenter.combineCategories();
+            Thread thread = new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        CategoryPresenter.setTypes((new TypeController()).list());
+                        CategoryPresenter.setCategories((new CategoryController()).list());
+                        CategoryPresenter.setSubCategories((new SubCategoryController()).list());
+                        CategoryPresenter.combineCategories();
+                        FriendDialogPresenter.setFriends((new FriendController()).list(UserPresenter.getUser().getId()));
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
         } catch (IOException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

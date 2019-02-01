@@ -1,9 +1,9 @@
 package com.moneylover.app.Friend.View;
 
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
-import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.Friend.Controllers.FriendController;
 import com.moneylover.Modules.Friend.Entities.Friend;
+import com.moneylover.app.Friend.FriendPresenter;
 import com.moneylover.app.User.UserPresenter;
 import javafx.beans.property.StringProperty;
 import javafx.event.Event;
@@ -16,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -84,9 +83,10 @@ public class FriendCell extends ListCell<Friend> implements DialogInterface {
     @FXML
     private void saveFriend(Event event) {
         String name = this.textFieldFriendName.getText();
+        String validation = FriendPresenter.validateFriend(name);
 
-        if (name.isEmpty()) {
-            this.showErrorDialog("Please input all needed information!");
+        if (validation != null) {
+            this.showErrorDialog(validation);
             return;
         }
 

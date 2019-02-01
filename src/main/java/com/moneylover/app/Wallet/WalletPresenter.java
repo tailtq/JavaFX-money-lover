@@ -6,6 +6,7 @@ import com.moneylover.Modules.Wallet.Entities.UserWallet;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Currency.CurrencyPresenter;
 import com.moneylover.app.PagePresenter;
+import com.moneylover.app.Transaction.TransactionPresenter;
 import com.moneylover.app.User.UserPresenter;
 import com.moneylover.app.Wallet.View.WalletCell;
 import javafx.beans.property.IntegerProperty;
@@ -16,19 +17,16 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class WalletPresenter extends PagePresenter implements Initializable {
+public class WalletPresenter extends PagePresenter {
     private StringProperty handledWalletId = new SimpleStringProperty();
 
     private com.moneylover.Modules.Wallet.Controllers.WalletController walletController; // Get Detail when update
@@ -145,18 +143,24 @@ public class WalletPresenter extends PagePresenter implements Initializable {
     }
 
     @FXML
+    private void changeAmount() {
+        TransactionPresenter.parseTextFieldMoney(this.textFieldWalletAmount);
+    }
+
+    @FXML
     private void saveWallet(Event event) throws NotFoundException, SQLException, ClassNotFoundException {
         this.walletController = new WalletController();
-
         String name = this.textFieldTransactionName.getText().trim();
         String amountText = this.textFieldWalletAmount.getText();
-        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.trim());
+        float amount = Float.valueOf(amountText.isEmpty() ? "0" : amountText.replaceAll("[^\\d.]", ""));
         int currencyId = this.selectedCurrencyId.get();
+        String validation = WalletPresenter.validateWallet(name, currencyId, amount);
 
-        if (name.isEmpty() || currencyId == 0) {
-            this.showErrorDialog("Please input all needed information");
+        if (validation != null) {
+            this.showErrorDialog(validation);
             return;
         }
+
         try {
             Wallet wallet = this.walletController.create(new Wallet(currencyId, name, amount));
             ArrayList<UserWallet> userWallet = new ArrayList<>();
@@ -170,7 +174,19 @@ public class WalletPresenter extends PagePresenter implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public static String validateWallet(String name, int currencyId, float amount) {
+        if (name.isEmpty() || currencyId == 0) {
+            return "Please input all needed information";
+        }
+
+        if (name.length() > 80) {
+            return "Name is not valid";
+        }
+
+        if (amount < 0) {
+            return "Amount is not valid";
+        }
+
+        return null;
     }
 }

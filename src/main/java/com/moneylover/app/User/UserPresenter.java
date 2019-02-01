@@ -8,7 +8,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.sql.SQLException;
+import java.util.regex.PatternSyntaxException;
 
 public class UserPresenter extends PagePresenter implements LoaderInterface {
     private com.moneylover.Modules.User.Controllers.UserController userController;
@@ -61,6 +64,17 @@ public class UserPresenter extends PagePresenter implements LoaderInterface {
             this.showErrorDialog("Please input all needed information!");
             return;
         }
+
+        if (name.length() > 80) {
+            this.showErrorDialog("Name is not valid");
+            return;
+        }
+
+        if (phone.length() > 20) {
+            this.showErrorDialog("Telephone is not exit");
+            return;
+        }
+
         if ((!password.isEmpty() || !passwordConfirmation.isEmpty()) && !password.equals(passwordConfirmation)) {
             this.setFieldsNull(this.textFieldPassword);
             this.showErrorDialog("Password Confirmation is invalid!");
