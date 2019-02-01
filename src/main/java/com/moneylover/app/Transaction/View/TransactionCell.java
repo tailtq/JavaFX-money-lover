@@ -2,7 +2,6 @@ package com.moneylover.app.Transaction.View;
 
 import com.moneylover.Infrastructure.Contracts.ParserInterface;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
-import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
@@ -38,8 +37,6 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     private ObservableList<Wallet> wallets;
 
-    private TransactionController transactionController;
-
     private CategoryPresenter categoryPresenter;
 
     private FriendDialogPresenter friendDialogPresenter;
@@ -50,11 +47,8 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         this._loadCell();
     }
 
-    public TransactionCell(StringProperty handledTransactionId) throws IOException, SQLException, ClassNotFoundException {
+    public TransactionCell(StringProperty handledTransactionId) throws IOException {
         this.handledTransactionId = handledTransactionId;
-        this.transactionController = new TransactionController();
-        this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
-        this.friendDialogPresenter = new FriendDialogPresenter(this.selectedFriend);
         this._loadCell();
     }
 
@@ -154,6 +148,8 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-save.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
+        this.friendDialogPresenter = new FriendDialogPresenter(this.selectedFriend);
+        this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
         this.categoryPresenter.setVBoxSelectFriend(this.vBoxSelectFriend);
         this.loadTransactionData();
         this.createScreen(parent, "Edit Transaction", 500, 230);
@@ -225,10 +221,10 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
         try {
             int id = this.transaction.getId();
-            this.transactionController.update(transaction, id);
+            (new TransactionController()).update(transaction, id);
             this.handledTransactionId.set(null);
             this.handledTransactionId.set("UPDATE-" + id);
-
+            this._clearPresenter();
             this.closeScene(event);
         } catch (SQLException | NotFoundException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -242,13 +238,18 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         if (buttonData == ButtonBar.ButtonData.YES) {
             try {
                 int id = this.transaction.getId();
-                this.transactionController.delete(id);
+                (new TransactionController()).delete(id);
                 this.handledTransactionId.set("DELETE-" + id);
-            } catch (SQLException | NotFoundException e1) {
+            } catch (SQLException | NotFoundException | ClassNotFoundException e1) {
                 e1.printStackTrace();
                 this.showErrorDialog("An error has occurred");
             }
         }
+    }
+
+    private void _clearPresenter() {
+        this.categoryPresenter = null;
+        this.friendDialogPresenter = null;
     }
 
     @FXML

@@ -34,8 +34,6 @@ public class TransactionPresenter extends PagePresenter {
 
     private StringProperty handledTransactionId = new SimpleStringProperty();
 
-    private LocalDate currentDate = LocalDate.now();
-
     private LocalDate tabDate = LocalDate.now();
 
     private CategoryPresenter categoryPresenter;
@@ -141,7 +139,7 @@ public class TransactionPresenter extends PagePresenter {
             selectedFriend = new SimpleIntegerProperty(0);
 
     @Override
-    public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
+    public void setWallets(ObservableList<Wallet> wallets) throws SQLException, InterruptedException {
         Thread thread = new Thread(){
             @Override
             public void run() {
@@ -151,12 +149,13 @@ public class TransactionPresenter extends PagePresenter {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                _calculateStatistic();
-                _setListViewTransactions();
             }
         };
         thread.start();
         super.setWallets(wallets);
+        this._setListViewTransactions();
+        thread.join();
+        this._calculateStatistic();
     }
 
     private void _calculateStatistic() {
@@ -205,7 +204,7 @@ public class TransactionPresenter extends PagePresenter {
                     transactionCell.setWallets(wallets);
 
                     return transactionCell;
-                } catch (IOException | SQLException | ClassNotFoundException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }
@@ -217,9 +216,10 @@ public class TransactionPresenter extends PagePresenter {
     private void changeTime(Event e) throws SQLException {
         Node button = (Node) e.getSource();
         int selectedTimeRange = Integer.parseInt(button.getUserData().toString());
+        LocalDate currentDate = LocalDate.now();
 
-        if (this.tabDate.getMonthValue() == this.currentDate.getMonthValue()
-                && this.tabDate.getYear() == this.currentDate.getYear()
+        if (this.tabDate.getMonthValue() == currentDate.getMonthValue()
+                && this.tabDate.getYear() == currentDate.getYear()
                 && selectedTimeRange == 1) {
             // TODO: Set current tab text is future, hide
             this.getTransactionsByDate(this.getWallet().getId(), this.tabDate, '>');
@@ -228,13 +228,13 @@ public class TransactionPresenter extends PagePresenter {
             this.rightTimeRange.setVisible(false);
         } else {
             this.rightTimeRange.setVisible(true);
-            this._setDay(selectedTimeRange);
+            this._setDay(selectedTimeRange, currentDate);
         }
 
         this._calculateStatistic();
     }
 
-    private void _setDay(int selectedTimeRange) throws SQLException {
+    private void _setDay(int selectedTimeRange, LocalDate currentDate) throws SQLException {
         int month = this.tabDate.getMonthValue();
         int year = this.tabDate.getYear();
 
@@ -256,10 +256,10 @@ public class TransactionPresenter extends PagePresenter {
         month = this.tabDate.getMonthValue();
         year = this.tabDate.getYear();
         String displayedMonth = (month >= 10) ? Integer.toString(month) : "0" + month;
-        int currentMonth = this.currentDate.getMonthValue();
+        int currentMonth = currentDate.getMonthValue();
         int prevMonth = (currentMonth == 1) ? 12 : currentMonth - 1;
         int prevMonth2 = (prevMonth == 1) ? 12 : prevMonth - 1;
-        int currentYear = this.currentDate.getYear();
+        int currentYear = currentDate.getYear();
         int prevYear = (currentMonth == 1) ? currentYear - 1 : currentYear;
         int prevYear2 = (prevMonth == 1) ? prevYear - 1 : prevYear;
 

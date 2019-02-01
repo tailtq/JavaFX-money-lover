@@ -148,6 +148,7 @@ public class BudgetService extends BaseService {
             i++;
             if (i % 1000 == 0 || i == budgets.size()) {
                 statement.executeBatch(); // Execute every 1000 items.
+                statement.clearBatch();
             }
         }
 

@@ -12,6 +12,7 @@ import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Budget.BudgetPresenter;
 import com.moneylover.app.Category.CategoryPresenter;
+import com.moneylover.app.MainPresenter;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Report.ReportPresenter;
 import com.moneylover.app.Transaction.TransactionPresenter;
@@ -42,8 +43,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class BudgetCell extends ListCell<Budget> implements DialogInterface, ParserInterface {
-    private BudgetController budgetController;
-
     private TransactionController transactionController;
 
     private CategoryPresenter categoryPresenter;
@@ -62,11 +61,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
 
     private LocalDate currentDate = LocalDate.now();
 
-    public BudgetCell(StringProperty handledBudgetId) throws IOException, SQLException, ClassNotFoundException {
+    public BudgetCell(StringProperty handledBudgetId) throws IOException {
         this.handledBudgetId = handledBudgetId;
-        this.budgetController = new BudgetController();
-        this.transactionController = new TransactionController();
-        this.categoryPresenter = new CategoryPresenter(this.selectedCategory, this.selectedSubCategory);
         this._loadCell();
     }
 
@@ -144,15 +140,11 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         LocalDate startedAt = item.getStartedAt(),
                 endedAt = item.getEndedAt();
         long daysLeft = ChronoUnit.DAYS.between(this.currentDate, endedAt);
-
-        if (daysLeft >= 1) {
-            this.labelBudgetRemainingTime.setText(daysLeft + (daysLeft > 1 ? " days" : " day") + " left");
-        } else {
-            this.labelBudgetRemainingTime.setText(null);
-        }
-
+        daysLeft = daysLeft >= 1 ? daysLeft : 0;
         float remainingAmount = budget.getAmount() - budget.getSpentAmount();
-        this.labelBudgetRemainingAmount.setText((remainingAmount > 0 ? "Left " : "Spent ") + this.toMoneyString(remainingAmount) + moneySymbol);
+        String startedAtText = startedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
+                endedAtText = endedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
+                imageUrl = "/assets/images/categories/" + item.getCategoryIcon() + ".png";
 
         if (remainingAmount < 0) {
             this.labelBudgetRemainingAmount.getStyleClass().add("danger-color");
@@ -160,9 +152,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
             this.labelBudgetRemainingAmount.getStyleClass().remove("danger-color");
         }
 
-        String startedAtText = startedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
-                endedAtText = endedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
-                imageUrl = "/assets/images/categories/" + item.getCategoryIcon() + ".png";
+        this.labelBudgetRemainingTime.setText(daysLeft + (daysLeft > 1 ? " days" : " day") + " left");
+        this.labelBudgetRemainingAmount.setText((remainingAmount > 0 ? "Left " : "Spent ") + this.toMoneyString(remainingAmount) + moneySymbol);
         this.labelBudgetTime.setText(startedAtText + " - " + endedAtText);
         this.labelBudgetAmount.setText("+" + budget.getAmount() + moneySymbol);
         this.imageBudgetCategory.setImage(new Image(imageUrl));
@@ -176,7 +167,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
     }
 
     @FXML
-    private void show() throws IOException, SQLException {
+    private void show() throws IOException, SQLException, ClassNotFoundException {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/components/dialogs/budget/budget-show.fxml")
         );
@@ -203,11 +194,10 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         this.labelBudgetDetailActualDailyAmount.setText(Float.toString(budget.getSpentAmount() / (passingDays == 0 ? 1 : passingDays)));
     }
 
-    private void _loadAreaChart() throws SQLException {
-        Wallet wallet = this.getWallet();
-        this.transactions = FXCollections.observableArrayList(this.transactionController.listByBudget(this.budget));
+    private void _loadAreaChart() throws SQLException, ClassNotFoundException {
+        this.transactions = FXCollections.observableArrayList((new TransactionController()).listByBudget(this.budget));
         ObservableList<Pair<CustomDate, ObservableList<Transaction>>> transactions = FXCollections.observableArrayList();
-        ReportPresenter.sortTransactionsByDate(transactions, this.transactions, wallet.getMoneySymbol());
+        ReportPresenter.sortTransactionsByDate(transactions, this.transactions, this.getWallet().getMoneySymbol());
         this._loadAreaChartData(transactions, this.budget);
     }
 
@@ -260,6 +250,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         );
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
+        this.categoryPresenter = new CategoryPresenter(this.selectedCategory, this.selectedSubCategory);
         this.loadBudgetData();
         this.createScreen(parent, "Edit Budget", 500, 170);
     }
@@ -312,7 +303,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
 
         try {
             int id = this.budget.getId();
-            this.budgetController.update(budget, id);
+            (new BudgetController()).update(budget, id);
             this.handledBudgetId.set(null);
             this.handledBudgetId.set("UPDATE-" + id);
             this.closeScene(event);
@@ -328,9 +319,9 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         if (buttonData == ButtonBar.ButtonData.YES) {
             try {
                 int id = this.budget.getId();
-                this.budgetController.delete(id);
+                (new BudgetController()).delete(id);
                 this.handledBudgetId.set("DELETE-" + id);
-            } catch (SQLException e1) {
+            } catch (SQLException | ClassNotFoundException e1) {
                 e1.printStackTrace();
                 this.showErrorDialog("An error has occurred");
             }

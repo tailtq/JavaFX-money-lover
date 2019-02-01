@@ -63,7 +63,7 @@ public class WalletPresenter extends PagePresenter {
             public ListCell<Wallet> call(ListView param) {
                 try {
                     return new WalletCell(handledWalletId);
-                } catch (IOException | SQLException | ClassNotFoundException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }
@@ -113,7 +113,7 @@ public class WalletPresenter extends PagePresenter {
     }
 
     @Override
-    public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
+    public void setWallets(ObservableList<Wallet> wallets) throws SQLException, InterruptedException {
         super.setWallets(wallets);
         this._setListViewWallets();
     }

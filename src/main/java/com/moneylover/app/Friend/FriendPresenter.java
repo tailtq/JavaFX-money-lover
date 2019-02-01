@@ -54,7 +54,7 @@ public class FriendPresenter extends PagePresenter {
             public ListCell call(ListView listView) {
                 try {
                     return new FriendCell(handledFriendId);
-                } catch (SQLException | ClassNotFoundException | IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }

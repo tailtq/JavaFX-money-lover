@@ -51,7 +51,7 @@ public class ReportPresenter extends PagePresenter {
     }
 
     @Override
-    public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
+    public void setWallets(ObservableList<Wallet> wallets) throws SQLException, InterruptedException {
         super.setWallets(wallets);
         Wallet wallet = this.getWallet();
         this.transactions = FXCollections.observableArrayList(
@@ -229,9 +229,7 @@ public class ReportPresenter extends PagePresenter {
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-
-        Wallet wallet = this.getWallet();
-        this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
+        this._loadBarChart(this.getWallet().getMoneySymbol(), this.startDate, this.endDate);
         this._listMonthTransactions();
         this.dateRangeChart.setTitle("Report");
         this.createScreen(parent, "Report", 500, 700);

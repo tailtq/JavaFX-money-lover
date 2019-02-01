@@ -45,7 +45,7 @@ abstract public class PagePresenter extends BaseViewPresenter implements LoaderI
     protected MenuButton dropdownWallets;
 
     @Override
-    public void setWallets(ObservableList<Wallet> wallets) throws SQLException {
+    public void setWallets(ObservableList<Wallet> wallets) throws SQLException, InterruptedException {
         this.wallets = wallets;
         this.loadHeaderWallets();
     }

@@ -25,13 +25,10 @@ public class FriendCell extends ListCell<Friend> implements DialogInterface {
 
     private Friend friend;
 
-    private FriendController friendController;
-
     private StringProperty handledFriendId;
 
-    public FriendCell(StringProperty handledFriendId) throws SQLException, ClassNotFoundException, IOException {
+    public FriendCell(StringProperty handledFriendId) throws IOException {
         this.handledFriendId = handledFriendId;
-        this.friendController = new FriendController();
         this._loadCell();
     }
 
@@ -93,11 +90,11 @@ public class FriendCell extends ListCell<Friend> implements DialogInterface {
         Friend friend = new Friend(UserPresenter.getUser().getId(), name);
         try {
             int id = this.friend.getId();
-            this.friendController.update(friend, id);
+            (new FriendController()).update(friend, id);
             this.handledFriendId.set(null);
             this.handledFriendId.set("UPDATE-" + id);
             this.closeScene(event);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
         }
@@ -109,9 +106,9 @@ public class FriendCell extends ListCell<Friend> implements DialogInterface {
         if (buttonData == ButtonBar.ButtonData.YES) {
             try {
                 int id = this.friend.getId();
-                this.friendController.delete(id);
+                (new FriendController()).delete(id);
                 this.handledFriendId.set("DELETE-" + id);
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
                 this.showErrorDialog("An error has occurred");
             }

@@ -214,6 +214,8 @@ public class TransactionService extends BaseService {
 
         if (operator == '=') {
             yearCondition = "year(transacted_at) = " + date.getYear();
+        } else {
+            yearCondition = "year(transacted_at) >= " + date.getYear();
         }
 
         ResultSet resultSet = this.getByJoin(
@@ -369,6 +371,7 @@ public class TransactionService extends BaseService {
             i++;
             if (i % 1000 == 0 || i == transactions.size()) {
                 statement.executeBatch(); // Execute every 1000 items.
+                statement.clearBatch();
             }
         }
 

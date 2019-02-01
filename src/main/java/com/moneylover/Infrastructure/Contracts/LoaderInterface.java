@@ -12,5 +12,5 @@ public interface LoaderInterface {
 
     void setWalletIndex(IntegerProperty walletIndex);
 
-    void setWallets(ObservableList<Wallet> wallets) throws IOException, SQLException;
+    void setWallets(ObservableList<Wallet> wallets) throws IOException, SQLException, InterruptedException;
 }
