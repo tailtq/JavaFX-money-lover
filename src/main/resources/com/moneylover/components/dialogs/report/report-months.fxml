@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="
@@ -14,10 +14,11 @@
           @../../../../../assets/css/content.css,
           @../../../../../assets/css/pages/transaction.css,
           @../../../../../assets/css/pages/report.css"
-      styleClass="report--padding-30, report--background-white"
+      styleClass="dialog-container"
       alignment="TOP_CENTER">
-    <VBox styleClass="dialog-container, month-report-container" alignment="TOP_CENTER">
-        <BarChart fx:id="dateRangeChart" legendVisible="false" title="Net Income">
+    <VBox styleClass="dialog__content, month-report-container" alignment="TOP_CENTER">
+        <Label styleClass="font--size-15, text-bold" text="Report"/>
+        <BarChart fx:id="dateRangeChart" legendVisible="false">
             <xAxis>
                 <CategoryAxis side="BOTTOM"/>
             </xAxis>
@@ -27,53 +28,6 @@
         </BarChart>
         <VBox styleClass="transactions__times">
             <ListView fx:id="listViewMonthTransactions"/>
-            <!--<GridPane styleClass="transactions">-->
-                <!--<GridPane styleClass="transaction__content, report__transactions&#45;&#45;no-border"-->
-                          <!--GridPane.columnIndex="0" GridPane.rowIndex="0">-->
-                    <!--<Label text="December"-->
-                           <!--styleClass="transaction__content__type, text-bold, category"-->
-                           <!--GridPane.columnIndex="0" GridPane.rowIndex="0"/>-->
-                    <!--<Label text="2018"-->
-                           <!--styleClass="transaction__content__note, gray-color"-->
-                           <!--GridPane.columnIndex="0" GridPane.rowIndex="1"/>-->
-                <!--</GridPane>-->
-                <!--<Label text="-2,960,000.00 ₫"-->
-                       <!--styleClass="danger-color, text-bold"-->
-                       <!--GridPane.columnIndex="1" GridPane.rowIndex="0"/>-->
-                <!--<fx:include source="../../buttons/normal-button.fxml"-->
-                            <!--onAction="#loadDetail"-->
-                            <!--GridPane.columnIndex="2" GridPane.rowIndex="0">-->
-                    <!--<text>View</text>-->
-                <!--</fx:include>-->
-
-                <!--<GridPane styleClass="transaction__content"-->
-                          <!--GridPane.columnIndex="0" GridPane.rowIndex="1">-->
-                    <!--<Label text="December"-->
-                           <!--styleClass="transaction__content__type, text-bold, category"-->
-                           <!--GridPane.columnIndex="0" GridPane.rowIndex="0"/>-->
-                    <!--<Label text="2018"-->
-                           <!--styleClass="transaction__content__note, gray-color"-->
-                           <!--GridPane.columnIndex="0" GridPane.rowIndex="1"/>-->
-                <!--</GridPane>-->
-                <!--<Label text="+2,960,000.00 ₫"-->
-                       <!--styleClass="primary-color, text-bold"-->
-                       <!--GridPane.columnIndex="1" GridPane.rowIndex="1"/>-->
-                <!--<fx:include source="../../buttons/normal-button.fxml"-->
-                            <!--onAction="#loadDetail"-->
-                            <!--GridPane.columnIndex="2" GridPane.rowIndex="1">-->
-                    <!--<text>View</text>-->
-                <!--</fx:include>-->
-                <!--<columnConstraints>-->
-                    <!--<ColumnConstraints hgrow="SOMETIMES" percentWidth="56" halignment="CENTER"/>-->
-                    <!--<ColumnConstraints hgrow="SOMETIMES" percentWidth="28" halignment="RIGHT"/>-->
-                    <!--<ColumnConstraints hgrow="SOMETIMES" percentWidth="16" halignment="RIGHT"/>-->
-                <!--</columnConstraints>-->
-                <!--<rowConstraints>-->
-                    <!--<RowConstraints vgrow="SOMETIMES" />-->
-                    <!--<RowConstraints vgrow="SOMETIMES" />-->
-                    <!--<RowConstraints vgrow="SOMETIMES" />-->
-                <!--</rowConstraints>-->
-            <!--</GridPane>-->
         </VBox>
     </VBox>
 </VBox>

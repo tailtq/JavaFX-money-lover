@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -14,10 +13,6 @@
         @../../../../../assets/css/components/dialogs/choose-currency.css
       "
       styleClass="dialog-container, white-bg-color">
-    <HBox styleClass="currency__search-form">
-        <Text styleClass="font--size-20">Currency</Text>
-        <TextField styleClass="currency__search-field" HBox.hgrow="ALWAYS"/>
-    </HBox>
     <ListView fx:id="listViewCurrencies"/>
 </VBox>
 

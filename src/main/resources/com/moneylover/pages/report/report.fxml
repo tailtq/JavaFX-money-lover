@@ -40,7 +40,7 @@
           alignment="CENTER" styleClass="container">
         <VBox styleClass="container__content, report__content" alignment="TOP_CENTER">
             <VBox alignment="TOP_CENTER">
-                <BarChart fx:id="dateRangeChart" title="Net Income" legendVisible="false">
+                <BarChart fx:id="dateRangeChart" title="Net Income" styleClass="chart" legendVisible="false">
                     <xAxis>
                         <CategoryAxis side="BOTTOM"/>
                     </xAxis>
@@ -54,10 +54,8 @@
                 </fx:include>
             </VBox>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                <PieChart fx:id="incomeChart" title="Inflow"/>
-            </HBox>
-            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                <PieChart fx:id="expenseChart" title="Outflow"/>
+                <PieChart fx:id="incomeChart" styleClass="chart" legendVisible="false" title="Inflow"/>
+                <PieChart fx:id="expenseChart" styleClass="chart" legendVisible="false" title="Outflow"/>
             </HBox>
         </VBox>
     </VBox>

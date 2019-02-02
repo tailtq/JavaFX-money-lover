@@ -3,6 +3,7 @@ package com.moneylover.app.Budget.View;
 import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
 import com.moneylover.Infrastructure.Contracts.ParserInterface;
+import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
 import com.moneylover.Infrastructure.Helpers.DateHelper;
 import com.moneylover.Modules.Budget.Controllers.BudgetController;
 import com.moneylover.Modules.Budget.Entities.Budget;
@@ -124,7 +125,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
     private DatePicker datePickerStartedAt, datePickerEndedAt;
 
     @FXML
-    private Text textBudgetTitle;
+    private Text textDialogTitle;
 
     private IntegerProperty
             walletId = new SimpleIntegerProperty(0),
@@ -247,8 +248,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         Budget budget = this.budget;
         String startedAt = budget.getStartedAt().format(DateHelper.getFormat()),
                 endedAt = budget.getEndedAt().format(DateHelper.getFormat());
-        this.textBudgetTitle.setText("Transactions from " + startedAt + " to " + endedAt);
-        this.createScreen(parent, "Budget Detail", 400, 500);
+        this.textDialogTitle.setText("Transactions from " + startedAt + " to " + endedAt);
+        this.createScreen(parent, "Budget Detail", 470, 480);
     }
 
     @FXML
@@ -275,7 +276,9 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         PagePresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
-        this.textFieldBudgetAmount.setText(Float.toString(this.budget.getAmount()));
+        this.textFieldBudgetAmount.setText(
+                CurrencyHelper.parseToCurrency(Float.toString(this.budget.getAmount()))
+        );
         this.datePickerStartedAt.setValue(this.budget.getStartedAt());
         this.datePickerEndedAt.setValue(this.budget.getEndedAt());
 

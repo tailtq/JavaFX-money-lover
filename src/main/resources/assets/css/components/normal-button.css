@@ -21,6 +21,7 @@
     -fx-padding: 12 10 12 55;
     -fx-text-fill: #000;
     -fx-max-width: infinity;
+    -fx-text-alignment: left;
 }
 
 .subcategories .image-button {

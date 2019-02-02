@@ -13,16 +13,19 @@
           @../../../../../assets/css/pages/transaction.css,
           @../../../../../assets/css/pages/report.css
         "
-      styleClass="report--background-white"
+      styleClass="dialog-container"
       alignment="TOP_CENTER">
-    <VBox styleClass="dialog-container" alignment="TOP_CENTER">
-        <Text text="Transactions" styleClass="report__title">
-            <VBox.margin>
-                <Insets>
-                    <top>15</top>
-                </Insets>
-            </VBox.margin>
-        </Text>
-        <ListView fx:id="listViewTransactions"/>
+    <VBox alignment="TOP_CENTER">
+        <VBox styleClass="dialog__content, content--spacing-10"  alignment="TOP_CENTER">
+            <Text text="Transactions from 9/2/2019 to 9/3/2019" fx:id="textDialogTitle"
+                  styleClass="report__title, font--size-14, text-bold">
+                <VBox.margin>
+                    <Insets>
+                        <top>15</top>
+                    </Insets>
+                </VBox.margin>
+            </Text>
+            <ListView fx:id="listViewTransactions"/>
+        </VBox>
     </VBox>
 </VBox>

@@ -45,3 +45,29 @@
 .report__cell__icon {
     -fx-padding: 0 5 0 12;
 }
+
+.chart, .chart-content {
+    -fx-padding: 10;
+}
+
+.chart-title {
+    -fx-font-size: 14px;
+}
+
+#incomeChart .chart-pie-label {
+    -fx-fill: #2db84c;
+}
+
+#incomeChart .chart-pie-label-line {
+    -fx-stroke: #2db84c;
+    -fx-fill: #2db84c;
+}
+
+#expenseChart .chart-pie-label {
+    -fx-fill: #f25a5a;
+}
+
+#expenseChart .chart-pie-label-line {
+    -fx-stroke: #f25a5a;
+    -fx-fill: #f25a5a;
+}
