@@ -35,6 +35,8 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     private Transaction transaction;
 
+    private Wallet wallet;
+
     private ObservableList<Wallet> wallets;
 
     private CategoryPresenter categoryPresenter;
@@ -43,6 +45,8 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     private StringProperty handledTransactionId;
 
+    private IntegerProperty walletIndex;
+
     public TransactionCell() throws IOException {
         this._loadCell();
     }
@@ -50,6 +54,10 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     public TransactionCell(StringProperty handledTransactionId) throws IOException {
         this.handledTransactionId = handledTransactionId;
         this._loadCell();
+    }
+
+    public void setWalletIndex(IntegerProperty walletIndex) {
+        this.walletIndex = walletIndex;
     }
 
     private void _loadCell() throws IOException {
@@ -62,6 +70,10 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
 
     public void setWallets(ObservableList<Wallet> wallets) {
         this.wallets = wallets;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
 
     /*========================== Draw ==========================*/
@@ -112,8 +124,15 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
             return;
         }
 
-        String text = item.getSubCategoryName();
-        String imageUrl = "/assets/images/categories/" + item.getSubCategoryIcon() + ".png";
+        String moneySymbol,
+                text = item.getSubCategoryName(),
+                imageUrl = "/assets/images/categories/" + item.getSubCategoryIcon() + ".png";
+
+        if (this.wallet != null) {
+            moneySymbol = this.wallet.getMoneySymbol();
+        } else {
+            moneySymbol = this.wallets.get(this.walletIndex.get()).getMoneySymbol();
+        }
 
         if (text == null || text.equals("")) {
             text = item.getCategoryName();
@@ -125,8 +144,15 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
         );
         this.imageTransactionCategory.setImage(new Image(imageUrl));
         this.labelTransactionCategoryName.setText(text);
-        this.labelTransactionNote.setText(item.getNote());
-        this.labelAmount.setText(this.toMoneyString(item.getAmount()));
+
+        if (item.getNote().length() > 50) {
+            this.labelTransactionNote.setText(item.getNote().substring(0, 30) + "...");
+            this.labelTransactionNote.setTooltip(new Tooltip(item.getNote()));
+        } else {
+            this.labelTransactionNote.setText(item.getNote());
+        }
+
+        this.labelAmount.setText(this.toMoneyString(item.getAmount(), moneySymbol));
         this.labelAmount.getStyleClass().removeAll("danger-color", "success-color");
 
         if (item.getAmount() < 0) {

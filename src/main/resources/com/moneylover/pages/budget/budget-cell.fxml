@@ -33,10 +33,9 @@
                         <Label styleClass="text-bold, font--size-13" fx:id="labelBudgetAmount"/>
                         <Label styleClass="font--size-12" fx:id="labelBudgetRemainingAmount"/>
                     </VBox>
-                    <Button styleClass="bg--linear-succeed-color" onAction="#showPopup">
+                    <Button styleClass="optional-button" onAction="#showPopup">
                         <graphic>
-                            <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px"
-                                                 glyphStyle="-fx-fill: white"/>
+                            <FontAwesomeIconView glyphName="ELLIPSIS_V" size="12px" glyphStyle="-fx-fill: black" />
                         </graphic>
                     </Button>
                 </HBox>

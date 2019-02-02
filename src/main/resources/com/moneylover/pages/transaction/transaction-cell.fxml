@@ -23,14 +23,14 @@
         <Label text="Thursday" fx:id="labelTransactionCategoryName"
                styleClass="transaction__content__type, text-bold, category"/>
         <Label text="December 2018" fx:id="labelTransactionNote"
-               styleClass="transaction__content__note, gray-color"/>
+               styleClass="gray-color"/>
     </VBox>
     <Pane HBox.hgrow="ALWAYS"></Pane>
     <HBox alignment="CENTER_RIGHT" styleClass="transaction__amount">
         <Label fx:id="labelAmount"/>
-        <Button fx:id="buttonOptions" onAction="#showPopup" styleClass="bg--linear-succeed-color">
+        <Button fx:id="buttonOptions" onAction="#showPopup" styleClass="optional-button">
             <graphic>
-                <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white" />
+                <FontAwesomeIconView glyphName="ELLIPSIS_V" size="12px" glyphStyle="-fx-fill: black" />
             </graphic>
         </Button>
     </HBox>

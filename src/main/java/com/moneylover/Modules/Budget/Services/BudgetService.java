@@ -40,7 +40,9 @@ public class BudgetService extends BaseService {
 
     public Budget getDetail(int id) throws SQLException, NotFoundException {
         ResultSet resultSet = this._getDetailByJoin(
-                "budgets.*, categories.icon as category_icon, sub_categories.icon as sub_category_icon",
+                "budgets.*, " +
+                        "categories.icon as category_icon, categories.name as category_name, " +
+                        "sub_categories.icon as sub_category_icon, sub_categories.name as sub_category_name",
                 "LEFT JOIN categories ON categories.id = " +
                         "CASE WHEN budgets.budgetable_type = '" + CommonConstants.APP_CATEGORY + "' " +
                         "THEN budgets.budgetable_id ELSE null END " +
@@ -101,7 +103,9 @@ public class BudgetService extends BaseService {
     private ArrayList<Budget> _list(int walletId) throws SQLException {
         ArrayList<Budget> budgets = new ArrayList<>();
         ResultSet resultSet = this.getByJoin(
-                "budgets.*, categories.icon as category_icon, sub_categories.icon as sub_category_icon",
+                "budgets.*, " +
+                        "categories.icon as category_icon, categories.name as category_name, " +
+                        "sub_categories.icon as sub_category_icon, sub_categories.name as sub_category_name",
                 "LEFT JOIN categories ON categories.id = " +
                         "CASE WHEN budgets.budgetable_type = '" + CommonConstants.APP_CATEGORY + "' " +
                         "THEN budgets.budgetable_id ELSE null END " +
@@ -220,8 +224,10 @@ public class BudgetService extends BaseService {
 
         if (budget.getBudgetableType().equals(CommonConstants.APP_SUB_CATEGORY)) {
             budget.setCategoryIcon(resultSet.getString("sub_category_icon"));
+            budget.setCategoryName(resultSet.getString("sub_category_name"));
         } else {
             budget.setCategoryIcon(resultSet.getString("category_icon"));
+            budget.setCategoryName(resultSet.getString("category_name"));
         }
 
         return budget;

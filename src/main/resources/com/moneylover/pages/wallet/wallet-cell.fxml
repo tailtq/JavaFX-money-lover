@@ -21,9 +21,9 @@
         <Label fx:id="labelWalletAmount"/>
     </VBox>
     <Pane HBox.hgrow="ALWAYS"></Pane>
-    <Button fx:id="buttonOptions" onAction="#showPopup" styleClass="bg--linear-succeed-color">
+    <Button onAction="#showPopup" styleClass="optional-button">
         <graphic>
-            <FontAwesomeIconView glyphName="ELLIPSIS_H" size="12px" glyphStyle="-fx-fill: white" />
+            <FontAwesomeIconView glyphName="ELLIPSIS_V" size="12px" glyphStyle="-fx-fill: black" />
         </graphic>
     </Button>
 </HBox>

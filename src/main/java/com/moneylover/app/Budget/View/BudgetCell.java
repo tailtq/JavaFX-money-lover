@@ -33,6 +33,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -94,11 +95,12 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
             labelBudgetRemainingTime,
             labelBudgetAmount,
             labelBudgetRemainingAmount,
-            labelBudgetDetailRemainingAmount,
-            labelBudgetDetailSpentAmount,
-            labelBudgetDetailRecommendedDailyAmount,
-            labelBudgetDetailActualDailyAmount,
-            labelBudgetDetailStatus;
+            labelBudgeSpentAmount,
+            labelBudgetNormalDailyAmount,
+            labelBudgetDailyAmount,
+            labelBudgetStatus,
+            labelBudgetDate,
+            labelBudgetCategoryName;
 
     @FXML
     private ProgressBar progressBarRemainingAmount;
@@ -120,6 +122,9 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
 
     @FXML
     private DatePicker datePickerStartedAt, datePickerEndedAt;
+
+    @FXML
+    private Text textBudgetTitle;
 
     private IntegerProperty
             walletId = new SimpleIntegerProperty(0),
@@ -145,17 +150,14 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         String startedAtText = startedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
                 endedAtText = endedAt.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")),
                 imageUrl = "/assets/images/categories/" + item.getCategoryIcon() + ".png";
-
-        if (remainingAmount < 0) {
-            this.labelBudgetRemainingAmount.getStyleClass().add("danger-color");
-        } else {
-            this.labelBudgetRemainingAmount.getStyleClass().remove("danger-color");
-        }
-
         this.labelBudgetRemainingTime.setText(daysLeft + (daysLeft > 1 ? " days" : " day") + " left");
-        this.labelBudgetRemainingAmount.setText((remainingAmount > 0 ? "Left " : "Spent ") + this.toMoneyString(remainingAmount) + moneySymbol);
+        this.labelBudgetRemainingAmount.getStyleClass().removeAll("success-color", "danger-color");
+        this.labelBudgetRemainingAmount.getStyleClass().add((remainingAmount > 0) ? "success-color" : "danger-color");
+        this.labelBudgetRemainingAmount.setText(
+                (remainingAmount > 0 ? "Left " : "Overspent ") + this.toMoneyString(remainingAmount, moneySymbol)
+        );
         this.labelBudgetTime.setText(startedAtText + " - " + endedAtText);
-        this.labelBudgetAmount.setText("+" + budget.getAmount() + moneySymbol);
+        this.labelBudgetAmount.setText(this.toMoneyString(budget.getAmount(), moneySymbol));
         this.imageBudgetCategory.setImage(new Image(imageUrl));
         this.progressBarRemainingAmount.setProgress(budget.getSpentAmount() / budget.getAmount());
         setGraphic(this.budgetCell);
@@ -173,25 +175,32 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         );
         fxmlLoader.setController(this);
         VBox parent = fxmlLoader.load();
-
         this._loadAreaChart();
         this._loadBudgetData();
-        this.createScreen(parent, "Budget Detail", 400, 500);
+        this.createScreen(parent, "Budget Detail", 470, 500);
     }
 
     private void _loadBudgetData() {
         long totalDays = Math.abs(ChronoUnit.DAYS.between(this.budget.getStartedAt(), this.budget.getEndedAt()));
         long passingDays = Math.abs(ChronoUnit.DAYS.between(this.budget.getStartedAt(), this.currentDate));
+        String moneySymbol = this.getWallet().getMoneySymbol(),
+                imageUrl = "/assets/images/categories/" + this.budget.getCategoryIcon() + ".png";
 
         if (this._isOverspent(budget)) {
-            this.labelBudgetDetailStatus.setText("Overspent");
-            this.labelBudgetDetailRemainingAmount.getStyleClass().add("danger-color");
+            this.labelBudgetStatus.setText("Overspent");
+            this.labelBudgetRemainingAmount.getStyleClass().add("danger-color");
         }
 
-        this.labelBudgetDetailRemainingAmount.setText(Float.toString(budget.getAmount() - budget.getSpentAmount()));
-        this.labelBudgetDetailSpentAmount.setText(Float.toString(budget.getSpentAmount()));
-        this.labelBudgetDetailRecommendedDailyAmount.setText(Float.toString(budget.getAmount() / totalDays));
-        this.labelBudgetDetailActualDailyAmount.setText(Float.toString(budget.getSpentAmount() / (passingDays == 0 ? 1 : passingDays)));
+        this.imageBudgetCategory.setImage(new Image(imageUrl));
+        this.labelBudgetDate.setText(
+                budget.getStartedAt().format(DateHelper.getFormat()) + " - " + budget.getEndedAt().format(DateHelper.getFormat())
+        );
+        this.labelBudgetCategoryName.setText(budget.getCategoryName());
+        this.labelBudgetAmount.setText(this.toMoneyString(budget.getAmount(), moneySymbol));
+        this.labelBudgetRemainingAmount.setText(this.toMoneyString(budget.getAmount() - budget.getSpentAmount(), moneySymbol));
+        this.labelBudgeSpentAmount.setText(this.toMoneyString(budget.getSpentAmount(), moneySymbol));
+        this.labelBudgetNormalDailyAmount.setText(this.toMoneyString(budget.getAmount() / totalDays, moneySymbol) + " / day");
+        this.labelBudgetDailyAmount.setText(this.toMoneyString(budget.getSpentAmount() / (passingDays == 0 ? 1 : passingDays), moneySymbol));
     }
 
     private void _loadAreaChart() throws SQLException, ClassNotFoundException {
@@ -234,7 +243,11 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-        ReportPresenter.listTransactions(this.listViewTransactions, this.transactions);
+        ReportPresenter.listTransactions(this.listViewTransactions, this.transactions, this.getWallet());
+        Budget budget = this.budget;
+        String startedAt = budget.getStartedAt().format(DateHelper.getFormat()),
+                endedAt = budget.getEndedAt().format(DateHelper.getFormat());
+        this.textBudgetTitle.setText("Transactions from " + startedAt + " to " + endedAt);
         this.createScreen(parent, "Budget Detail", 400, 500);
     }
 

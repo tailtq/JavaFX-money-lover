@@ -2,7 +2,6 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.ListView?>
 
@@ -54,18 +53,14 @@
 
             <VBox styleClass="transaction__pane" alignment="CENTER">
                 <GridPane styleClass="transaction__statistic">
-                    <Text text="Inflow"
-                          GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                    <Label text="+2,960,000.00 ₫" fx:id="labelInflow"
-                           styleClass="primary-color"
+                    <Text text="Inflow" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <Label fx:id="labelInflow" styleClass="success-color"
                            GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                    <Text text="Outflow"
-                          GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    <Label text="-15,960,000.00 ₫" fx:id="labelOutflow"
-                           styleClass="danger-color"
+                    <Text text="Outflow" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <Label fx:id="labelOutflow" styleClass="danger-color"
                            GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                    <Label text="-60,000.00 ₫" fx:id="labelRemainingAmount"
-                           styleClass="transaction__statistic__remaining-amount"
+                    <Text text="Total" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <Label fx:id="labelRemainingAmount" styleClass="transaction__statistic__remaining-amount"
                            GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
                     <columnConstraints>
@@ -77,15 +72,6 @@
                         <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
-                <fx:include source="../../components/buttons/text-button.fxml" styleClass="success-color">
-                    <text>VIEW REPORT FOR THIS PERIOD</text>
-                    <VBox.margin>
-                        <Insets>
-                            <top>5</top>
-                            <bottom>10</bottom>
-                        </Insets>
-                    </VBox.margin>
-                </fx:include>
 
                 <ListView styleClass="transactions__times" fx:id="listViewTransactions"/>
             </VBox>

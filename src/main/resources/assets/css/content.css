@@ -23,8 +23,6 @@
 
 .dialog-container {
     -fx-spacing: 10;
-    -fx-padding: 10;
-    -fx-max-width: 400px;
 }
 
 .dialog-container--max-width-0 {
@@ -39,6 +37,13 @@
 
 .container__content {
     -fx-max-width: 480px;
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
+}
+
+.dialog__content {
+    -fx-max-width: 400px;
+    -fx-padding: 25 10;
     -fx-background-color: #fff;
     -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
 }
@@ -60,8 +65,24 @@
     -fx-font-size: 13px;
 }
 
+.font--size-14 {
+    -fx-font-size: 14px;
+}
+
+.font--size-15 {
+    -fx-font-size: 15px;
+}
+.font--size-16 {
+    -fx-font-size: 16px;
+}
+
 .font--size-20 {
     -fx-font-size: 20px;
+}
+
+/* Spacing */
+.content--spacing-10 {
+    -fx-spacing: 10;
 }
 
 /* Button */
@@ -167,10 +188,8 @@
     -fx-padding: 0 0 0 30;
 }
 
-/* Chart */
-/*.default-color0.chart-bar {*/
-    /*-fx-stroke: blue*/
-/*}*/
-/*.default-color0.chart-series-bar { -fx-stroke: blue; }*/
-/*.default-color1.chart-series-bar { -fx-stroke: yellow; }*/
-/*.default-color2.chart-series-bar { -fx-stroke: brown; }*/
+.optional-button {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+

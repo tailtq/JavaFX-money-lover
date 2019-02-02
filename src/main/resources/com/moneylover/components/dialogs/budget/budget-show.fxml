@@ -6,8 +6,6 @@
 <?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.text.Text?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -16,18 +14,18 @@
           @../../../../../assets/css/content.css,
           @../../../../../assets/css/pages/transaction.css,
           @../../../../../assets/css/pages/budget.css"
-      styleClass="report--padding-30, report--background-white"
+      styleClass="dialog-container"
       alignment="TOP_CENTER">
-    <VBox styleClass="dialog-container" alignment="TOP_CENTER">
+    <VBox styleClass="dialog__content" alignment="TOP_CENTER">
         <HBox alignment="CENTER" styleClass="budget-show__title">
             <ImageView fitHeight="50"
                        fitWidth="50"
-                       styleClass="transaction__content__image"
-                       GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Image url="@../../../../../assets/images/categories/i_debt.png"
-                       backgroundLoading="true"/>
-            </ImageView>
-            <Text styleClass="font--size-20">Hello</Text>
+                       fx:id="imageBudgetCategory"
+                       styleClass="transaction__content__image"/>
+            <VBox alignment="CENTER_LEFT">
+                <Label styleClass="font--size-15, text-bold" fx:id="labelBudgetCategoryName"/>
+                <Label styleClass="font--size-12, text-bold, gray-color" fx:id="labelBudgetDate"/>
+            </VBox>
         </HBox>
         <AreaChart fx:id="areaChartDetail" legendVisible="false">
             <xAxis>
@@ -42,22 +40,28 @@
             <GridPane styleClass="transaction__statistic, budget__statistic">
                 <VBox styleClass="transaction__time"
                       GridPane.columnIndex="0" GridPane.rowIndex="0">
-                    <Label text="Left" styleClass="font--size-12, gray-color" fx:id="labelBudgetDetailStatus"/>
-                    <Label text="+$ 2,500.00" styleClass="font--size-13" fx:id="labelBudgetDetailRemainingAmount"/>
+                    <Label text="Amount" styleClass="text-bold, font--size-12, gray-color"/>
+                    <Label styleClass="font--size-13" fx:id="labelBudgetAmount"/>
                 </VBox>
                 <VBox styleClass="transaction__time"
                       GridPane.columnIndex="1" GridPane.rowIndex="0">
-                    <Label text="Spent" styleClass="font--size-12, gray-color"/>
-                    <Label text="+$ 500.00" styleClass="font--size-13" fx:id="labelBudgetDetailSpentAmount"/>
+                    <Label text="Spent" styleClass="text-bold, font--size-12, gray-color"/>
+                    <Label styleClass="font--size-13" fx:id="labelBudgeSpentAmount"/>
                 </VBox>
 
-                <VBox styleClass="transaction__time" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Label text="Recommended daily spending" styleClass="font--size-12, gray-color"/>
-                    <Label text="+$ 96.15" styleClass="font--size-13" fx:id="labelBudgetDetailRecommendedDailyAmount"/>
+                <VBox styleClass="transaction__time"
+                      GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label styleClass="text-bold, font--size-12, gray-color" fx:id="labelBudgetStatus"/>
+                    <Label styleClass="font--size-13" fx:id="labelBudgetRemainingAmount"/>
                 </VBox>
-                <VBox styleClass="transaction__time" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <Label text="Actual daily spending" styleClass="font--size-12, gray-color"/>
-                    <Label text="+$ 100.00" styleClass="font--size-13" fx:id="labelBudgetDetailActualDailyAmount"/>
+
+                <VBox styleClass="transaction__time" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label text="Should spend" styleClass="text-bold, font--size-12, gray-color"/>
+                    <Label styleClass="font--size-13" fx:id="labelBudgetNormalDailyAmount"/>
+                </VBox>
+                <VBox styleClass="transaction__time" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label text="Daily spending" styleClass="text-bold, font--size-12, gray-color"/>
+                    <Label styleClass="font--size-13" fx:id="labelBudgetDailyAmount"/>
                 </VBox>
 
                 <columnConstraints>
@@ -65,8 +69,8 @@
                     <ColumnConstraints hgrow="ALWAYS" percentWidth="50" halignment="RIGHT"/>
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints vgrow="SOMETIMES" />
-                    <RowConstraints vgrow="SOMETIMES" />
+                    <RowConstraints vgrow="SOMETIMES"/>
+                    <RowConstraints vgrow="SOMETIMES"/>
                 </rowConstraints>
             </GridPane>
         </VBox>
