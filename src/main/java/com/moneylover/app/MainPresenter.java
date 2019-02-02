@@ -30,6 +30,8 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 
     private LoaderInterface controller;
 
+    private StringProperty changeMainScene;
+
     private BooleanProperty changeScene = new SimpleBooleanProperty(false);
 
     private String fxmlFile = "";
@@ -37,6 +39,10 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     private IntegerProperty walletIndex = new SimpleIntegerProperty(0);
 
     private VBox mainView;
+
+    void setChangeMainScene(StringProperty changeMainScene) {
+        this.changeMainScene = changeMainScene;
+    }
 
     BooleanProperty getChangeScene() {
         return changeScene;
@@ -128,6 +134,11 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         }
     }
 
+    @FXML
+    private void pressSignOut(Event e) {
+        this.changeMainScene.set("signin");
+    }
+
     private void initView(FXMLLoader viewLoader) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         String file = viewLoader.getLocation().getFile();
         this.fxmlFile = file.substring(file.indexOf("/com/moneylover"));
@@ -141,7 +152,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report/report.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
             this.initView(fxmlLoader);
             this.changeScene.set(false);
 

@@ -118,3 +118,11 @@
 .friends.active {
     -fx-background-image: url("../../images/coloured-friends.png");
 }
+
+.sign-out {
+    -fx-background-image: url("../../images/sign-out.png");
+}
+
+.sign-out.active {
+    -fx-background-image: url("../../images/coloured-sign-out.png");
+}

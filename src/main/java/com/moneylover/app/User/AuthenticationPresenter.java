@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class AuthenticationPresenter extends BaseViewPresenter {
-    private StringProperty changeScene = new SimpleStringProperty("signin");
+    private StringProperty changeMainScene;
 
     @FXML
     private TextField name;
@@ -35,16 +35,9 @@ public class AuthenticationPresenter extends BaseViewPresenter {
 
     private com.moneylover.Modules.User.Controllers.UserController userController;
 
-    public AuthenticationPresenter() throws SQLException, ClassNotFoundException {
+    public AuthenticationPresenter(StringProperty changeMainScene) throws SQLException, ClassNotFoundException {
+        this.changeMainScene = changeMainScene;
         this.userController = new UserController();
-    }
-
-    public Scene loadView() throws IOException {
-        return this.loadSignInForm();
-    }
-
-    public StringProperty getChangeScene() {
-        return changeScene;
     }
 
     public Scene loadSignInForm() throws IOException {
@@ -57,10 +50,10 @@ public class AuthenticationPresenter extends BaseViewPresenter {
 
     @FXML
     private void changeScene() {
-        if (changeScene.get().equals("signin")) {
-            changeScene.set("signup");
+        if (this.changeMainScene.get().equals("signin")) {
+            this.changeMainScene.set("signup");
         } else {
-            changeScene.set("signin");
+            this.changeMainScene.set("signin");
         }
     }
 
@@ -77,7 +70,7 @@ public class AuthenticationPresenter extends BaseViewPresenter {
         User user = new User(email, password);
         try {
             UserPresenter.setUser(this.userController.login(user));
-            this.changeScene.set("transaction");
+            this.changeMainScene.set("transaction");
         } catch (NotFoundException e) {
             this.setFieldsNull(this.password);
             this.showErrorDialog("Email or password is not valid");
@@ -121,6 +114,7 @@ public class AuthenticationPresenter extends BaseViewPresenter {
         }
 
         User user = new User(name, email, password);
+
         try {
             this.userController.getUserByEmail(user.getEmail());
             this.setFieldsNull(this.password, this.passwordConfirmation);
@@ -129,6 +123,7 @@ public class AuthenticationPresenter extends BaseViewPresenter {
         } catch (NotFoundException e) {
             this.userController.create(user);
         }
-        this.changeScene.set("signin");
+
+        this.changeMainScene.set("signin");
     }
 }

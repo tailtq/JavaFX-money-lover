@@ -1,7 +1,11 @@
 package com.moneylover.app.Report.View;
 
+import com.moneylover.Infrastructure.Constants.CommonConstants;
+import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
+import com.moneylover.Infrastructure.Helpers.DateHelper;
 import com.moneylover.Modules.Time.Entities.CustomDate;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
+import com.moneylover.Modules.Wallet.Entities.Wallet;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +21,13 @@ import java.time.format.DateTimeFormatter;
 public class ReportCell extends ListCell<Pair<CustomDate, ObservableList<Transaction>>> {
     private HBox reportCell;
 
-    public ReportCell() throws IOException {
+    private Wallet wallet;
+
+    private LocalDate startDate, endDate;
+
+    public ReportCell(LocalDate startDate, LocalDate endDate) throws IOException {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this._loadCell();
     }
 
@@ -25,6 +35,10 @@ public class ReportCell extends ListCell<Pair<CustomDate, ObservableList<Transac
         FXMLLoader reportCellLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/report/report-cell.fxml"));
         reportCellLoader.setController(this);
         this.reportCell = reportCellLoader.load();
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
 
     /*========================== Draw ==========================*/
@@ -64,16 +78,29 @@ public class ReportCell extends ListCell<Pair<CustomDate, ObservableList<Transac
 
         float amount = income - Math.abs(outcome);
         CustomDate date = item.getKey();
-        String month = (date.getMonthNumber() < 10) ? "0" + date.getMonthNumber() : Integer.toString(date.getMonthNumber());
-        String day = (date.getDayOfMonth() < 10) ? "0" + date.getDayOfMonth() : Integer.toString(date.getDayOfMonth());
-        String dateString = date.getYear() + "-" + month + "-" + day;
-        String amountString = (amount > 0) ? "+" + amount : Float.toString(amount);
+        String month = (date.getMonthNumber() < 10) ? "0" + date.getMonthNumber() : Integer.toString(date.getMonthNumber()),
+                day = (date.getDayOfMonth() < 10) ? "0" + date.getDayOfMonth() : Integer.toString(date.getDayOfMonth()),
+                dateString = date.getYear() + "-" + month + "-" + day,
+                moneySymbol = this.wallet.getMoneySymbol(),
+                time;
         LocalDate localDate = LocalDate.parse(dateString);
 
-        labelDateTime.setText(localDate.format(DateTimeFormatter.ofPattern("EEEE Y/MM/dd")));
-        labelIncome.setText("+" + income);
-        labelOutcome.setText(Float.toString(outcome));
-        labelAmount.setText(amountString);
+        switch (DateHelper.getDateRange(this.startDate, this.endDate)) {
+            case CommonConstants.DAY_RANGE:
+                time = localDate.format(DateTimeFormatter.ofPattern("EEEE MM/dd/Y"));
+                break;
+            case (CommonConstants.MONTH_RANGE):
+                time = localDate.format(DateTimeFormatter.ofPattern("MM/dd/Y"));
+                break;
+            default:
+                time = localDate.format(DateTimeFormatter.ofPattern("MM/Y"));
+                break;
+        }
+
+        labelDateTime.setText(time);
+        labelIncome.setText(CurrencyHelper.toMoneyString(income, moneySymbol));
+        labelOutcome.setText(CurrencyHelper.toMoneyString(outcome, moneySymbol));
+        labelAmount.setText(CurrencyHelper.toMoneyString(amount, moneySymbol));
         setGraphic(this.reportCell);
     }
 }

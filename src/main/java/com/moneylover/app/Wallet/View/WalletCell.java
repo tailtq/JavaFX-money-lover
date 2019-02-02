@@ -1,5 +1,6 @@
 package com.moneylover.app.Wallet.View;
 
+import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
 import com.moneylover.Modules.Wallet.Controllers.WalletController;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
@@ -72,17 +73,15 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         }
 
         float amount = item.getAmount();
-        String amountText = String.format("%.1f", amount) + " " + item.getMoneySymbol();
 
-        if (amount > 0) {
-            amountText = "+" + amountText;
-            this.labelWalletAmount.getStyleClass().add("success-color");
-        } else if (amount < 0) {
+        if (amount < 0) {
             this.labelWalletAmount.getStyleClass().add("danger-color");
+        } else {
+            this.labelWalletAmount.getStyleClass().add("success-color");
         }
 
         this.labelWalletName.setText(item.getName());
-        this.labelWalletAmount.setText(amountText);
+        this.labelWalletAmount.setText(CurrencyHelper.toMoneyString(amount, item.getMoneySymbol()));
         setGraphic(this.walletCell);
     }
 
@@ -112,6 +111,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         Parent parent = fxmlLoader.load();
         this.currencyPresenter = new CurrencyPresenter(this.selectedCurrencyId);
         this.loadWalletData();
+        this.textFieldWalletAmount.setDisable(true);
         this.createScreen(parent, "Edit Wallet", 500, 115);
     }
 
@@ -121,7 +121,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         this.currencyPresenter.handleSelectedCurrencyId(this.selectCurrency);
         this.selectedCurrencyId.set(this.wallet.getCurrencyId());
         this.textFieldTransactionName.setText(this.wallet.getName());
-        this.textFieldWalletAmount.setText(String.format("%.1f", this.wallet.getAmount()));
+        this.textFieldWalletAmount.setText(CurrencyHelper.toMoney(this.wallet.getAmount()));
     }
 
     @FXML

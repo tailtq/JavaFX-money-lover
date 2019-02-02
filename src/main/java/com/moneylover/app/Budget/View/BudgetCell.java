@@ -2,7 +2,6 @@ package com.moneylover.app.Budget.View;
 
 import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
-import com.moneylover.Infrastructure.Contracts.ParserInterface;
 import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
 import com.moneylover.Infrastructure.Helpers.DateHelper;
 import com.moneylover.Modules.Budget.Controllers.BudgetController;
@@ -13,7 +12,6 @@ import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Budget.BudgetPresenter;
 import com.moneylover.app.Category.CategoryPresenter;
-import com.moneylover.app.MainPresenter;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Report.ReportPresenter;
 import com.moneylover.app.Transaction.TransactionPresenter;
@@ -35,7 +33,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -44,7 +41,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class BudgetCell extends ListCell<Budget> implements DialogInterface, ParserInterface {
+public class BudgetCell extends ListCell<Budget> implements DialogInterface {
     private TransactionController transactionController;
 
     private CategoryPresenter categoryPresenter;
@@ -155,10 +152,10 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         this.labelBudgetRemainingAmount.getStyleClass().removeAll("success-color", "danger-color");
         this.labelBudgetRemainingAmount.getStyleClass().add((remainingAmount > 0) ? "success-color" : "danger-color");
         this.labelBudgetRemainingAmount.setText(
-                (remainingAmount > 0 ? "Left " : "Overspent ") + this.toMoneyString(remainingAmount, moneySymbol)
+                (remainingAmount > 0 ? "Left " : "Overspent ") + CurrencyHelper.toMoneyString(remainingAmount, moneySymbol)
         );
         this.labelBudgetTime.setText(startedAtText + " - " + endedAtText);
-        this.labelBudgetAmount.setText(this.toMoneyString(budget.getAmount(), moneySymbol));
+        this.labelBudgetAmount.setText(CurrencyHelper.toMoneyString(budget.getAmount(), moneySymbol));
         this.imageBudgetCategory.setImage(new Image(imageUrl));
         this.progressBarRemainingAmount.setProgress(budget.getSpentAmount() / budget.getAmount());
         setGraphic(this.budgetCell);
@@ -190,6 +187,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         if (this._isOverspent(budget)) {
             this.labelBudgetStatus.setText("Overspent");
             this.labelBudgetRemainingAmount.getStyleClass().add("danger-color");
+        } else {
+            this.labelBudgetStatus.setText("Left");
         }
 
         this.imageBudgetCategory.setImage(new Image(imageUrl));
@@ -197,11 +196,11 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
                 budget.getStartedAt().format(DateHelper.getFormat()) + " - " + budget.getEndedAt().format(DateHelper.getFormat())
         );
         this.labelBudgetCategoryName.setText(budget.getCategoryName());
-        this.labelBudgetAmount.setText(this.toMoneyString(budget.getAmount(), moneySymbol));
-        this.labelBudgetRemainingAmount.setText(this.toMoneyString(budget.getAmount() - budget.getSpentAmount(), moneySymbol));
-        this.labelBudgeSpentAmount.setText(this.toMoneyString(budget.getSpentAmount(), moneySymbol));
-        this.labelBudgetNormalDailyAmount.setText(this.toMoneyString(budget.getAmount() / totalDays, moneySymbol) + " / day");
-        this.labelBudgetDailyAmount.setText(this.toMoneyString(budget.getSpentAmount() / (passingDays == 0 ? 1 : passingDays), moneySymbol));
+        this.labelBudgetAmount.setText(CurrencyHelper.toMoneyString(budget.getAmount(), moneySymbol));
+        this.labelBudgetRemainingAmount.setText(CurrencyHelper.toMoneyString(budget.getAmount() - budget.getSpentAmount(), moneySymbol));
+        this.labelBudgeSpentAmount.setText(CurrencyHelper.toMoneyString(budget.getSpentAmount(), moneySymbol));
+        this.labelBudgetNormalDailyAmount.setText(CurrencyHelper.toMoneyString(budget.getAmount() / totalDays, moneySymbol) + " / day");
+        this.labelBudgetDailyAmount.setText(CurrencyHelper.toMoneyString(budget.getSpentAmount() / (passingDays == 0 ? 1 : passingDays), moneySymbol));
     }
 
     private void _loadAreaChart() throws SQLException, ClassNotFoundException {
@@ -276,9 +275,7 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface, Par
         PagePresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
-        this.textFieldBudgetAmount.setText(
-                CurrencyHelper.parseToCurrency(Float.toString(this.budget.getAmount()))
-        );
+        this.textFieldBudgetAmount.setText(CurrencyHelper.toMoney(this.budget.getAmount()));
         this.datePickerStartedAt.setValue(this.budget.getStartedAt());
         this.datePickerEndedAt.setValue(this.budget.getEndedAt());
 
