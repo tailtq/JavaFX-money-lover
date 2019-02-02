@@ -38,8 +38,6 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 
     private VBox mainView;
 
-    public static long time;
-
     BooleanProperty getChangeScene() {
         return changeScene;
     }
@@ -98,7 +96,6 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     @FXML
     private void pressBudget(Event e) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         if (this.activeButton((Node) e.getSource())) {
-            time = System.nanoTime();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget/budgets.fxml"));
             this.initView(fxmlLoader);
         }
@@ -144,7 +141,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/budget/budgets.fxml"));
             this.initView(fxmlLoader);
             this.changeScene.set(false);
 
@@ -152,15 +149,15 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
                 @Override
                 public void run() {
                     super.run();
-//                    try {
-//                        CategoryPresenter.setTypes((new TypeController()).list());
-//                        CategoryPresenter.setCategories((new CategoryController()).list());
-//                        CategoryPresenter.setSubCategories((new SubCategoryController()).list());
-//                        CategoryPresenter.combineCategories();
-//                        FriendDialogPresenter.setFriends((new FriendController()).list(UserPresenter.getUser().getId()));
-//                    } catch (SQLException | ClassNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
+                    try {
+                        CategoryPresenter.setTypes((new TypeController()).list());
+                        CategoryPresenter.setCategories((new CategoryController()).list());
+                        CategoryPresenter.setSubCategories((new SubCategoryController()).list());
+                        CategoryPresenter.combineCategories();
+                        FriendDialogPresenter.setFriends((new FriendController()).list(UserPresenter.getUser().getId()));
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             };
             thread.start();

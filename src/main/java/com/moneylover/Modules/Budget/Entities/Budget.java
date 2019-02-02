@@ -21,6 +21,8 @@ public class Budget extends BaseModel {
 
     private String categoryIcon;
 
+    private String categoryName;
+
     public static String getTable() {
         return "budgets";
     }
@@ -87,5 +89,13 @@ public class Budget extends BaseModel {
 
     public void setCategoryIcon(String categoryIcon) {
         this.categoryIcon = categoryIcon;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

@@ -10,6 +10,7 @@ import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.PagePresenter;
 import com.moneylover.app.Report.View.ReportCell;
 import com.moneylover.app.Transaction.View.TransactionCell;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -285,12 +286,16 @@ public class ReportPresenter extends PagePresenter {
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-        ReportPresenter.listTransactions(this.listViewTransactions, transactions);
+        ReportPresenter.listTransactions(this.listViewTransactions, transactions, this.getWallet());
 
         this.createScreen(parent, "Report Detail", 400, 500);
     }
 
-    public static void listTransactions(ListView listView, ObservableList<Transaction> transactions) {
+    public static void listTransactions(
+            ListView listView,
+            ObservableList<Transaction> transactions,
+            Wallet wallet
+    ) {
         if (transactions.size() == 0) {
             listView.setPlaceholder(new Label("No Transaction In List"));
         }
@@ -302,6 +307,7 @@ public class ReportPresenter extends PagePresenter {
                 try {
                     TransactionCell transactionCell = new TransactionCell();
                     transactionCell.setDisableOptions(true);
+                    transactionCell.setWallet(wallet);
 
                     return transactionCell;
                 } catch (IOException e) {

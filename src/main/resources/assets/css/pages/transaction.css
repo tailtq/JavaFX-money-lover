@@ -4,6 +4,7 @@
 
 .transaction__statistic {
     -fx-vgap: 5;
+    -fx-padding: 0 0 10px;
 }
 
 .transaction__statistic__remaining-amount {
@@ -79,5 +80,5 @@
 }
 
 .transaction__amount {
-    -fx-spacing: 12;
+    -fx-spacing: 3;
 }

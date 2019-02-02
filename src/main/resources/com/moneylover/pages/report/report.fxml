@@ -20,7 +20,7 @@
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml" fx:id="dropdownWallets"/>
             </left>
             <center>
-                <HBox alignment="CENTER_RIGHT">
+                <HBox alignment="CENTER_RIGHT" styleClass="header__report">
                     <Text styleClass="font--size-10">Range Date</Text>
                     <DatePicker promptText="Start Date" fx:id="datePickerStartDate" onMouseReleased="#changeDayRange"
                                 styleClass="transaction__create-form__select, report__date-range"/>

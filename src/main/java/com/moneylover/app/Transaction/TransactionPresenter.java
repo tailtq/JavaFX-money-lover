@@ -160,6 +160,7 @@ public class TransactionPresenter extends PagePresenter {
 
     private void _calculateStatistic() {
         float inflow = 0, outflow = 0;
+        String moneySymbol = this.wallets.get(this.walletIndex.get()).getMoneySymbol();
 
         for (Transaction transaction: this.transactions) {
             if (transaction.getAmount() > 0) {
@@ -169,9 +170,9 @@ public class TransactionPresenter extends PagePresenter {
             }
         }
 
-        this.labelInflow.setText(this.toMoneyString(inflow));
-        this.labelOutflow.setText(this.toMoney(outflow));
-        this.labelRemainingAmount.setText(this.toMoneyString(inflow + outflow));
+        this.labelInflow.setText(this.toMoneyString(inflow, moneySymbol));
+        this.labelOutflow.setText(this.toMoneyString(outflow, moneySymbol));
+        this.labelRemainingAmount.setText(this.toMoneyString(inflow + outflow, moneySymbol));
     }
 
     private void _setListViewTransactions() {
@@ -181,7 +182,7 @@ public class TransactionPresenter extends PagePresenter {
             this.listViewTransactions.setPlaceholder(new Label("No Transaction In List"));
         }
 
-        TransactionPresenter.listTransactions(
+        this.listTransactions(
                 this.listViewTransactions,
                 this.transactions,
                 this.wallets,
@@ -189,7 +190,7 @@ public class TransactionPresenter extends PagePresenter {
         );
     }
 
-    public static void listTransactions(
+    private void listTransactions(
             ListView listView,
             ObservableList<Transaction> transactions,
             ObservableList<Wallet> wallets,
@@ -202,6 +203,7 @@ public class TransactionPresenter extends PagePresenter {
                 try {
                     TransactionCell transactionCell = new TransactionCell(handledTransactionId);
                     transactionCell.setWallets(wallets);
+                    transactionCell.setWalletIndex(walletIndex);
 
                     return transactionCell;
                 } catch (IOException e) {
