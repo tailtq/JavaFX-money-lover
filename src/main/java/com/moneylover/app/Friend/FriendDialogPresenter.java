@@ -8,6 +8,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -49,6 +50,7 @@ public class FriendDialogPresenter extends BaseViewPresenter implements DialogIn
             Button button = new Button();
             button.getStyleClass().addAll("currency__choose-button", "image-button", "boy", "white-bg-color");
             button.setGraphic(new Text(friend.getName()));
+            button.setAlignment(Pos.CENTER_LEFT);
             buttons.add(button);
             button.setMaxHeight(Double.MAX_VALUE);
             button.setOnAction(actionEvent -> {

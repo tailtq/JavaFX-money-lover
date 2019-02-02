@@ -114,7 +114,10 @@ public class WalletPresenter extends PagePresenter {
 
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException, InterruptedException {
-        super.setWallets(wallets);
+        this.wallets = wallets;
+        this.wallets.clear();
+        this.wallets.addAll(this.walletController.list(UserPresenter.getUser().getId()));
+        this.loadHeaderWallets();
         this._setListViewWallets();
     }
 

@@ -138,7 +138,7 @@ public class ReportPresenter extends PagePresenter {
     private DatePicker datePickerStartDate, datePickerEndDate;
 
     @FXML
-    private Text title;
+    private Text title, textDialogTitle;
 
     public void loadPresenter() {
         // TODO: Calculate data
@@ -232,8 +232,7 @@ public class ReportPresenter extends PagePresenter {
         Parent parent = fxmlLoader.load();
         this._loadBarChart(this.getWallet().getMoneySymbol(), this.startDate, this.endDate);
         this._listMonthTransactions();
-        this.dateRangeChart.setTitle("Report");
-        this.createScreen(parent, "Report", 500, 700);
+        this.createScreen(parent, "Report", 600, 700);
     }
 
     private void _listMonthTransactions() {
@@ -278,17 +277,17 @@ public class ReportPresenter extends PagePresenter {
     }
 
     @FXML
-    private void _loadMonthTransactionsDetail(
-            ObservableList<Transaction> transactions
-    ) throws IOException {
+    private void _loadMonthTransactionsDetail(ObservableList<Transaction> transactions) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/moneylover/components/dialogs/report/report-detail.fxml")
+                getClass().getResource("/com/moneylover/components/dialogs/budget/budget-detail.fxml")
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
         ReportPresenter.listTransactions(this.listViewTransactions, transactions, this.getWallet());
-
-        this.createScreen(parent, "Report Detail", 400, 500);
+        String startedAt = startDate.format(DateHelper.getFormat()),
+                endedAt = endDate.format(DateHelper.getFormat());
+        this.textDialogTitle.setText("Transactions from " + startedAt + " to " + endedAt);
+        this.createScreen(parent, "Report Detail", 470, 480);
     }
 
     public static void listTransactions(
