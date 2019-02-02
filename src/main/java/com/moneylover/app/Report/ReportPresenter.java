@@ -35,7 +35,8 @@ import java.util.Iterator;
 public class ReportPresenter extends PagePresenter {
     private TransactionController transactionController;
 
-    private LocalDate startDate, endDate;
+    private LocalDate startDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()),
+            endDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 
     private ObservableList<Transaction> transactions;
 
@@ -46,8 +47,6 @@ public class ReportPresenter extends PagePresenter {
             outflowTransactions = FXCollections.observableArrayList();
 
     public ReportPresenter() throws SQLException, ClassNotFoundException {
-        this.startDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-        this.endDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
         this.transactionController = new TransactionController();
     }
 
@@ -58,11 +57,14 @@ public class ReportPresenter extends PagePresenter {
         this.transactions = FXCollections.observableArrayList(
                 this.transactionController.listNotReportedByDateRange(wallet.getId(), startDate, endDate)
         );
-        this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
+        this.datePickerStartDate.setValue(this.startDate);
+        this.datePickerEndDate.setValue(this.endDate);
+        this.sortData(wallet.getMoneySymbol(), this.startDate, this.endDate);
+        this.loadBarChart();
         this._loadPieCharts();
     }
 
-    private void _loadBarChart(
+    private void sortData(
             String moneySymbol,
             LocalDate startDate,
             LocalDate endDate
@@ -72,7 +74,9 @@ public class ReportPresenter extends PagePresenter {
         } else {
             ReportPresenter._sortTransactionsByMonth(this.monthTransactions, transactions, moneySymbol);
         }
+    }
 
+    private void loadBarChart() {
         this._loadBarChartData(this.monthTransactions, startDate, endDate);
     }
 
@@ -152,7 +156,7 @@ public class ReportPresenter extends PagePresenter {
         this.dateRangeChart.getData().clear();
         ObservableList<String> titles = FXCollections.observableArrayList();
         CategoryAxis categoryAxis = (CategoryAxis) this.dateRangeChart.getXAxis();
-        String dateRangeType = this._getDateRange(startDate, endDate);
+        String dateRangeType = DateHelper.getDateRange(startDate, endDate);
         XYChart.Series inflowSeries = new XYChart.Series<>();
         XYChart.Series outflowSeries = new XYChart.Series();
         inflowSeries.setName("Inflow");
@@ -196,16 +200,6 @@ public class ReportPresenter extends PagePresenter {
         this.dateRangeChart.getData().addAll(inflowSeries, outflowSeries);
     }
 
-    private String _getDateRange(LocalDate startDate, LocalDate endDate) {
-        if (DateHelper.isSameMonth(startDate, endDate)) {
-            return CommonConstants.DAY_RANGE;
-        } else if (DateHelper.isSameYear(startDate, endDate)) {
-            return CommonConstants.MONTH_RANGE;
-        } else {
-            return CommonConstants.YEAR_RANGE;
-        }
-    }
-
     private void _loadPieChartData(
             PieChart pieChart,
             ObservableList<Pair<Category, ObservableList<Transaction>>> transactions
@@ -230,7 +224,7 @@ public class ReportPresenter extends PagePresenter {
         );
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
-        this._loadBarChart(this.getWallet().getMoneySymbol(), this.startDate, this.endDate);
+        this.loadBarChart();
         this._listMonthTransactions();
         this.createScreen(parent, "Report", 600, 700);
     }
@@ -267,7 +261,10 @@ public class ReportPresenter extends PagePresenter {
             @Override
             public ListCell call(ListView param) {
                 try {
-                    return new ReportCell();
+                    ReportCell reportCell = new ReportCell(startDate, endDate);
+                    reportCell.setWallet(getWallet());
+
+                    return reportCell;
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
@@ -332,7 +329,8 @@ public class ReportPresenter extends PagePresenter {
             this.transactions.addAll(
                     this.transactionController.listNotReportedByDateRange(wallet.getId(), startDate, endDate)
             );
-            this._loadBarChart(wallet.getMoneySymbol(), this.startDate, this.endDate);
+            this.sortData(wallet.getMoneySymbol(), this.startDate, this.endDate);
+            this.loadBarChart();
             this._loadPieCharts();
         }
     }

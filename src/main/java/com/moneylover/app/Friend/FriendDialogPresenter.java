@@ -5,6 +5,7 @@ import com.moneylover.Modules.Category.Entities.Category;
 import com.moneylover.Modules.Friend.Entities.Friend;
 import com.moneylover.app.BaseViewPresenter;
 import javafx.beans.property.IntegerProperty;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,11 @@ public class FriendDialogPresenter extends BaseViewPresenter implements DialogIn
 
     public static void setFriends(ArrayList<Friend> friends) {
         FriendDialogPresenter.friends = friends;
+    }
+
+    public static void addFriends(ObservableList<Friend> friends) {
+        FriendDialogPresenter.friends.clear();
+        FriendDialogPresenter.friends.addAll(friends);
     }
 
     private IntegerProperty selectedFriend;

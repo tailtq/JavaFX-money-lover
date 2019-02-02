@@ -4,6 +4,12 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class CurrencyHelper {
+    public static String toMoney(float amount) {
+        NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
+
+        return nf.format(amount);
+    }
+
     public static String parseToCurrency(String text) {
         if (text.equals("")) {
             return "";
@@ -31,5 +37,9 @@ public class CurrencyHelper {
         }
 
         return text;
+    }
+
+    public static String toMoneyString(float amount, String moneySymbol) {
+        return (amount > 0 ? "+" : "") + CurrencyHelper.toMoney(amount) + moneySymbol;
     }
 }

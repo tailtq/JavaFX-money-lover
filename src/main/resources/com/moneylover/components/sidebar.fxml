@@ -39,4 +39,8 @@
     <fx:include source="buttons/sidebar-button.fxml" onAction="#pressUser" styleClass="user">
         <text>User</text>
     </fx:include>
+
+    <fx:include source="buttons/sidebar-button.fxml" onAction="#pressSignOut" styleClass="sign-out">
+        <text>Sign out</text>
+    </fx:include>
 </VBox>

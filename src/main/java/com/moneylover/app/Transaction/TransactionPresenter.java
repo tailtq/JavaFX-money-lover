@@ -170,9 +170,9 @@ public class TransactionPresenter extends PagePresenter {
             }
         }
 
-        this.labelInflow.setText(this.toMoneyString(inflow, moneySymbol));
-        this.labelOutflow.setText(this.toMoneyString(outflow, moneySymbol));
-        this.labelRemainingAmount.setText(this.toMoneyString(inflow + outflow, moneySymbol));
+        this.labelInflow.setText(CurrencyHelper.toMoneyString(inflow, moneySymbol));
+        this.labelOutflow.setText(CurrencyHelper.toMoneyString(outflow, moneySymbol));
+        this.labelRemainingAmount.setText(CurrencyHelper.toMoneyString(inflow + outflow, moneySymbol));
     }
 
     private void _setListViewTransactions() {

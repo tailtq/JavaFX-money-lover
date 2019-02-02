@@ -64,6 +64,7 @@ public class FriendPresenter extends PagePresenter {
 
     private void _addNewFriend(Friend friend) {
         this.friends.add(0, friend);
+        FriendDialogPresenter.addFriends(this.friends);
     }
 
     @FXML
@@ -141,6 +142,8 @@ public class FriendPresenter extends PagePresenter {
             } else {
                 this.friends.remove(i);
             }
+
+            FriendDialogPresenter.addFriends(this.friends);
         });
     }
 

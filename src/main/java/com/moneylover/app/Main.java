@@ -1,6 +1,8 @@
 package com.moneylover.app;
 
 import com.moneylover.app.User.AuthenticationPresenter;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
@@ -17,60 +19,75 @@ public class Main extends Application {
 
     private HBox layout = new HBox();
 
+    private boolean firstLogin = true;
+
+    private StringProperty changeMainScene = new SimpleStringProperty("signin");
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        this.authenticationController = new AuthenticationPresenter();
+        this.authenticationController = new AuthenticationPresenter(changeMainScene);
         this.listenSceneChanging();
     }
 
     private void listenSceneChanging() throws IOException {
-        this.authenticationController.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
+        this.changeMainScene.addListener((observableValue, oldValue, newValue) -> {
             try {
+                this.layout.getChildren().clear();
+
                 if (newValue.equals("signin") || newValue.equals("signup")) {
+                    this.primaryStage.setMinWidth(270);
+                    this.primaryStage.setMinHeight(270);
+
                     if (newValue.equals("signup")) {
                         this.primaryStage.setScene(this.authenticationController.loadSignUpForm());
                     } else {
                         this.primaryStage.setScene(this.authenticationController.loadSignInForm());
                     }
-                    this.primaryStage.setMinWidth(270);
                 } else {
                     this.loadMainScene();
+                    firstLogin = false;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-        this.primaryStage.setScene(this.authenticationController.loadView());
+        this.primaryStage.setScene(this.authenticationController.loadSignInForm());
         this.primaryStage.setMinWidth(270);
         this.primaryStage.show();
     }
 
     private void loadMainScene() throws IOException {
+        if (!firstLogin) {
+            this.layout = new HBox();
+        }
+
         FXMLLoader sidebarLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/sidebar.fxml"));
         Parent sidebar = sidebarLoader.load();
 
         this.layout.getChildren().add(sidebar);
         this.changeMainView(sidebarLoader.getController());
-
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(this.layout, 680, 550));
-        primaryStage.setMinWidth(680);
-        primaryStage.setMinHeight(550);
-        primaryStage.show();
+        this.primaryStage.setTitle("MoneyLover");
+        this.primaryStage.setScene(new Scene(this.layout, 680, 550));
+        this.primaryStage.setMinWidth(680);
+        this.primaryStage.setMinHeight(550);
+        this.primaryStage.show();
     }
 
     private void changeMainView(MainPresenter mainPresenter) {
         mainPresenter.getChangeScene().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
-                ObservableList<Node> nodes = this.layout.getChildren();
-                nodes.set(1, mainPresenter.getMainView());
+                if (this.layout.getChildren().size() == 2) {
+                    this.layout.getChildren().set(1, mainPresenter.getMainView());
+                } else {
+                    this.layout.getChildren().add(mainPresenter.getMainView());
+                }
 
-                // The difference between oldValue and newValue triggers an event
                 mainPresenter.setChangeScene(false);
             }
         });
-        this.layout.getChildren().add(mainPresenter.getMainView());
+        mainPresenter.setChangeScene(true);
+        mainPresenter.setChangeMainScene(this.changeMainScene);
     }
 
     public static void main(String[] args) {

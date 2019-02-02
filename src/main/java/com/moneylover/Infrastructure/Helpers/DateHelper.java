@@ -1,5 +1,7 @@
 package com.moneylover.Infrastructure.Helpers;
 
+import com.moneylover.Infrastructure.Constants.CommonConstants;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -39,5 +41,15 @@ public class DateHelper {
 
     public static DateTimeFormatter getFormat() {
         return DateTimeFormatter.ofPattern("MM/dd/YYYY");
+    }
+
+    public static String getDateRange(LocalDate startDate, LocalDate endDate) {
+        if (DateHelper.isSameMonth(startDate, endDate)) {
+            return CommonConstants.DAY_RANGE;
+        } else if (DateHelper.isSameYear(startDate, endDate)) {
+            return CommonConstants.MONTH_RANGE;
+        } else {
+            return CommonConstants.YEAR_RANGE;
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.moneylover.app.Transaction.View;
 
-import com.moneylover.Infrastructure.Contracts.ParserInterface;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
+import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
 import com.moneylover.Modules.Transaction.Controllers.TransactionController;
 import com.moneylover.Modules.Transaction.Entities.Transaction;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class TransactionCell extends ListCell<Transaction> implements DialogInterface, ParserInterface {
+public class TransactionCell extends ListCell<Transaction> implements DialogInterface {
     private HBox transactionCell;
 
     private Transaction transaction;
@@ -152,7 +152,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
             this.labelTransactionNote.setText(item.getNote());
         }
 
-        this.labelAmount.setText(this.toMoneyString(item.getAmount(), moneySymbol));
+        this.labelAmount.setText(CurrencyHelper.toMoneyString(item.getAmount(), moneySymbol));
         this.labelAmount.getStyleClass().removeAll("danger-color", "success-color");
 
         if (item.getAmount() < 0) {
@@ -184,7 +184,7 @@ public class TransactionCell extends ListCell<Transaction> implements DialogInte
     private void loadTransactionData() {
         this.walletId.set(this.transaction.getWalletId());
         this.textFieldNote.setText(this.transaction.getNote());
-        this.textFieldTransactionAmount.setText(Float.toString(Math.abs(this.transaction.getAmount())));
+        this.textFieldTransactionAmount.setText(CurrencyHelper.toMoney(Math.abs(this.transaction.getAmount())));
         /* TODO: reload update after transaction cell is edit again */
         this.selectedFriend.set(0);
         this.selectedCategory.set(0);
