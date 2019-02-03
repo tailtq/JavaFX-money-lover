@@ -333,7 +333,7 @@ public class TransactionService extends BaseService {
             statement.setInt(4, subcategoryId);
         }
 
-        if (!moneyType.equals(CommonConstants.EXPENSE) && !moneyType.equals(CommonConstants.INCOME)) {
+        if (!moneyType.equals(CommonConstants.EXPENSE) && !moneyType.equals(CommonConstants.INCOME) && transaction.getFriendId() != 0) {
             statement.setInt(11, transaction.getFriendId());
         } else {
             statement.setNull(11, Types.INTEGER);
