@@ -1,9 +1,11 @@
 package com.moneylover.app;
 
 import com.moneylover.Modules.Category.Controllers.CategoryController;
+import com.moneylover.Modules.Currency.Controllers.CurrencyController;
 import com.moneylover.Modules.Friend.Controllers.FriendController;
 import com.moneylover.Modules.SubCategory.Controllers.SubCategoryController;
 import com.moneylover.Modules.Type.Controllers.TypeController;
+import com.moneylover.Modules.Wallet.Controllers.WalletController;
 import com.moneylover.Modules.Wallet.Entities.Wallet;
 import com.moneylover.app.Category.CategoryPresenter;
 import com.moneylover.app.Currency.CurrencyPresenter;
@@ -11,12 +13,14 @@ import com.moneylover.app.Friend.FriendDialogPresenter;
 import com.moneylover.app.User.UserPresenter;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import com.moneylover.Infrastructure.Contracts.LoaderInterface;
 
@@ -40,6 +44,14 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
 
     private VBox mainView;
 
+    @FXML
+    private Button buttonTransaction,
+            buttonReport,
+            buttonBudget,
+            buttonWallet,
+            buttonFriend,
+            buttonUser;
+
     void setChangeMainScene(StringProperty changeMainScene) {
         this.changeMainScene = changeMainScene;
     }
@@ -56,12 +68,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         return this.mainView;
     }
 
-    private void setWallets() throws IOException, SQLException, ClassNotFoundException, InterruptedException {
-        if (this.wallets.isEmpty()) {
-            com.moneylover.Modules.Wallet.Controllers.WalletController walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
-            this.wallets.addAll(walletController.list(UserPresenter.getUser().getId()));
-        }
-
+    private void setWallets() throws IOException, SQLException, InterruptedException {
         this.controller.setWallets(this.wallets);
         this.walletIndex.addListener((observableValue, oldValue, newValue) -> {
             try {
@@ -112,9 +119,7 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         if (this.activeButton((Node) e.getSource())) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallets.fxml"));
             this.initView(fxmlLoader);
-            CurrencyPresenter.setCurrencies(
-                    (new com.moneylover.Modules.Currency.Controllers.CurrencyController()).list()
-            );
+            CurrencyPresenter.setCurrencies((new CurrencyController()).list());
         }
     }
 
@@ -152,10 +157,33 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
-            this.initView(fxmlLoader);
-            this.changeScene.set(false);
+            this.wallets.addAll((new WalletController()).list(UserPresenter.getUser().getId()));
+            this.wallets.addListener(new ListChangeListener<Wallet>() {
+                @Override
+                public void onChanged(Change<? extends Wallet> change) {
+                    boolean disable = wallets.size() == 0;
+                    disableSidebarButtons(disable);
+                }
+            });
+            FXMLLoader fxmlLoader;
 
+            if (this.wallets.size() == 0) {
+                fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/wallet/wallets.fxml"));
+                CurrencyPresenter.setCurrencies((new CurrencyController()).list());
+            } else {
+                fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/pages/transaction/transactions.fxml"));
+            }
+
+            this.initView(fxmlLoader);
+
+            if (this.wallets.size() == 0) {
+                this.buttonWallet.getStyleClass().add("active");
+                this.disableSidebarButtons(true);
+            } else {
+                this.buttonTransaction.getStyleClass().add("active");
+            }
+
+            this.changeScene.set(false);
             Thread thread = new Thread(){
                 @Override
                 public void run() {
@@ -181,5 +209,13 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
         this.mainView = viewLoader.load();
         this.controller = viewLoader.getController();
         this.changeScene.set(true);
+    }
+
+    private void disableSidebarButtons(boolean disable) {
+        this.buttonTransaction.setDisable(disable);
+        this.buttonReport.setDisable(disable);
+        this.buttonBudget.setDisable(disable);
+        this.buttonFriend.setDisable(disable);
+        this.buttonUser.setDisable(disable);
     }
 }

@@ -55,10 +55,14 @@ public class UserPresenter extends PagePresenter implements LoaderInterface {
 
     @FXML
     private void updateUser() {
-        String name = this.textFieldName.getText().trim();
-        String phone = this.textFieldPhone.getText().trim();
-        String password = this.textFieldPassword.getText().trim();
-        String passwordConfirmation = this.textFieldPasswordConfirmation.getText().trim();
+        String name = this.textFieldName.getText();
+        String phone = this.textFieldPhone.getText();
+        String password = this.textFieldPassword.getText();
+        String passwordConfirmation = this.textFieldPasswordConfirmation.getText();
+        name = (name == null) ? "" : name.trim();
+        phone = (phone == null) ? "" : phone.trim();
+        password = (password == null) ? "" : password.trim();
+        passwordConfirmation = (passwordConfirmation == null) ? "" : passwordConfirmation.trim();
 
         if (name.isEmpty()) {
             this.showErrorDialog("Please input all needed information!");
