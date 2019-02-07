@@ -42,8 +42,6 @@ public class TransactionPresenter extends PagePresenter {
 
     public void loadPresenter() throws SQLException, ClassNotFoundException {
         this.transactionController = new com.moneylover.Modules.Transaction.Controllers.TransactionController();
-        this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
-        this.friendDialogPresenter = new FriendDialogPresenter(this.selectedFriend);
     }
 
     private void getTransactionsByDate(int walletId, LocalDate date, char operator) throws SQLException {
@@ -140,21 +138,9 @@ public class TransactionPresenter extends PagePresenter {
 
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException, InterruptedException {
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                try {
-                    getTransactionsByDate(getWallet().getId(), tabDate, '=');
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        thread.start();
         super.setWallets(wallets);
+        this.getTransactionsByDate(getWallet().getId(), tabDate, '=');
         this._setListViewTransactions();
-        thread.join();
         this._calculateStatistic();
     }
 
@@ -303,8 +289,21 @@ public class TransactionPresenter extends PagePresenter {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/transaction/transaction-save.fxml"));
         fxmlLoader.setController(this);
         Parent parent = fxmlLoader.load();
+
+        if (this.categoryPresenter == null) {
+            this.categoryPresenter = new CategoryPresenter(this.selectedType, this.selectedCategory, this.selectedSubCategory);
+        }
+
+        if (this.friendDialogPresenter == null) {
+            this.friendDialogPresenter = new FriendDialogPresenter(this.selectedFriend);
+        }
+
         this.categoryPresenter.setVBoxSelectFriend(this.vBoxSelectFriend);
         this.friendDialogPresenter.handleSelectedFriendId(this.selectFriend);
+        this.createScreen(parent, "Add Transaction", 500, 230);
+    }
+
+    private void loadTransactionData() {
         this.walletId.set(0);
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
@@ -312,8 +311,6 @@ public class TransactionPresenter extends PagePresenter {
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
         this.datePickerTransactedAt.setValue(LocalDate.now());
-
-        this.createScreen(parent, "Add Transaction", 500, 230);
     }
 
     @FXML

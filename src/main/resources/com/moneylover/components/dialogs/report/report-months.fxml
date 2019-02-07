@@ -10,7 +10,6 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="
-          @../../../../../assets/css/colors.css,
           @../../../../../assets/css/content.css,
           @../../../../../assets/css/pages/transaction.css,
           @../../../../../assets/css/pages/report.css"
