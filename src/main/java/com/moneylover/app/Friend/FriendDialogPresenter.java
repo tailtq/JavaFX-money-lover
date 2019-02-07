@@ -55,6 +55,11 @@ public class FriendDialogPresenter extends BaseViewPresenter implements DialogIn
         for (Friend friend: FriendDialogPresenter.friends) {
             Button button = new Button();
             button.getStyleClass().addAll("currency__choose-button", "image-button", "boy", "white-bg-color");
+
+            if (friend.getId() == this.selectedFriend.get()) {
+                button.getStyleClass().add("active");
+            }
+
             button.setGraphic(new Text(friend.getName()));
             button.setAlignment(Pos.CENTER_LEFT);
             buttons.add(button);

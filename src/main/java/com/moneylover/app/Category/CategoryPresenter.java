@@ -168,6 +168,11 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                 Button buttonCategory = categoryLoader.load();
                 buttonCategory.setText(categoryDetail.getName());
                 buttonCategory.getStyleClass().addAll("image-button", categoryDetail.getIcon());
+
+                if (categoryDetail.getId() == this.selectedCategory.get()) {
+                    buttonCategory.getStyleClass().add("active");
+                }
+
                 buttonCategory.setAlignment(Pos.TOP_LEFT);
                 buttonCategory.setUserData(categoryDetail.getId());
                 buttonCategory.setOnAction(actionEvent -> {
@@ -189,6 +194,12 @@ public class CategoryPresenter extends BaseViewPresenter implements DialogInterf
                     Button buttonSubCategory = subCategoryLoader.load();
                     buttonSubCategory.setText(subCategory.getName());
                     buttonSubCategory.getStyleClass().addAll("image-button", subCategory.getIcon());
+
+                    if (subCategory.getId() == this.selectedSubCategory.get()) {
+                        buttonSubCategory.getStyleClass().add("active");
+                        buttonCategory.getStyleClass().remove("active");
+                    }
+
                     buttonSubCategory.setAlignment(Pos.TOP_LEFT);
                     buttonSubCategory.setUserData(subCategory.getId());
                     buttonSubCategory.setOnAction(actionEvent -> {

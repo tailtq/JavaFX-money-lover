@@ -50,6 +50,10 @@ public class CurrencyCell extends ListCell<Currency> implements DialogInterface 
         if (empty) {
             setGraphic(null);
         } else {
+            if (item.getId() == this.selectedCurrencyId.get()) {
+                this.currencyCell.getStyleClass().add("active");
+            }
+
             this.currencyCell.getStyleClass().add(item.getIcon());
             this.currencyName.setText(item.getName());
             this.currencyCode.setText(item.getCode() + " - " + item.getSymbol());
