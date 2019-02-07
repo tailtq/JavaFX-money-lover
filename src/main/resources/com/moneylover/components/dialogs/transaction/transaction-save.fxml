@@ -14,7 +14,6 @@
 <GridPane xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"
           stylesheets="
-            @../../../../../assets/css/components/header.css,
             @../../../../../assets/css/icons.css,
             @../../../../../assets/css/content.css,
             @../../../../../assets/css/components/dialogs/transaction-create.css

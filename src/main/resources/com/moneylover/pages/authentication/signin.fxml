@@ -13,7 +13,7 @@
 
     <VBox styleClass="form__field-group">
         <Label text="Email"/>
-        <TextField promptText="Email" styleClass="form__field" fx:id="email" text="tai.ltq@yopmail.com"/>
+        <TextField promptText="Email" styleClass="form__field" fx:id="email" text="tailedn98@gmail.com"/>
     </VBox>
 
     <VBox styleClass="form__field-group">

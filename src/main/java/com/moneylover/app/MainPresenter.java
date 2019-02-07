@@ -23,10 +23,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import com.moneylover.Infrastructure.Contracts.LoaderInterface;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainPresenter extends BaseViewPresenter implements Initializable {
@@ -43,6 +45,10 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     private IntegerProperty walletIndex = new SimpleIntegerProperty(0);
 
     private VBox mainView;
+
+    private long time;
+
+    private ArrayList<Pair<String, Pair<PagePresenter, VBox>>> views = new ArrayList<>();
 
     @FXML
     private Button buttonTransaction,
@@ -147,8 +153,10 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     private void initView(FXMLLoader viewLoader) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         String file = viewLoader.getLocation().getFile();
         this.fxmlFile = file.substring(file.indexOf("/com/moneylover"));
+        time = System.nanoTime();
         this.changeViewLoader(viewLoader);
         this.setChangeScene(true);
+        System.out.println((System.nanoTime() - time) / 1000000);
         this.controller.loadPresenter();
         this.controller.setWalletIndex(this.walletIndex);
         this.setWallets();
@@ -206,9 +214,19 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     }
 
     private void changeViewLoader(FXMLLoader viewLoader) throws IOException {
+        for (Pair<String, Pair<PagePresenter, VBox>> view: this.views) {
+            if (view.getKey().equals(this.fxmlFile)) {
+                this.mainView = view.getValue().getValue();
+                this.controller = view.getValue().getKey();
+                this.changeScene.set(true);
+                return;
+            }
+        }
+
         this.mainView = viewLoader.load();
         this.controller = viewLoader.getController();
         this.changeScene.set(true);
+        this.views.add(new Pair(this.fxmlFile, new Pair(this.controller, this.mainView)));
     }
 
     private void disableSidebarButtons(boolean disable) {

@@ -7,7 +7,6 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.moneylover.app.Currency.CurrencyPresenter"
       stylesheets="
-        @../../../../../assets/css/colors.css,
         @../../../../../assets/css/icons.css,
         @../../../../../assets/css/content.css,
         @../../../../../assets/css/components/dialogs/choose-currency.css

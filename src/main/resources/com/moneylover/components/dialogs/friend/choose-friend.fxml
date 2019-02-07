@@ -9,7 +9,6 @@
             fitToHeight="true"
             fitToWidth="true"
             stylesheets="
-              @../../../../../assets/css/colors.css,
               @../../../../../assets/css/icons.css,
               @../../../../../assets/css/content.css,
               @../../../../../assets/css/components/normal-button.css,

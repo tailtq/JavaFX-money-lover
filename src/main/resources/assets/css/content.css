@@ -193,3 +193,86 @@
     -fx-border-width: 0;
 }
 
+/* Header */
+.header {
+    -fx-background-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, #000000, 2, 0, 0, 0);
+    -fx-padding: 8 10;
+}
+
+.header__wallet__select-btn {
+    -fx-background-color: #fff;
+}
+
+.header__wallet__select-btn, .header__wallet {
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 24px;
+    -fx-background-position: 5px 45%;
+    -fx-background-image: url('../images/header-wallet.png');
+    -fx-padding: 0 0 0 25;
+}
+
+.header__wallet {
+    -fx-pref-height: 30px;
+    -fx-padding: 0 0 0 40;
+}
+
+.header__report {
+    -fx-spacing: 5;
+}
+
+/* Colors */
+.primary-color {
+    -fx-text-fill: #039be5;
+}
+
+.success-color {
+    -fx-text-fill: #2db84c;
+}
+
+.success-bg-color {
+    -fx-background-color: #2db84c;
+}
+
+.warning-color {
+    -fx-text-fill: #ffc107;
+}
+
+.warning-bg-color {
+    -fx-background-color: #ffc107;
+}
+
+.danger-color {
+    -fx-text-fill: #f25a5a;
+}
+
+.danger-bg-color {
+    -fx-background-color: #f25a5a;
+}
+
+.white-color {
+    -fx-text-fill: #fff;
+}
+
+.white-bg-color {
+    -fx-background-color: #fff;
+}
+
+.black-color {
+    -fx-text-fill: rgba(0,0,0,.87);
+}
+
+.gray-color {
+    -fx-text-fill: rgba(0,0,0,.54);
+}
+
+.text-bold {
+    -fx-font-weight: bold;
+    -fx-font-family: 'SansSerif';
+}
+
+/* Linear color */
+.bg--linear-succeed-color {
+    -fx-background-color: linear-gradient(to bottom right, #2db84c, #4af597);
+    -fx-font-size: 11px;
+}

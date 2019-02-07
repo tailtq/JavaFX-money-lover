@@ -8,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import java.sql.SQLException;
-import java.util.regex.PatternSyntaxException;
 
 public class UserPresenter extends PagePresenter implements LoaderInterface {
     private com.moneylover.Modules.User.Controllers.UserController userController;

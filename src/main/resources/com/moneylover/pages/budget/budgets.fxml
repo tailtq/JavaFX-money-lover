@@ -12,8 +12,7 @@
       stylesheets="@../../../../assets/css/content.css"
       fx:controller="com.moneylover.app.Budget.BudgetPresenter"
       styleClass="root__content" HBox.hgrow="ALWAYS">
-    <HBox stylesheets="@../../../../assets/css/components/header.css"
-          styleClass="header">
+    <HBox styleClass="header">
         <BorderPane HBox.hgrow="ALWAYS">
             <left>
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml" fx:id="dropdownWallets"/>
@@ -27,7 +26,6 @@
     </HBox>
 
     <VBox stylesheets="
-            @../../../../assets/css/colors.css,
             @../../../../assets/css/pages/transaction.css,
             @../../../../assets/css/pages/budget.css
           "
