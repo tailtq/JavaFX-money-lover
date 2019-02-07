@@ -298,6 +298,7 @@ public class TransactionPresenter extends PagePresenter {
             this.friendDialogPresenter = new FriendDialogPresenter(this.selectedFriend);
         }
 
+        this.loadTransactionData();
         this.categoryPresenter.setVBoxSelectFriend(this.vBoxSelectFriend);
         this.friendDialogPresenter.handleSelectedFriendId(this.selectFriend);
         this.createScreen(parent, "Add Transaction", 500, 230);
