@@ -4,11 +4,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
       stylesheets="@../../../../assets/css/content.css, @../../../../assets/css/pages/login.css"
       alignment="CENTER"
       styleClass="login__container">
+    <ImageView fitHeight="90"
+               fitWidth="150"
+               styleClass="transaction__content__image">
+        <Image url="@../../../../assets/images/money-lover-logo.png"
+               backgroundLoading="true"/>
+    </ImageView>
     <Text styleClass="font--size-20">SIGN UP</Text>
 
     <VBox styleClass="form__field-group">
@@ -36,6 +44,6 @@
     </fx:include>
 
     <fx:include source="../../components/buttons/text-button.fxml" styleClass="sign-up-message" onAction="#changeScene">
-        <text>Sign in</text>
+        <text>Sign in here</text>
     </fx:include>
 </VBox>
