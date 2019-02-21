@@ -3,6 +3,7 @@ package com.moneylover.Modules.Friend.Services;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Friend.Entities.Friend;
+import com.moneylover.Modules.Transaction.Services.TransactionService;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,8 +12,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class FriendService extends BaseService {
+    private TransactionService transactionService;
+
     public FriendService() throws SQLException, ClassNotFoundException {
         super();
+        this.transactionService = new TransactionService();
     }
 
     protected String getTable() {
@@ -52,6 +56,11 @@ public class FriendService extends BaseService {
 
     public void update(Friend friend, int id) throws SQLException {
         this._update(friend, id);
+    }
+
+    public void delete(int id) throws SQLException {
+        this.transactionService.setNullFriendId(id);
+        this.deleteById(id);
     }
 
     /*====================================================================================*/

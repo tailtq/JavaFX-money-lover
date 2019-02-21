@@ -1,6 +1,7 @@
 package com.moneylover.Modules.Budget.Services;
 
 import com.moneylover.Infrastructure.Constants.CommonConstants;
+import com.moneylover.Infrastructure.Exceptions.BadRequestException;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Services.BaseService;
 import com.moneylover.Modules.Budget.Entities.Budget;
@@ -75,7 +76,8 @@ public class BudgetService extends BaseService {
         return budget;
     }
 
-    public Budget create(Budget budget) throws SQLException, NotFoundException, ClassNotFoundException {
+    public Budget create(Budget budget) throws SQLException, NotFoundException, ClassNotFoundException, BadRequestException {
+        this.verifySameBudget(budget);
         int id = this._create(budget);
         float amount = this._getTransactionService().getAmountByBudget(budget);
         this._setSpentAmount(Math.abs(amount), id);
@@ -89,7 +91,8 @@ public class BudgetService extends BaseService {
         return true;
     }
 
-    public void update(Budget budget, int id) throws SQLException, ClassNotFoundException {
+    public void update(Budget budget, int id) throws SQLException, ClassNotFoundException, BadRequestException {
+        this.verifySameBudget(budget);
         this._update(budget, id);
         float amount = this._getTransactionService().getAmountByBudget(budget);
         this._setSpentAmount(Math.abs(amount), id);
@@ -99,7 +102,32 @@ public class BudgetService extends BaseService {
         this._increaseSpentAmount(amount, typeId, type, transactedAt);
     }
 
+    private void verifySameBudget(Budget budget) throws SQLException, BadRequestException {
+        String idCondition = "";
+
+        if (budget.getId() != 0) {
+            idCondition = "id != " + budget.getId();
+        }
+
+        ResultSet resultSet = this._getDetailBy(
+                "wallet_id = " + budget.getWalletId(),
+                "budgetable_id = " + budget.getBudgetableId(),
+                "budgetable_type = '" + budget.getBudgetableType() + "'",
+                "started_at = '" + budget.getStartedAt().toString() + "'",
+                "ended_at = '" + budget.getEndedAt().toString() + "'",
+                idCondition
+        );
+
+        if (resultSet.next()) {
+            this.closeStatement();
+            throw new BadRequestException();
+        }
+
+        this.closeStatement();
+    }
+
     /*====================================================================================*/
+
     private ArrayList<Budget> _list(int walletId) throws SQLException {
         ArrayList<Budget> budgets = new ArrayList<>();
         ResultSet resultSet = this.getByJoin(

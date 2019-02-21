@@ -189,6 +189,10 @@ public class TransactionService extends BaseService {
         );
     }
 
+    public void setNullFriendId(int friendId) throws SQLException {
+        this._setNullFriendId(friendId);
+    }
+
     public void delete(int id) throws SQLException, NotFoundException {
         Transaction transaction = this._getTransactionById(id);
         Thread updateAmount = new Thread() {
@@ -333,7 +337,7 @@ public class TransactionService extends BaseService {
             statement.setInt(4, subcategoryId);
         }
 
-        if (!moneyType.equals(CommonConstants.EXPENSE) && !moneyType.equals(CommonConstants.INCOME)) {
+        if (!moneyType.equals(CommonConstants.EXPENSE) && !moneyType.equals(CommonConstants.INCOME) && transaction.getFriendId() != 0) {
             statement.setInt(11, transaction.getFriendId());
         } else {
             statement.setNull(11, Types.INTEGER);
@@ -383,6 +387,14 @@ public class TransactionService extends BaseService {
         PreparedStatement statement = this.handleCreateProcess(transaction, moneyType, statementString);
         statement.setTimestamp(12, this.getCurrentTime());
         statement.setInt(13, id);
+        statement.executeUpdate();
+        this.closePreparedStatement();
+    }
+
+    private void _setNullFriendId(int friendId) throws SQLException {
+        String statementString = "UPDATE " + getTable() + " SET friend_id = null WHERE friend_id = ?";
+        PreparedStatement statement = this.getPreparedStatement(statementString);
+        statement.setInt(1, friendId);
         statement.executeUpdate();
         this.closePreparedStatement();
     }

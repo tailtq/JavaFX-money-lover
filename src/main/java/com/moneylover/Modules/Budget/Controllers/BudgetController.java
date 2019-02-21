@@ -1,5 +1,6 @@
 package com.moneylover.Modules.Budget.Controllers;
 
+import com.moneylover.Infrastructure.Exceptions.BadRequestException;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Modules.Budget.Entities.Budget;
 import com.moneylover.Modules.Budget.Services.BudgetService;
@@ -32,7 +33,7 @@ public class BudgetController {
         return budget;
     }
 
-    public Budget create(Budget budget) throws SQLException, NotFoundException, ClassNotFoundException {
+    public Budget create(Budget budget) throws SQLException, NotFoundException, ClassNotFoundException, BadRequestException {
         Budget newBudget = this.service.create(budget);
 
         return newBudget;
@@ -44,7 +45,7 @@ public class BudgetController {
         return true;
     }
 
-    public boolean update(Budget budget, int id) throws SQLException, ClassNotFoundException {
+    public boolean update(Budget budget, int id) throws SQLException, ClassNotFoundException, BadRequestException {
         this.service.update(budget, id);
 
         return true;
