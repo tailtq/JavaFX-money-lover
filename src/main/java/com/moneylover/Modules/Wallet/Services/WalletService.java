@@ -134,7 +134,7 @@ public class WalletService extends BaseService {
     }
 
     private int _create(Wallet wallet) throws SQLException {
-        String statementString = "INSERT INTO " + getTable() + "(currency_id, name, amount, created_at) VALUES (?, ?, ?, ?, ?)";
+        String statementString = "INSERT INTO " + getTable() + "(currency_id, name, amount, created_at) VALUES (?, ?, ?, ?)";
         PreparedStatement statement = this.getPreparedStatement(statementString, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, wallet.getCurrencyId());
         statement.setString(2, wallet.getName());

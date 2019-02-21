@@ -6,7 +6,6 @@
 
 <HBox xmlns="http://javafx.com/javafx"
       stylesheets="
-          @../../../../assets/css/colors.css,
           @../../../../assets/css/content.css,
           @../../../../assets/css/components/buttons/optional-buttons.css
       " styleClass="optional-buttons">

@@ -12,6 +12,10 @@
     -fx-background-color: rgba(45,184,76,.08);
 }
 
+.category .normal-button.active {
+    -fx-background-color: rgba(45,184,76,.08);
+}
+
 .subcategories {
     -fx-spacing: 3;
 }

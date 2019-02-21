@@ -32,7 +32,7 @@ public class WalletPresenter extends PagePresenter {
     private com.moneylover.Modules.Wallet.Controllers.WalletController walletController; // Get Detail when update
 
     public void loadPresenter() throws SQLException, ClassNotFoundException {
-        this.walletController = new com.moneylover.Modules.Wallet.Controllers.WalletController();
+        this.walletController = new WalletController();
     }
 
     /*========================== Draw ==========================*/
@@ -170,6 +170,7 @@ public class WalletPresenter extends PagePresenter {
             userWallet.add(new UserWallet(UserPresenter.getUser().getId(), wallet.getId()));
             this.walletController.attachUsers(userWallet);
             this.wallets.add(0, wallet);
+            this.loadHeaderWallets();
             this.closeScene(event);
         } catch (SQLException e) {
             e.printStackTrace();

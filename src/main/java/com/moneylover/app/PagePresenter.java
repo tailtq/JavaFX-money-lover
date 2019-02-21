@@ -50,6 +50,12 @@ abstract public class PagePresenter extends BaseViewPresenter implements LoaderI
     }
 
     protected void loadHeaderWallets() {
+        if (this.wallets.size() == 0) {
+            this.dropdownWallets.setText("No wallet is selected");
+            this.dropdownWallets.getItems().clear();
+            return;
+        }
+
         this.dropdownWallets.setText(this.wallets.get(this.walletIndex.get()).getName());
         ObservableList<MenuItem> items = this.dropdownWallets.getItems();
         items.clear();

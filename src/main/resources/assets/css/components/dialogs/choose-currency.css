@@ -10,6 +10,10 @@
     -fx-background-color: rgba(45,184,76,.08);
 }
 
+.currency__choose-button.active {
+    -fx-background-color: rgba(45,184,76,.08);
+}
+
 .currency__title {
     -fx-font-size: 20;
 }

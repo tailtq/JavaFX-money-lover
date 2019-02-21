@@ -10,8 +10,7 @@
       fx:controller="com.moneylover.app.Friend.FriendPresenter"
       stylesheets="@../../../../assets/css/content.css"
       styleClass="root__content" HBox.hgrow="ALWAYS">
-    <HBox stylesheets="@../../../../assets/css/components/header.css"
-          styleClass="header">
+    <HBox styleClass="header">
         <BorderPane HBox.hgrow="ALWAYS">
             <left>
                 <fx:include source="../../components/buttons/wallet-dropdown.fxml" fx:id="dropdownWallets"/>
@@ -29,8 +28,7 @@
           stylesheets="
             @../../../../assets/css/pages/transaction.css,
             @../../../../assets/css/pages/wallet.css,
-            @../../../../assets/css/pages/friend.css,
-            @../../../../assets/css/colors.css
+            @../../../../assets/css/pages/friend.css
           "
           alignment="TOP_CENTER"
           styleClass="container">

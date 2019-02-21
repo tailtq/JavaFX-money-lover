@@ -45,8 +45,6 @@ public class BudgetPresenter extends PagePresenter {
 
     public BudgetPresenter() throws SQLException, ClassNotFoundException {
         this.budgetController = new BudgetController();
-        this.categoryPresenter = new CategoryPresenter(this.selectedCategory, this.selectedSubCategory);
-        this.categoryPresenter.setOnlyExpenseCategories(true);
         this.currentDate = LocalDate.now();
     }
 
@@ -223,14 +221,23 @@ public class BudgetPresenter extends PagePresenter {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/moneylover/components/dialogs/budget/budget-save.fxml"));
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
+
+        if (this.categoryPresenter == null) {
+            this.categoryPresenter = new CategoryPresenter(this.selectedCategory, this.selectedSubCategory);
+            this.categoryPresenter.setOnlyExpenseCategories(true);
+        }
+
+        this.loadBudgetData();
+        this.createScreen(parent, "Create Budget", 500, 170);
+    }
+
+    private void loadBudgetData() {
         this.walletId.set(0);
         this.selectedCategory.set(0);
         this.selectedSubCategory.set(0);
         PagePresenter.loadStaticWallets(this.selectWallet, this.walletId, this.wallets);
         this.categoryPresenter.handleSelectedCategoryId(this.selectedCategory, this.selectCategory, "category");
         this.categoryPresenter.handleSelectedCategoryId(this.selectedSubCategory, this.selectCategory, "subCategory");
-
-        this.createScreen(parent, "Create Budget", 500, 170);
     }
 
     @FXML
