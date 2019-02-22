@@ -36,8 +36,8 @@ public class Main extends Application {
                 this.layout.getChildren().clear();
 
                 if (newValue.equals("signin") || newValue.equals("signup")) {
-                    this.primaryStage.setMinWidth(270);
-                    this.primaryStage.setMinHeight(270);
+                    this.primaryStage.setMinWidth(320);
+                    this.primaryStage.setMinHeight(320);
 
                     if (newValue.equals("signup")) {
                         this.primaryStage.setScene(this.authenticationController.loadSignUpForm());
@@ -53,7 +53,7 @@ public class Main extends Application {
             }
         });
         this.primaryStage.setScene(this.authenticationController.loadSignInForm());
-        this.primaryStage.setMinWidth(270);
+        this.primaryStage.setMinWidth(320);
         this.primaryStage.show();
     }
 
