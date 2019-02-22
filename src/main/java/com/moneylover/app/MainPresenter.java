@@ -153,10 +153,10 @@ public class MainPresenter extends BaseViewPresenter implements Initializable {
     private void initView(FXMLLoader viewLoader) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         String file = viewLoader.getLocation().getFile();
         this.fxmlFile = file.substring(file.indexOf("/com/moneylover"));
-        time = System.nanoTime();
+//        time = System.nanoTime();
         this.changeViewLoader(viewLoader);
         this.setChangeScene(true);
-        System.out.println((System.nanoTime() - time) / 1000000);
+//        System.out.println((System.nanoTime() - time) / 1000000);
         this.controller.loadPresenter();
         this.controller.setWalletIndex(this.walletIndex);
         this.setWallets();

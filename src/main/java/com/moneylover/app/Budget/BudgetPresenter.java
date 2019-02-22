@@ -1,6 +1,7 @@
 package com.moneylover.app.Budget;
 
 import com.moneylover.Infrastructure.Constants.CommonConstants;
+import com.moneylover.Infrastructure.Exceptions.BadRequestException;
 import com.moneylover.Infrastructure.Exceptions.NotFoundException;
 import com.moneylover.Infrastructure.Helpers.DateHelper;
 import com.moneylover.Modules.Budget.Controllers.BudgetController;
@@ -279,6 +280,8 @@ public class BudgetPresenter extends PagePresenter {
         } catch (SQLException | NotFoundException | ClassNotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
+        } catch (BadRequestException e) {
+            this.showErrorDialog("Same budget existed");
         }
     }
 

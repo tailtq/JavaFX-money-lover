@@ -45,6 +45,8 @@ public class FriendController {
     }
 
     public boolean delete(int id) throws SQLException {
-        return this.service.deleteById(id);
+        this.service.delete(id);
+
+        return true;
     }
 }

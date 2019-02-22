@@ -40,7 +40,7 @@
           alignment="CENTER" styleClass="container">
         <VBox styleClass="container__content, report__content" alignment="TOP_CENTER">
             <VBox alignment="TOP_CENTER">
-                <BarChart fx:id="dateRangeChart" title="Net Income" styleClass="chart" legendVisible="false">
+                <BarChart fx:id="dateRangeChart" title="Net Income" styleClass="chart">
                     <xAxis>
                         <CategoryAxis side="BOTTOM"/>
                     </xAxis>

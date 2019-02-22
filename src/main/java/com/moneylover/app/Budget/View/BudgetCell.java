@@ -2,6 +2,7 @@ package com.moneylover.app.Budget.View;
 
 import com.moneylover.Infrastructure.Constants.CommonConstants;
 import com.moneylover.Infrastructure.Contracts.DialogInterface;
+import com.moneylover.Infrastructure.Exceptions.BadRequestException;
 import com.moneylover.Infrastructure.Helpers.CurrencyHelper;
 import com.moneylover.Infrastructure.Helpers.DateHelper;
 import com.moneylover.Modules.Budget.Controllers.BudgetController;
@@ -42,8 +43,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class BudgetCell extends ListCell<Budget> implements DialogInterface {
-    private TransactionController transactionController;
-
     private CategoryPresenter categoryPresenter;
 
     private Budget budget;
@@ -323,6 +322,8 @@ public class BudgetCell extends ListCell<Budget> implements DialogInterface {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             this.showErrorDialog("An error has occurred");
+        } catch (BadRequestException e) {
+            this.showErrorDialog("Same budget existed");
         }
     }
 

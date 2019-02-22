@@ -112,6 +112,7 @@ public class WalletCell extends ListCell<Wallet> implements DialogInterface {
         this.currencyPresenter = new CurrencyPresenter(this.selectedCurrencyId);
         this.loadWalletData();
         this.textFieldWalletAmount.setDisable(true);
+        this.selectCurrency.setDisable(true);
         this.createScreen(parent, "Edit Wallet", 500, 115);
     }
 
