@@ -115,8 +115,7 @@ public class WalletPresenter extends PagePresenter {
     @Override
     public void setWallets(ObservableList<Wallet> wallets) throws SQLException, InterruptedException {
         this.wallets = wallets;
-        this.wallets.clear();
-        this.wallets.addAll(this.walletController.list(UserPresenter.getUser().getId()));
+        this.wallets.setAll(this.walletController.list(UserPresenter.getUser().getId()));
         this.loadHeaderWallets();
         this._setListViewWallets();
     }
@@ -139,6 +138,7 @@ public class WalletPresenter extends PagePresenter {
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/com/moneylover/components/dialogs/wallet/wallet-save.fxml")
         );
+        this.selectedCurrencyId.set(0);
         fxmlLoader.setController(this);
         GridPane parent = fxmlLoader.load();
 

@@ -325,8 +325,7 @@ public class ReportPresenter extends PagePresenter {
             this.endDate = endDate;
 
             Wallet wallet = this.getWallet();
-            this.transactions.clear();
-            this.transactions.addAll(
+            this.transactions.setAll(
                     this.transactionController.listNotReportedByDateRange(wallet.getId(), startDate, endDate)
             );
             this.sortData(wallet.getMoneySymbol(), this.startDate, this.endDate);

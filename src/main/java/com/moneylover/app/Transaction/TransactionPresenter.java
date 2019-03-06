@@ -45,8 +45,7 @@ public class TransactionPresenter extends PagePresenter {
     }
 
     private void getTransactionsByDate(int walletId, LocalDate date, char operator) throws SQLException {
-        this.transactions.clear();
-        this.transactions.addAll(
+        this.transactions.setAll(
                 this.transactionController.listByMonth(walletId, date, operator)
         );
     }

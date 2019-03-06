@@ -30,7 +30,7 @@ public class CurrencyPresenter implements DialogInterface, Initializable {
     }
 
     public static void setCurrencies(ArrayList<Currency> currencies) {
-        CurrencyPresenter.currencies.addAll(currencies);
+        CurrencyPresenter.currencies.setAll(currencies);
     }
 
     public void setSelectedCurrencyId(IntegerProperty selectedCurrencyId) {
